@@ -1,8 +1,8 @@
 ---
-name: Refactor
-about: Refactor project code
-title: ''
-labels: ''
+name: "♻️ Refactor"
+about: 리펙토링에 관해 적습니다
+title: "♻️ [Refactor] - "
+labels: ":recycle: refactor"
 assignees: ''
 
 ---

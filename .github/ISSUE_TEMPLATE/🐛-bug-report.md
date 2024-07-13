@@ -1,8 +1,8 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+name: "\U0001F41B Bug report"
+about: 버그가 발생한 상황과 수정 내역을 적습니다
+title: "\U0001F41B [Bug] - "
+labels: ":bug: bug"
 assignees: ''
 
 ---
