@@ -1,0 +1,18 @@
+# Local Profile
+spring:
+  config:
+    activate:
+      on-profile: local
+REDIS_HOST: localhost
+REDIS_PORT: 6379
+#REDIS_PASSWORD: ??
+---
+# Dev Profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+REDIS_HOST: ${REDIS_URL}
+REDIS_PORT: 6379
+#REDIS_PASSWORD: ??
+---

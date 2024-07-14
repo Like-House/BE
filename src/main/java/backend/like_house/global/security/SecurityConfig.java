@@ -32,7 +32,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 new AntPathRequestMatcher("/swagger-ui/**"),
                                 new AntPathRequestMatcher("/api-docs/**"),
                                 new AntPathRequestMatcher("/error"),
-                                new AntPathRequestMatcher("/favicon.ico")
+                                new AntPathRequestMatcher("/favicon.ico"),
+                                new AntPathRequestMatcher("/health")
                         ).permitAll()
                         .anyRequest().authenticated());
         return http.build();

@@ -24,6 +24,7 @@ spring:
     include:
       - database
       - jwt
+      - redis
   data:
     redis:
       repositories:
