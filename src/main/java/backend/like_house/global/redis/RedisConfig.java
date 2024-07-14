@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 @EnableCaching
 @Configuration
-@PropertySource("classpath:application-redis.yml")
 public class RedisConfig {
 
     @Value("${REDIS_HOST}")
