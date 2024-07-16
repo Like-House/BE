@@ -1,2 +1,5 @@
-# jwt:
-#   secret: 'as'
+spring:
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+    expiration: 60000
+    refreshExpiration: 604800000 # 7일
