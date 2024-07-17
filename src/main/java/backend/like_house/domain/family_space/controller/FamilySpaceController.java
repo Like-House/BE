@@ -29,7 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class FamilySpaceController {
 
     @GetMapping("/check/{userId}")
-    @Operation(summary = "가족 공간 초대 링크 확인 API", description = "가족 공간 초대 링크가 유효한지 확인하는 API입니다. query string 으로 가족 공간 링크를 주세요.")
+    @Operation(summary = "가족 공간 초대 링크 확인 API", description = "가족 공간 초대 링크가 유효한지 확인하는 API입니다. "
+            + "가족 공간 링크가 존재하면 true를 반환합니다. query string 으로 가족 공간 링크를 주세요.")
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다."),
             @Parameter(name = "familySpaceLink", description = "가족 공간 링크, query string 입니다.")
