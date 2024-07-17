@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/api/family-space")
-class FamilySpaceController {
+public class FamilySpaceController {
 
     @GetMapping("/check/{userId}")
     @Operation(summary = "가족 공간 초대 링크 확인 API", description = "가족 공간 초대 링크가 유효한지 확인하는 API입니다. query string 으로 가족 공간 링크를 주세요.")
@@ -34,7 +34,7 @@ class FamilySpaceController {
             @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다."),
             @Parameter(name = "familySpaceLink", description = "가족 공간 링크, query string 입니다.")
     })
-    ApiResponse<CheckFamilySpaceLinkResponse> checkFamilySpaceLink(
+    public ApiResponse<CheckFamilySpaceLinkResponse> checkFamilySpaceLink(
             @PathVariable(name = "userId") Long userId,
             @RequestParam(name = "familySpaceLink") String familySpaceLink
     ) {
@@ -49,7 +49,7 @@ class FamilySpaceController {
             @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다."),
             @Parameter(name = "familySpaceLink", description = "가족 공간 링크, query string 입니다.")
     })
-    ApiResponse<NewFamilySpaceResponse> generateNewFamilySpace(
+    public ApiResponse<NewFamilySpaceResponse> generateNewFamilySpace(
             @PathVariable(name = "userId") Long userId,
             @RequestParam(name = "familySpaceLink") String familySpaceLink
     ) {
@@ -61,7 +61,7 @@ class FamilySpaceController {
 
     @PostMapping("/enter")
     @Operation(summary = "가족 공간 입장 API", description = "가족 공간에 입장하는 API입니다.")
-    ApiResponse<EnterFamilySpaceResponse> enterFamilySpace(
+    public ApiResponse<EnterFamilySpaceResponse> enterFamilySpace(
             @RequestBody @Valid EnterFamilySpaceRequest request
     ) {
         // TODO 차단되어있는 상태이면 입장 X
