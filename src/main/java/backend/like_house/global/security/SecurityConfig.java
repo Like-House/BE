@@ -2,6 +2,7 @@ package backend.like_house.global.security;
 
 import backend.like_house.global.security.filter.JwtAuthenticationFilter;
 import backend.like_house.global.security.annotation.LoginUserResolver;
+import backend.like_house.global.security.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import java.util.List;
 public class SecurityConfig implements WebMvcConfigurer {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final LoginUserResolver loginUserResolver;
 
     @Bean
@@ -47,7 +49,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 new AntPathRequestMatcher("/health")
                         ).permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
         return http.build();
     }
 

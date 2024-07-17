@@ -21,7 +21,7 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 가입된 유저 입니다."),
 
     // 인증 관련 에러
-    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "유효하지 않은 refresh token 입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "유효하지 않은 토큰입니다."),
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "AUTH4002", "비밀번호가 일치하지 않습니다."),
 
     // 예시,,,
