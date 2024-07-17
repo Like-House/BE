@@ -1,6 +1,6 @@
 package backend.like_house.global.security.jwt;
 
-import backend.like_house.global.security.filter.CustomUserDetailsService;
+import backend.like_house.global.security.principal.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
