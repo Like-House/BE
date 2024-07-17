@@ -1,12 +1,11 @@
 package backend.like_house.domain.user.service;
 
-import backend.like_house.domain.user.dto.SignInDTO;
-import backend.like_house.domain.user.dto.SignUpDTO;
+import backend.like_house.domain.user.dto.UserDTO;
 
 public interface UserCommandService {
 
-    SignUpDTO.SignUpResponse signUp(SignUpDTO.SignUpRequest request);
+    UserDTO.SignUpResponse signUp(UserDTO.SignUpRequest request);
 
-    SignInDTO.SignInResponse signIn(SignInDTO.SignInRequest request);
+    UserDTO.SignInResponse signIn(UserDTO.SignInRequest request);
 
 }

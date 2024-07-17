@@ -1,7 +1,6 @@
 package backend.like_house.domain.user.controller;
 
-import backend.like_house.domain.user.dto.SignInDTO;
-import backend.like_house.domain.user.dto.SignUpDTO;
+import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.domain.user.service.UserCommandService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.error.code.status.SuccessStatus;
@@ -23,13 +22,13 @@ public class UserController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입 API")
-    public ApiResponse<SignUpDTO.SignUpResponse> signUp(@RequestBody SignUpDTO.SignUpRequest signUpDTO) {
+    public ApiResponse<UserDTO.SignUpResponse> signUp(@RequestBody UserDTO.SignUpRequest signUpDTO) {
         return ApiResponse.of(SuccessStatus.SIGNUP_OK, userCommandService.signUp(signUpDTO));
     }
 
     @PostMapping("/signin")
     @Operation(summary = "로그인 API")
-    public ApiResponse<SignInDTO.SignInResponse> signIn(@RequestBody SignInDTO.SignInRequest signInDTO) {
+    public ApiResponse<UserDTO.SignInResponse> signIn(@RequestBody UserDTO.SignInRequest signInDTO) {
         return ApiResponse.of(SuccessStatus.SIGNIN_OK, userCommandService.signIn(signInDTO));
     }
 }

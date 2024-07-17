@@ -1,8 +1,7 @@
 package backend.like_house.domain.user.service.impl;
 
 import backend.like_house.domain.user.converter.UserConverter;
-import backend.like_house.domain.user.dto.SignInDTO;
-import backend.like_house.domain.user.dto.SignUpDTO;
+import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
 import backend.like_house.domain.user.service.UserCommandService;
@@ -26,7 +25,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final RedisUtil redisUtil;
 
     @Override
-    public SignUpDTO.SignUpResponse signUp(SignUpDTO.SignUpRequest signUpRequest) {
+    public UserDTO.SignUpResponse signUp(UserDTO.SignUpRequest signUpRequest) {
         // 이메일 중복 검사
         userRepository.findByEmail(signUpRequest.getEmail())
                 .ifPresent(user -> {
@@ -44,7 +43,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
-    public SignInDTO.SignInResponse signIn(SignInDTO.SignInRequest signInRequest) {
+    public UserDTO.SignInResponse signIn(UserDTO.SignInRequest signInRequest) {
         // 이메일로 사용자 조회
         User user = userRepository.findByEmail(signInRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
