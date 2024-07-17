@@ -1,5 +1,5 @@
 spring:
   jwt:
     secret: ${JWT_SECRET_KEY}
-    expiration: 60 * 3 * 1000 # 3분 (밀리초)
-    refreshExpiration: 60 * 60 * 24 * 7 * 1000 # 7일 (밀리초)
+    expiration: 180000 # 3분 (밀리초)
+    refreshExpiration: 604800000 # 7일 (밀리초)
