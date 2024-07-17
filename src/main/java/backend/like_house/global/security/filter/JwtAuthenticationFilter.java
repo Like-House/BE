@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + refreshedAccessToken);
                         }
                     } else {
-                        throw new UserException(ErrorStatus.INVALID_REFRESH_TOKEN);
+                        throw new UserException(ErrorStatus.INVALID_TOKEN);
                     }
                 } else {
                     throw new UserException(ErrorStatus._UNAUTHORIZED);
