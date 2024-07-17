@@ -39,11 +39,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // AccessToken이 만료된 경우 RefreshToken을 사용하여 AccessToken 갱신
                 String refreshToken = request.getHeader(HttpHeaders.AUTHORIZATION);
                 if (refreshToken != null && refreshToken.startsWith("Bearer ")) {
-                    String refreshedAccessToken = jwtUtil.renewAccessToken(refreshToken.substring(7));
-                    if (refreshedAccessToken != null) {
-                        Authentication authentication = jwtUtil.getAuthentication(jwtUtil.extractEmail(refreshedAccessToken));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + refreshedAccessToken);
+                    refreshToken = refreshToken.substring(7);
+
+                    // Redis에 refreshToken이 있는지 검증
+                    if (jwtUtil.isRefreshTokenValid(refreshToken)) {
+                        String refreshedAccessToken = jwtUtil.renewAccessToken(refreshToken);
+                        if (refreshedAccessToken != null) {
+                            Authentication authentication = jwtUtil.getAuthentication(jwtUtil.extractEmail(refreshedAccessToken));
+                            SecurityContextHolder.getContext().setAuthentication(authentication);
+                            response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + refreshedAccessToken);
+                        }
+                    } else {
+                        handleJwtException(response, "유효하지 않은 Refresh Token", HttpServletResponse.SC_UNAUTHORIZED);
                     }
                 } else {
                     handleJwtException(response, ex.getMessage(), HttpServletResponse.SC_UNAUTHORIZED);

@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,15 +29,18 @@ public class JWTUtil {
     private final long jwtExpirationInMs;
     private final long jwtRefreshExpirationInMs;
     private final CustomUserDetailsService customUserDetailsService;
+    private final RedisTemplate<String, String> redisTemplate;
 
     public JWTUtil(@Value("${spring.jwt.secret}") String secretKey,
                    @Value("${spring.jwt.expiration}") long jwtExpirationInMs,
                    @Value("${spring.jwt.refreshExpiration}") long jwtRefreshExpirationInMs,
-                   CustomUserDetailsService customUserDetailsService) {
+                   CustomUserDetailsService customUserDetailsService,
+                   RedisTemplate redisTemplate) {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.jwtExpirationInMs = jwtExpirationInMs;
         this.jwtRefreshExpirationInMs = jwtRefreshExpirationInMs;
         this.customUserDetailsService = customUserDetailsService;
+        this.redisTemplate = redisTemplate;
     }
 
     public String generateAccessToken(String email) {
@@ -92,6 +96,7 @@ public class JWTUtil {
         }
         return null;
     }
+
     public Authentication getAuthentication(String email) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
         if (userDetails != null) {
@@ -101,5 +106,10 @@ public class JWTUtil {
             return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
         }
         return null;
+    }
+
+    public boolean isRefreshTokenValid(String refreshToken) {
+        String tokenFromRedis = redisTemplate.opsForValue().get(refreshToken);
+        return tokenFromRedis != null && tokenFromRedis.equals(refreshToken);
     }
 }
