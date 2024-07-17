@@ -58,7 +58,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
 
         // Redis에 RefreshToken 저장
-        redisUtil.saveRefreshToken(accessToken, refreshToken);
+        redisUtil.saveRefreshToken(user.getEmail(), refreshToken);
 
         return UserConverter.toSignInResponseDTO(accessToken);
     }
