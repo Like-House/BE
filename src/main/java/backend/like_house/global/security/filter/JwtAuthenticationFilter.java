@@ -1,5 +1,8 @@
 package backend.like_house.global.security.filter;
 
+import backend.like_house.global.common.ApiResponse;
+import backend.like_house.global.error.code.status.ErrorStatus;
+import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.security.jwt.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -9,12 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -39,6 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException ex) {
                 // AccessToken이 만료된 경우 RefreshToken을 사용하여 AccessToken 갱신
                 String refreshToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
                 if (refreshToken != null && refreshToken.startsWith("Bearer ")) {
                     refreshToken = refreshToken.substring(7);
 
@@ -51,19 +57,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + refreshedAccessToken);
                         }
                     } else {
-                        handleJwtException(response, "유효하지 않은 Refresh Token", HttpServletResponse.SC_UNAUTHORIZED);
+                        throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
                     }
                 } else {
-                    handleJwtException(response, ex.getMessage(), HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
+                    throw new GeneralException(ErrorStatus._UNAUTHORIZED);
                 }
             } catch (JwtException ex) {
-                // 그 외의 JWT 예외 처리
-                handleJwtException(response, ex.getMessage(), HttpServletResponse.SC_BAD_REQUEST);
-                return;
+                throw new GeneralException(ErrorStatus._BAD_REQUEST);
             }
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -71,11 +73,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader(HttpHeaders.AUTHORIZATION);
         return (bearer != null && bearer.startsWith("Bearer ")) ? bearer.substring(7) : null;
-    }
-
-    private void handleJwtException(HttpServletResponse response, String message, int status) throws IOException {
-        response.setStatus(status);
-        response.setContentType("application/json");
-        response.getWriter().write("{\"error\": \"" + message + "\"}");
     }
 }

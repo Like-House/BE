@@ -2,6 +2,8 @@ package backend.like_house.global.security.principal;
 
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
+import backend.like_house.global.error.code.status.ErrorStatus;
+import backend.like_house.global.error.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 가진 사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         return new CustomUserDetails(user);
     }

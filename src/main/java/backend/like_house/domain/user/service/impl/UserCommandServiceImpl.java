@@ -46,11 +46,10 @@ public class UserCommandServiceImpl implements UserCommandService {
     public UserDTO.SignInResponse signIn(UserDTO.SignInRequest signInRequest) {
         // 이메일로 사용자 조회
         User user = userRepository.findByEmail(signInRequest.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
-
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
         // 비밀번호 일치 여부 확인
         if (!passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new GeneralException(ErrorStatus.WRONG_PASSWORD);
         }
 
         // AccessToken & RefreshToken 생성
