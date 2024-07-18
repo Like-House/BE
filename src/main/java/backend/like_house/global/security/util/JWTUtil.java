@@ -1,4 +1,4 @@
-package backend.like_house.global.security.jwt;
+package backend.like_house.global.security.util;
 
 import backend.like_house.global.security.principal.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;

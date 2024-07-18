@@ -1,4 +1,4 @@
-package backend.like_house.global.security.jwt;
+package backend.like_house.global.security.util;
 
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.error.code.status.ErrorStatus;

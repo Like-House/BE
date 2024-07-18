@@ -8,7 +8,7 @@ import backend.like_house.domain.auth.service.AuthCommandService;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.redis.RedisUtil;
-import backend.like_house.global.security.jwt.JWTUtil;
+import backend.like_house.global.security.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

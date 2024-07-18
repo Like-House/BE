@@ -2,7 +2,7 @@ package backend.like_house.global.security.filter;
 
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.UserException;
-import backend.like_house.global.security.jwt.JWTUtil;
+import backend.like_house.global.security.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

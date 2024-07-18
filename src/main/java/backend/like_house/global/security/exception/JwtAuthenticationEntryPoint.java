@@ -1,7 +1,7 @@
 package backend.like_house.global.security.exception;
 
 import backend.like_house.global.error.code.status.ErrorStatus;
-import backend.like_house.global.security.jwt.ResponseUtil;
+import backend.like_house.global.security.util.ResponseUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
