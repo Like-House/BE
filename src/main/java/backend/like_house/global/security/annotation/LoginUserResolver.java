@@ -1,7 +1,7 @@
 package backend.like_house.global.security.annotation;
 
 import backend.like_house.domain.user.entity.User;
-import backend.like_house.domain.user.repository.UserRepository;
+import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.security.principal.CustomUserDetails;
@@ -20,7 +20,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class LoginUserResolver implements HandlerMethodArgumentResolver {
 
-    private final UserRepository userRepository;
+    private final AuthRepository authRepository;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -38,7 +38,7 @@ public class LoginUserResolver implements HandlerMethodArgumentResolver {
         }
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = userRepository.findByEmail(customUserDetails.getUser().getEmail())
+        User user = authRepository.findByEmail(customUserDetails.getUser().getEmail())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         return user;

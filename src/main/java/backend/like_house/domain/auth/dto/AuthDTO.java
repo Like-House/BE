@@ -1,10 +1,10 @@
-package backend.like_house.domain.user.dto;
+package backend.like_house.domain.auth.dto;
 
 import lombok.*;
 
 import java.time.LocalDate;
 
-public class UserDTO {
+public class AuthDTO {
 
     @Getter
     public static class SignInRequest {

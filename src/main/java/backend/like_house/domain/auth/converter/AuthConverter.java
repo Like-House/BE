@@ -1,24 +1,24 @@
-package backend.like_house.domain.user.converter;
+package backend.like_house.domain.auth.converter;
 
-import backend.like_house.domain.user.dto.UserDTO;
+import backend.like_house.domain.auth.dto.AuthDTO;
 import backend.like_house.domain.user.entity.User;
 
-public class UserConverter {
+public class AuthConverter {
 
-    public static UserDTO.SignUpResponse toSignUpResponseDTO(User user) {
-        return UserDTO.SignUpResponse.builder()
+    public static AuthDTO.SignUpResponse toSignUpResponseDTO(User user) {
+        return AuthDTO.SignUpResponse.builder()
                 .name(user.getName())
                 .email(user.getEmail())
                 .build();
     }
 
-    public static UserDTO.SignInResponse toSignInResponseDTO(String accessToken) {
-        return UserDTO.SignInResponse.builder()
+    public static AuthDTO.SignInResponse toSignInResponseDTO(String accessToken) {
+        return AuthDTO.SignInResponse.builder()
                 .accessToken(accessToken)
                 .build();
     }
 
-    public static User toUser(UserDTO.SignUpRequest signUpRequest, String password) {
+    public static User toUser(AuthDTO.SignUpRequest signUpRequest, String password) {
         return User.builder()
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
