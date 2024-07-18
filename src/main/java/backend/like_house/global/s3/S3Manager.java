@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -32,6 +34,12 @@ public class S3Manager {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         file.delete();
         return amazonS3.getUrl(bucketName, fileName).toString();
+    }
+
+    public List<String> uploadFiles(List<MultipartFile> multipartFiles) {
+        return multipartFiles.stream()
+                .map(this::uploadFile)
+                .collect(Collectors.toList());
     }
 
     public void deleteFile(String fileUrl) {
