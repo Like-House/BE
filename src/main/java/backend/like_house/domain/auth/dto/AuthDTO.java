@@ -18,6 +18,7 @@ public class AuthDTO {
     @AllArgsConstructor
     public static class SignInResponse {
         String accessToken;
+        String refreshToken;
     }
 
     @Getter
