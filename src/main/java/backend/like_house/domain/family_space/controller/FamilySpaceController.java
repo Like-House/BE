@@ -10,6 +10,8 @@ import backend.like_house.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/api/family-space")
+@RequestMapping("/api/v0/family-space")
+@Tag(name = "가족 공간 관련 컨트롤러")
 public class FamilySpaceController {
-
     @GetMapping("/check/{userId}")
     @Operation(summary = "가족 공간 초대 링크 확인 API", description = "가족 공간 초대 링크가 유효한지 확인하는 API입니다. "
             + "가족 공간 링크가 존재하면 true를 반환합니다. query string 으로 가족 공간 링크를 주세요.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+    })
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다."),
             @Parameter(name = "familySpaceLink", description = "가족 공간 링크, query string 입니다.")
@@ -44,8 +49,13 @@ public class FamilySpaceController {
         return ApiResponse.onSuccess(FamilySpaceConverter.toCheckFamilySpaceLinkResponse(familySpace));
     }
 
+
     @GetMapping("/generate/{userId}")
     @Operation(summary = "가족 공간 생성 API", description = "새로운 가족 공간을 생성하는 API입니다. query string 으로 가족 공간 링크를 주세요.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4001", description = "이미 존재하는 가족 공간 입니다."),
+    })
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다."),
             @Parameter(name = "familySpaceLink", description = "가족 공간 링크, query string 입니다.")
@@ -62,6 +72,10 @@ public class FamilySpaceController {
 
     @PostMapping("/enter")
     @Operation(summary = "가족 공간 입장 API", description = "가족 공간에 입장하는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
+    })
     public ApiResponse<EnterFamilySpaceResponse> enterFamilySpace(
             @RequestBody @Valid EnterFamilySpaceRequest request
     ) {
