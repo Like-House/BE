@@ -1,7 +1,7 @@
 package backend.like_house.global.security.filter;
 
 import backend.like_house.global.error.code.status.ErrorStatus;
-import backend.like_house.global.error.handler.UserException;
+import backend.like_house.global.error.handler.AuthException;
 import backend.like_house.global.security.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -54,13 +54,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + refreshedAccessToken);
                         }
                     } else {
-                        throw new UserException(ErrorStatus.INVALID_TOKEN);
+                        throw new AuthException(ErrorStatus.INVALID_TOKEN);
                     }
                 } else {
-                    throw new UserException(ErrorStatus._UNAUTHORIZED);
+                    throw new AuthException(ErrorStatus._UNAUTHORIZED);
                 }
             } catch (JwtException ex) {
-                throw new UserException(ErrorStatus._BAD_REQUEST);
+                throw new AuthException(ErrorStatus._BAD_REQUEST);
             }
         }
 
