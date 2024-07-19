@@ -1,5 +1,7 @@
 package backend.like_house.domain.auth.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -38,4 +40,13 @@ public class AuthDTO {
         String name;
         String email;
     }
+
+    @Getter
+    public static class DeleteAccountRequest {
+
+        @NotNull
+        @Schema(description = "탈퇴할 유저 아이디", example = "1")
+        private Long userId;
+    }
+
 }
