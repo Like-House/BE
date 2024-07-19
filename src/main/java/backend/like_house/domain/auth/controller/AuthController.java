@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthCommandService userCommandService;
+    private final AuthCommandService authCommandService;
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입 API", description = "일반 회원가입 API 입니다.")
@@ -26,16 +26,27 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
     public ApiResponse<AuthDTO.SignUpResponse> signUp(@RequestBody AuthDTO.SignUpRequest signUpDTO) {
-        return ApiResponse.onSuccess(userCommandService.signUp(signUpDTO));
+        return ApiResponse.onSuccess(authCommandService.signUp(signUpDTO));
     }
 
     @PostMapping("/signin")
-    @Operation(summary = "로그인 API")
+    @Operation(summary = "로그인 API", description = "일반 로그인 API 입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
     public ApiResponse<AuthDTO.SignInResponse> signIn(@RequestBody AuthDTO.SignInRequest signInDTO) {
-        return ApiResponse.onSuccess(userCommandService.signIn(signInDTO));
+        return ApiResponse.onSuccess(authCommandService.signIn(signInDTO));
     }
+
+    @PostMapping("/signout")
+    @Operation(summary = "로그아웃 API", description = "로그아웃 API 입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<?> signOut() {
+        // 로그아웃 로직 authauthCommandService.signOut
+        return ApiResponse.onSuccess(null);
+    }
+
 }
 
