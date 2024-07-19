@@ -16,7 +16,6 @@ import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "가족 공간 관련 컨트롤러")
 public class FamilySpaceController {
 
-    @GetMapping("/check/{userId}")
+    @PostMapping("/check/{userId}")
     @Operation(summary = "가족 공간 초대 코드 확인 API", description = "가족 공간 초대 코드가 유효한지 확인하는 API입니다. "
             + "가족 공간 초대 코드가 존재하면 true를 반환합니다. query string 으로 가족 공간 초대 코드를 주세요.")
     @ApiResponses({
@@ -51,7 +50,7 @@ public class FamilySpaceController {
     }
 
 
-    @GetMapping("/generate/{userId}")
+    @PostMapping("/generate/{userId}")
     @Operation(summary = "가족 공간 생성 API", description = "새로운 가족 공간을 생성하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
