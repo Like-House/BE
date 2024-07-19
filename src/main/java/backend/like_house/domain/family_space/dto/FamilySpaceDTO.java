@@ -29,8 +29,8 @@ public class FamilySpaceDTO {
         @Getter
         @NoArgsConstructor
         @AllArgsConstructor
-        public static class CheckFamilySpaceLinkResponse {
-            @Schema(description = "가족 공간 링크가 존재하면 true", example = "true")
+        public static class CheckFamilySpaceCodeResponse {
+            @Schema(description = "초대 코드에 해당하는 가족 공간이 존재하면 true", example = "true")
             Boolean isValid;
         }
 
@@ -41,8 +41,8 @@ public class FamilySpaceDTO {
         public static class NewFamilySpaceResponse {
             @Schema(description = "새로 만들어진 가족 공간 아이디", example = "1")
             Long familySpaceId;
-            @Schema(description = "새로 만들어진 가족 공간 링크", example = "https://asdfasdf/asdf")
-            String link;
+            @Schema(description = "새로 만들어진 가족 공간 초대 코드", example = "A1b2C4")
+            String code;
             LocalDateTime createdAt;
         }
 

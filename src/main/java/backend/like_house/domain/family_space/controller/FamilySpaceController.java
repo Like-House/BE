@@ -30,41 +30,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v0/family-space")
 @Tag(name = "가족 공간 관련 컨트롤러")
 public class FamilySpaceController {
+
     @GetMapping("/check/{userId}")
-    @Operation(summary = "가족 공간 초대 링크 확인 API", description = "가족 공간 초대 링크가 유효한지 확인하는 API입니다. "
-            + "가족 공간 링크가 존재하면 true를 반환합니다. query string 으로 가족 공간 링크를 주세요.")
+    @Operation(summary = "가족 공간 초대 코드 확인 API", description = "가족 공간 초대 코드가 유효한지 확인하는 API입니다. "
+            + "가족 공간 초대 코드가 존재하면 true를 반환합니다. query string 으로 가족 공간 초대 코드를 주세요.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다."),
-            @Parameter(name = "familySpaceLink", description = "가족 공간 링크, query string 입니다.")
+            @Parameter(name = "familySpaceCode", description = "가족 공간 초대 코드, query string 입니다.")
     })
-    public ApiResponse<CheckFamilySpaceLinkResponse> checkFamilySpaceLink(
+    public ApiResponse<CheckFamilySpaceCodeResponse> checkFamilySpaceCode(
             @PathVariable(name = "userId") Long userId,
-            @RequestParam(name = "familySpaceLink") String familySpaceLink
+            @RequestParam(name = "familySpaceCode") String familySpaceCode
     ) {
-        // TODO 초대 링크를 통해 Optional<FamilySpace> 가져오기
+        // TODO 초대 코드를 통해 Optional<FamilySpace> 가져오기
         Optional<FamilySpace> familySpace = Optional.of(null);
-        return ApiResponse.onSuccess(FamilySpaceConverter.toCheckFamilySpaceLinkResponse(familySpace));
+        return ApiResponse.onSuccess(FamilySpaceConverter.toCheckFamilySpaceCodeResponse(familySpace));
     }
 
 
     @GetMapping("/generate/{userId}")
-    @Operation(summary = "가족 공간 생성 API", description = "새로운 가족 공간을 생성하는 API입니다. query string 으로 가족 공간 링크를 주세요.")
+    @Operation(summary = "가족 공간 생성 API", description = "새로운 가족 공간을 생성하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4001", description = "이미 존재하는 가족 공간 입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4003", description = "이미 가족 공간에 소속되어 있습니다.")
     })
     @Parameters({
-            @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다."),
-            @Parameter(name = "familySpaceLink", description = "가족 공간 링크, query string 입니다.")
+            @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다.")
     })
     public ApiResponse<NewFamilySpaceResponse> generateNewFamilySpace(
-            @PathVariable(name = "userId") Long userId,
-            @RequestParam(name = "familySpaceLink") String familySpaceLink
+            @PathVariable(name = "userId") Long userId
     ) {
-        // TODO 다른 가족 공간과 링크 중복되는지 확인
+        // TODO 가족 공간 초대 코드 랜덤 생성 (중복X)
         // TODO 가족 공간 생성 -> 주최자 isRoomManager 변경
         FamilySpace familySpace = null;
         return ApiResponse.onSuccess(FamilySpaceConverter.toNewFamilySpaceResponse(familySpace));
@@ -74,7 +73,7 @@ public class FamilySpaceController {
     @Operation(summary = "가족 공간 입장 API", description = "가족 공간에 입장하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다.")
     })
     public ApiResponse<EnterFamilySpaceResponse> enterFamilySpace(
             @RequestBody @Valid EnterFamilySpaceRequest request

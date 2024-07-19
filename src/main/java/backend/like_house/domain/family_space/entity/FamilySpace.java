@@ -20,5 +20,5 @@ public class FamilySpace extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String link;
+    private String code;
 }
