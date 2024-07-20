@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +16,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Validated
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/schedule")
 @Tag(name = "일정 공유 관련 컨트롤러")
@@ -82,13 +82,13 @@ public class ScheduleController {
         return ApiResponse.onSuccess(null);
     }
 
-    @PutMapping("/modify")
+    @PatchMapping("/modify")
     @Operation(summary = "일정 수정 API", description = "일정 수정 완료하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SCHEDULE4001", description = "존재하지 않는 일정 입니다.")
     })
-    public ApiResponse<SaveScheduleResponse> updateSchedule(@RequestBody ModifyScheduleRequest request) {
+    public ApiResponse<SaveScheduleResponse> updateSchedule(@RequestBody @Valid ModifyScheduleRequest request) {
         // TODO 일정 수정
         return ApiResponse.onSuccess(null);
     }
@@ -98,11 +98,10 @@ public class ScheduleController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<SaveScheduleResponse> saveSchedule(@RequestBody SaveScheduleRequest request) {
+    public ApiResponse<SaveScheduleResponse> saveSchedule(@RequestBody @Valid SaveScheduleRequest request) {
         // TODO 일정 저장
         return ApiResponse.onSuccess(null);
     }
-
 
     @DeleteMapping("/{scheduleId}")
     @Operation(summary = "일정 삭제 API", description = "일정을 삭제하는 API입니다.")

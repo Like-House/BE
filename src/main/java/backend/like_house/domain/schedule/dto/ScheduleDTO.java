@@ -21,16 +21,12 @@ public class ScheduleDTO {
             @NotNull
             @Schema(description = "수정할 일정 아이디", example = "1")
             private Long id;
-            @NotNull
             @Schema(description = "수정할 일정 날짜")
             private LocalDate date;
-            @NotBlank
             @Schema(description = "수정할 일정 유형", example = "생일")
             private String dtype;
-            @NotBlank
             @Schema(description = "수정할 일정 제목", example = "제목")
             private String title;
-            @NotBlank
             @Schema(description = "수정할 일정 내용", example = "내용")
             private String content;
         }
