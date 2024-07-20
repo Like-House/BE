@@ -1,6 +1,7 @@
 package backend.like_house.domain.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -18,5 +19,17 @@ public class UserDTO {
 
         @Schema(description = "수정할 생년월일")
         private LocalDate birthDate;
+    }
+
+    @Getter
+    public static class changePasswordRequest {
+        @NotBlank
+        @Schema(description = "기존 비밀번호")
+        private String currentPassword;
+
+        @NotBlank
+        @Schema(description = "수정할 비밀번호")
+        private String newPassword;
+
     }
 }
