@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/v0/post")
 public class PostController {
 
     private final PostQueryService postQueryService;
@@ -80,7 +80,7 @@ public class PostController {
             @RequestPart("createPostRequest") @Valid PostDTO.PostRequest.CreatePostRequest createPostRequest,
             @RequestPart("files") List<MultipartFile> files
     ) {
-        PostDTO.PostResponse.CreatePostResponse response = postCommandService.createPost(createPostRequest, files);
+        PostDTO.PostResponse.CreatePostResponse response = postCommandService.createPost(createPostRequest, files, userId);
         return ApiResponse.onSuccess(response);
     }
 
@@ -96,7 +96,7 @@ public class PostController {
             @RequestPart("updatePostRequest") @Valid PostDTO.PostRequest.UpdatePostRequest updatePostRequest,
             @RequestPart("files") List<MultipartFile> files
     ) {
-        PostDTO.PostResponse.CreatePostResponse response = postCommandService.updatePost(postId, updatePostRequest, files);
+        PostDTO.PostResponse.CreatePostResponse response = postCommandService.updatePost(postId, updatePostRequest, files, userId);
         return ApiResponse.onSuccess(response);
     }
 

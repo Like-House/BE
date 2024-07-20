@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface PostCommandService {
-    PostDTO.PostResponse.CreatePostResponse createPost(PostDTO.PostRequest.CreatePostRequest createPostRequest, List<MultipartFile> files);
-    PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, PostDTO.PostRequest.UpdatePostRequest updatePostRequest, List<MultipartFile> files);
+    PostDTO.PostResponse.CreatePostResponse createPost(PostDTO.PostRequest.CreatePostRequest createPostRequest, List<MultipartFile> files, Long userId);
+    PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, PostDTO.PostRequest.UpdatePostRequest updatePostRequest, List<MultipartFile> files, Long userId);
     void deletePost(Long postId, Long userId);
 }

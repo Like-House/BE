@@ -20,7 +20,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public PostDTO.PostResponse.CreatePostResponse createPost(PostDTO.PostRequest.CreatePostRequest createPostRequest, List<MultipartFile> files) {
+    public PostDTO.PostResponse.CreatePostResponse createPost(PostDTO.PostRequest.CreatePostRequest createPostRequest, List<MultipartFile> files, Long userId) {
         List<String> imageUrls = s3Manager.uploadFiles(files);
         Post post = null;
         // TODO: 새로운 게시글을 작성하는 로직
@@ -32,7 +32,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, PostDTO.PostRequest.UpdatePostRequest updatePostRequest, List<MultipartFile> files) {
+    public PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, PostDTO.PostRequest.UpdatePostRequest updatePostRequest, List<MultipartFile> files, Long userId) {
         List<String> imageUrls = s3Manager.uploadFiles(files);
         Post post = null;
         // TODO: 특정 게시글을 수정하는 로직

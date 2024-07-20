@@ -1,8 +1,11 @@
 package backend.like_house.domain.post.service.impl;
 
 import backend.like_house.domain.account.entity.Custom;
+import backend.like_house.domain.post.converter.CommentConverter;
 import backend.like_house.domain.post.converter.PostConverter;
+import backend.like_house.domain.post.dto.CommentDTO;
 import backend.like_house.domain.post.dto.PostDTO;
+import backend.like_house.domain.post.entity.Comment;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.service.PostQueryService;
 import backend.like_house.domain.user.entity.User;
@@ -24,10 +27,11 @@ public class PostQueryServiceImpl implements PostQueryService {
 
         List<PostDTO.PostResponse.GetPostListResponse> postListResponses = posts.stream().map(post -> {
             String authorNickname = null;
+            String profileImage = null;
             int likeCount = 0;
             int commentCount = 0;
             List<String> imageUrls = null;
-            return PostConverter.toGetPostListResponse(post, authorNickname, likeCount, commentCount, imageUrls);
+            return PostConverter.toGetPostListResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls);
         }).collect(Collectors.toList());
 
         // TODO: 가족 공간 ID로 게시글을 가져오는 로직
@@ -40,15 +44,27 @@ public class PostQueryServiceImpl implements PostQueryService {
     public PostDTO.PostResponse.GetPostDetailResponse getPostDetail(Long postId, Long userId) {
         Post post = null;
         String authorNickname = null;
+        String profileImage = null;
         int likeCount = 0;
         int commentCount = 0;
         List<String> imageUrls = null;
         List<PostDTO.PostResponse.FamilyTagResponse> taggedUsers = null;
 
+        List<Comment> comments = null;
+        List<CommentDTO.CommentResponse.GetCommentResponse> commentResponses = comments.stream()
+                .map(comment -> {
+                    // User user = userRepository.findById(comment.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
+                    // String userNickname = user.getNickname();
+                    String userNickname = null;
+                    return CommentConverter.toGetCommentResponse(comment, userNickname);
+                })
+                .collect(Collectors.toList());
+
         // TODO: postId를 사용하여 특정 게시글의 상세 정보를 조회하는 로직
         // 1. postId를 기반으로 게시글 조회
         // 2. 조회한 게시글의 상세 정보 반환
-        return PostConverter.toGetPostDetailResponse(post, authorNickname, likeCount, commentCount, imageUrls, taggedUsers);
+        // 3. + 댓글 정보
+        return PostConverter.toGetPostDetailResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls, taggedUsers, commentResponses);
     }
 
     @Transactional(readOnly = true)

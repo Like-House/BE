@@ -48,6 +48,7 @@ public class PostDTO {
             private Long postId;
             private String content;
             private String authorNickname;
+            private String profileImage;
             private int likeCount;
             private int commentCount;
             private List<String> imageUrls;
@@ -63,10 +64,12 @@ public class PostDTO {
             private Long postId;
             private String content;
             private String authorNickname;
+            private String profileImage;
             private int likeCount;
             private int commentCount;
             private List<String> imageUrls;
             private List<FamilyTagResponse> taggedUsers;
+            private List<CommentDTO.CommentResponse.GetCommentResponse> comments;
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
         }
