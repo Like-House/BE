@@ -16,9 +16,14 @@ public enum ErrorStatus implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
-    // 유저 관려 에러
+    // 가족 공간 관련 에러
+    ALREADY_EXIST_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4001", "이미 존재하는 가족 공간 입니다."),
+    FAMILY_SPACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4002", "존재하지 않는 가족 공간 입니다."),
+
+    // 유저 관련 에러
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자를 찾을 수 없습니다."),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 가입된 유저 입니다."),
+    ALREADY_BELONG_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "USER4003", "이미 가족 공간에 소속되어 있습니다."),
 
     // 인증 관련 에러
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "유효하지 않은 토큰입니다."),
