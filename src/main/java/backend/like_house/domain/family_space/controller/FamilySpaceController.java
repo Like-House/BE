@@ -7,6 +7,7 @@ import backend.like_house.domain.family_space.converter.FamilySpaceConverter;
 import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
+import backend.like_house.global.security.annotation.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -15,6 +16,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,5 +84,49 @@ public class FamilySpaceController {
         User user = null;
         FamilySpace familySpace = null;
         return ApiResponse.onSuccess(FamilySpaceConverter.toEnterFamilySpaceResponse(user, familySpace));
+    }
+
+    @GetMapping("/check/code")
+    @Operation(summary = "가족 공간 초대 코드 확인 API", description = "가족 공간 초대 코드를 확인하는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다.")
+    })
+    public ApiResponse<GetFamilySpaceCodeResponse> getFamilySpaceCode(@Parameter(hidden = true) @LoginUser User user) {
+        // TODO 코드 return
+        return ApiResponse.onSuccess(null);
+    }
+
+    @DeleteMapping("/")
+    @Operation(summary = "가족 공간 삭제 API", description = "가족 공간을 삭제하는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다.")
+    })
+    public ApiResponse<String> deleteFamilySpace(@Parameter(hidden = true) @LoginUser User user) {
+        // TODO 연결된 것 싹 다 삭제
+        // TODO 주최자 isRoomManager -> false로 변경
+        // TODO 주최자만 가능하도록!
+        return ApiResponse.onSuccess("Family space deletion completed");
+    }
+
+    @PatchMapping("/modify")
+    @Operation(summary = "가족 공간 초대 코드 변경 API", description = "가족 공간의 초대 코드를 변경하는 API입니다. "
+            + "query string 으로 가족 공간 초대 코드를 주세요.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다.")
+    })
+    @Parameters({
+            @Parameter(name = "familySpaceCode", description = "가족 공간 초대 코드, query string 입니다.")
+    })
+    public ApiResponse<ModifyFamilySpaceCodeResponse> modifyFamilySpaceCode(
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestParam(name = "familySpaceCode") String familySpaceCode) {
+        // TODO 중복 X
+        // TODO 주최자만 가능하도록!
+        return ApiResponse.onSuccess(null);
     }
 }

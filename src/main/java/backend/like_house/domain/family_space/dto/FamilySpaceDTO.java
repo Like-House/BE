@@ -58,5 +58,27 @@ public class FamilySpaceDTO {
             @Schema(description = "입장한 가족 공간 아이디", example = "1")
             private Long familySpaceId;
         }
+
+        @Builder
+        @Getter
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class GetFamilySpaceCodeResponse {
+            @Schema(description = "가족 공간 아이디", example = "1")
+            private Long familySpaceId;
+            @Schema(description = "가족 공간 초대 코드", example = "A1b2C4")
+            private String code;
+        }
+
+        @Builder
+        @Getter
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class ModifyFamilySpaceCodeResponse {
+            @Schema(description = "가족 공간 아이디", example = "1")
+            private Long familySpaceId;
+            private LocalDateTime createdAt;
+            private LocalDateTime updatedAt;
+        }
     }
 }
