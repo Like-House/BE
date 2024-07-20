@@ -100,8 +100,8 @@ public class ScheduleController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
     public ApiResponse<SaveScheduleResponse> saveSchedule(
-            @RequestBody @Valid SaveScheduleRequest request,
-            @Parameter(hidden = true) @LoginUser User user) {
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestBody @Valid SaveScheduleRequest request) {
         // TODO 일정 저장
         return ApiResponse.onSuccess(null);
     }
