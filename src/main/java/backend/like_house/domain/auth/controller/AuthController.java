@@ -55,5 +55,38 @@ public class AuthController {
         // 탈퇴 로직
         return ApiResponse.onSuccess(null);
     }
+
+    @GetMapping("/oauth/kakao/login")
+    @Operation(summary = "카카오 로그인 API", description = "카카오 로그인 API 입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<?> kakaoLogin(@RequestParam("code") String accessCode) {
+        // 카카오의 인가코드를 통해 유저 정보 얻고
+        // 회원가입 or 로그인 진행
+        return ApiResponse.onSuccess(null);
+    }
+
+    @GetMapping("/oauth/naver/login")
+    @Operation(summary = "네이버 로그인 API", description = "네이버 로그인 API 입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<?> naverLogin(@RequestParam("code") String accessCode) {
+        // 네이버 인가코드를 통해 유저 정보 얻고
+        // 회원가입 or 로그인 진행
+        return ApiResponse.onSuccess(null);
+    }
+
+    @GetMapping("/oauth/google/login")
+    @Operation(summary = "구글 로그인 API", description = "구글 로그인 API 입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<?> googleLogin(@RequestParam("code") String accessCode) {
+        // 구글의 인가코드를 통해 유저 정보 얻고
+        // 회원가입 or 로그인 진행
+        return ApiResponse.onSuccess(null);
+    }
 }
 
