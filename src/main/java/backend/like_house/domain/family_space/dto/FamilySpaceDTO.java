@@ -1,7 +1,6 @@
 package backend.like_house.domain.family_space.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,10 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class FamilySpaceDTO {
-
-    public static class FamilySpaceRequest {
-
-    }
 
     public static class FamilySpaceResponse {
 

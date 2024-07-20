@@ -1,7 +1,6 @@
 package backend.like_house.domain.family_space.controller;
 
 import static backend.like_house.domain.family_space.dto.FamilySpaceDTO.FamilySpaceResponse.*;
-import static backend.like_house.domain.family_space.dto.FamilySpaceDTO.FamilySpaceRequest.*;
 
 import backend.like_house.domain.family_space.converter.FamilySpaceConverter;
 import backend.like_house.domain.family_space.entity.FamilySpace;
