@@ -1,5 +1,7 @@
 package backend.like_house.global.s3;
 
+import backend.like_house.global.error.code.status.ErrorStatus;
+import backend.like_house.global.error.exception.FileConversionException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
@@ -52,7 +54,7 @@ public class S3Manager {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(multipartFile.getBytes());
         } catch (IOException e) {
-            throw new RuntimeException("Error converting multipartFile to file", e);
+            throw new FileConversionException(ErrorStatus.FILE_CONVERSION_ERROR);
         }
         return file;
     }
