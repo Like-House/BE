@@ -34,9 +34,6 @@ public class ScheduleDTO {
         @Getter
         public static class SaveScheduleRequest {
             @NotNull
-            @Schema(description = "일정을 저장하는 유저 아이디", example = "1")
-            private Long userId;
-            @NotNull
             @Schema(description = "저장할 일정 날짜")
             private LocalDate date;
             @NotBlank
