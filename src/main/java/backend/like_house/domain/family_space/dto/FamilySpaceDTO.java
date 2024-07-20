@@ -13,15 +13,6 @@ public class FamilySpaceDTO {
 
     public static class FamilySpaceRequest {
 
-        @Getter
-        public static class EnterFamilySpaceRequest {
-            @NotNull
-            @Schema(description = "입장할 유저 아이디", example = "1")
-            private Long userId;
-            @NotNull
-            @Schema(description = "입장할 가족 공간 아이디", example = "1")
-            private Long familySpaceId;
-        }
     }
 
     public static class FamilySpaceResponse {
@@ -31,8 +22,8 @@ public class FamilySpaceDTO {
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
         public static class CheckFamilySpaceCodeResponse {
-            @Schema(description = "초대 코드에 해당하는 가족 공간이 존재하면 true", example = "true")
-            private Boolean isValid;
+            @Schema(description = "초대 코드에 해당하는 가족 공간 아이디", example = "1")
+            private Long familySpaceId;
         }
 
         @Builder
