@@ -26,4 +26,14 @@ public class UserController {
         return ApiResponse.onSuccess(null);
     }
 
+    @PatchMapping("/password")
+    @Operation(summary = "사용자 비밀번호 수정 API", description = "사용자의 비밀번호를 수정합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<?> changePassword(@RequestBody UserDTO.changePasswordRequest changePasswordRequest) {
+        return ApiResponse.onSuccess(null);
+    }
+
+
 }
