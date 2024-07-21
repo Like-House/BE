@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthCommandService userCommandService;
+    private final AuthCommandService authCommandService;
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입 API")
-    public ApiResponse<AuthDTO.SignUpResponse> signUp(@RequestBody AuthDTO.SignUpRequest signUpDTO) {
-        return ApiResponse.of(SuccessStatus.SIGNUP_OK, userCommandService.signUp(signUpDTO));
+    public ApiResponse<AuthDTO.SignUpResponse> signUp(@RequestBody AuthDTO.SignUpRequest signUpRequest) {
+        return ApiResponse.of(SuccessStatus.SIGNUP_OK, authCommandService.signUp(signUpRequest));
     }
 
     @PostMapping("/signin")
     @Operation(summary = "로그인 API")
-    public ApiResponse<AuthDTO.SignInResponse> signIn(@RequestBody AuthDTO.SignInRequest signInDTO) {
-        return ApiResponse.of(SuccessStatus.SIGNIN_OK, userCommandService.signIn(signInDTO));
+    public ApiResponse<AuthDTO.SignInResponse> signIn(@RequestBody AuthDTO.SignInRequest signInRequest) {
+        return ApiResponse.of(SuccessStatus.SIGNIN_OK, authCommandService.signIn(signInRequest));
     }
 }
 
