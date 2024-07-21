@@ -16,6 +16,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,7 +87,7 @@ public class FamilySpaceController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다.")
     })
     public ApiResponse<GetFamilySpaceCodeResponse> getFamilySpaceCode(@Parameter(hidden = true) @LoginUser User user) {
-        // TODO 코드 return
+        // TODO 코드, 만료 시간 return
         return ApiResponse.onSuccess(null);
     }
 
@@ -102,5 +103,17 @@ public class FamilySpaceController {
         // TODO 주최자 isRoomManager -> false로 변경
         // TODO 주최자만 가능하도록!
         return ApiResponse.onSuccess("Family space deletion completed");
+    }
+
+    @PatchMapping("/")
+    @Operation(summary = "가족 공간 초대 코드 재발급 API", description = "초대 코드를 재발급하는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다.")
+    })
+    public ApiResponse<GetFamilySpaceCodeResponse> regenerateFamilySpaceCode(@Parameter(hidden = true) @LoginUser User user) {
+        // TODO 코드 램덤 재설정 + 만료 시간 재설정
+        return ApiResponse.onSuccess(null);
     }
 }
