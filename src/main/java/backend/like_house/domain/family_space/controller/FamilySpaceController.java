@@ -45,7 +45,7 @@ public class FamilySpaceController {
     }
 
 
-    @PostMapping("/generate")
+    @PostMapping("/")
     @Operation(summary = "가족 공간 생성 API", description = "새로운 가족 공간을 생성하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
