@@ -53,7 +53,7 @@ public class FamilySpaceController {
     @Operation(summary = "가족 공간 생성 API", description = "새로운 가족 공간을 생성하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4003", description = "이미 가족 공간에 소속되어 있습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4004", description = "이미 가족 공간에 소속되어 있습니다.")
     })
     public ApiResponse<NewFamilySpaceResponse> generateNewFamilySpace(@Parameter(hidden = true) @LoginUser User user) {
         // TODO 가족 공간 초대 코드 랜덤 생성 (중복X)

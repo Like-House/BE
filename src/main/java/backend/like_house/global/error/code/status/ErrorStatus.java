@@ -19,11 +19,11 @@ public enum ErrorStatus implements BaseErrorCode {
     // 가족 공간 관련 에러
     ALREADY_EXIST_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4001", "이미 존재하는 가족 공간 입니다."),
     FAMILY_SPACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4002", "존재하지 않는 가족 공간 입니다."),
+    ALREADY_BELONG_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4004", "이미 가족 공간에 소속되어 있습니다."),
 
     // 유저 관련 에러
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "사용자를 찾을 수 없습니다."),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER4002", "이미 가입된 유저 입니다."),
-    ALREADY_BELONG_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "USER4003", "이미 가족 공간에 소속되어 있습니다."),
     USER_NOT_MANAGER(HttpStatus.BAD_REQUEST, "USER4004", "주최자가 아닙니다."),
     ALREADY_REMOVED_USER(HttpStatus.BAD_REQUEST, "USER4005", "이미 해제된 유저입니다."),
     ALREADY_BLOCKED_USER(HttpStatus.BAD_REQUEST, "USER4006", "이미 차단된 유저입니다."),
