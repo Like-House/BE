@@ -12,9 +12,10 @@ public class AuthConverter {
                 .build();
     }
 
-    public static AuthDTO.SignInResponse toSignInResponseDTO(String accessToken) {
+    public static AuthDTO.SignInResponse toSignInResponseDTO(String accessToken, String refreshToken) {
         return AuthDTO.SignInResponse.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
