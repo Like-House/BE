@@ -110,23 +110,4 @@ public class FamilySpaceController {
         // TODO 주최자만 가능하도록!
         return ApiResponse.onSuccess("Family space deletion completed");
     }
-
-    @PatchMapping("/modify")
-    @Operation(summary = "가족 공간 초대 코드 변경 API", description = "가족 공간의 초대 코드를 변경하는 API입니다. "
-            + "query string 으로 가족 공간 초대 코드를 주세요.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다.")
-    })
-    @Parameters({
-            @Parameter(name = "familySpaceCode", description = "가족 공간 초대 코드, query string 입니다.")
-    })
-    public ApiResponse<ModifyFamilySpaceCodeResponse> modifyFamilySpaceCode(
-            @Parameter(hidden = true) @LoginUser User user,
-            @RequestParam(name = "familySpaceCode") String familySpaceCode) {
-        // TODO 중복 X
-        // TODO 주최자만 가능하도록!
-        return ApiResponse.onSuccess(null);
-    }
 }
