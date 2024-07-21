@@ -9,7 +9,7 @@ public class FamilySpaceConverter {
 
     public static CheckFamilySpaceCodeResponse toCheckFamilySpaceCodeResponse(Optional<FamilySpace> familySpace) {
         return CheckFamilySpaceCodeResponse.builder()
-                .isValid(familySpace.isPresent())
+                .familySpaceId(familySpace.map(FamilySpace::getId).orElse(0L))
                 .build();
     }
 

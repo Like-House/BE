@@ -2,7 +2,9 @@ package backend.like_house.domain.schedule.controller;
 
 import backend.like_house.domain.schedule.dto.ScheduleDTO.ScheduleRequest.*;
 import backend.like_house.domain.schedule.dto.ScheduleDTO.ScheduleResponse.*;
+import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
+import backend.like_house.global.security.annotation.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v0/schedule")
+@RequestMapping("/api/v0/schedules")
 @Tag(name = "일정 공유 관련 컨트롤러")
 public class ScheduleController {
 
@@ -60,7 +62,7 @@ public class ScheduleController {
     })
     public ApiResponse<ScheduleDataListResponse> getScheduleByDay(
             @RequestParam(name = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            @RequestParam(name = "cursor", required = false) Integer cursor,
+            @RequestParam(name = "cursor") Integer cursor,
             @RequestParam(name = "take") Integer take) {
         // TODO 일정 조회 (Day) + 무한 스크롤
         return ApiResponse.onSuccess(null);
@@ -81,7 +83,7 @@ public class ScheduleController {
         return ApiResponse.onSuccess(null);
     }
 
-    @PatchMapping("/modify")
+    @PatchMapping("/")
     @Operation(summary = "일정 수정 API", description = "일정 수정 완료하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -92,12 +94,14 @@ public class ScheduleController {
         return ApiResponse.onSuccess(null);
     }
 
-    @PostMapping("/save")
+    @PostMapping("/")
     @Operation(summary = "일정 저장 API", description = "새로운 일정을 저장하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<SaveScheduleResponse> saveSchedule(@RequestBody @Valid SaveScheduleRequest request) {
+    public ApiResponse<SaveScheduleResponse> saveSchedule(
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestBody @Valid SaveScheduleRequest request) {
         // TODO 일정 저장
         return ApiResponse.onSuccess(null);
     }

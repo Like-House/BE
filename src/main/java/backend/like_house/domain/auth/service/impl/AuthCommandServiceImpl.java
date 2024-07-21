@@ -59,6 +59,6 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         // Redis에 RefreshToken 저장
         redisUtil.saveRefreshToken(user.getEmail(), refreshToken);
 
-        return AuthConverter.toSignInResponseDTO(accessToken);
+        return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }
 }
