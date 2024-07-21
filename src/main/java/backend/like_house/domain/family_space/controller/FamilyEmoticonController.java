@@ -30,7 +30,7 @@ public class FamilyEmoticonController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
-    public ApiResponse<FamilyEmoticonPreviewList> getFamilyEmoticons(@LoginUser User user, @PathVariable Long familySpaceId) {
+    public ApiResponse<FamilyEmoticonPreviewList> getFamilyEmoticons(@Parameter(hidden = true) @LoginUser User user, @PathVariable Long familySpaceId) {
         return ApiResponse.onSuccess(null);
     }
 
@@ -42,7 +42,7 @@ public class FamilyEmoticonController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_EMOTICON4001", description = "존재하지 가족 이모티콘 입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
-    public ApiResponse<FamilyEmoticonDetail> getFamilyEmoticon(@LoginUser User user,@PathVariable Long familySpaceId, @PathVariable Long familyEmoticonId) {
+    public ApiResponse<FamilyEmoticonDetail> getFamilyEmoticon(@Parameter(hidden = true) @LoginUser User user,@PathVariable Long familySpaceId, @PathVariable Long familyEmoticonId) {
         return ApiResponse.onSuccess(null);
     }
 
@@ -53,7 +53,7 @@ public class FamilyEmoticonController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4002", description = "존재하지 않는 가족 공간 입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
-    public ApiResponse<FamilyEmoticonPreview> createFamilyEmoticon(@LoginUser User user,@RequestBody FamilyEmoticonDTO.CreateFamilyEmoticonRequest createFamilyEmoticonRequest) {
+    public ApiResponse<FamilyEmoticonPreview> createFamilyEmoticon(@Parameter(hidden = true) @LoginUser User user,@RequestBody FamilyEmoticonDTO.CreateFamilyEmoticonRequest createFamilyEmoticonRequest) {
         return ApiResponse.onSuccess(null);
     }
 
@@ -65,7 +65,7 @@ public class FamilyEmoticonController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_EMOTICON4001", description = "존재하지 않는 가족 이모티콘 입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
-    public ApiResponse<String> deleteFamilyEmoticon(@LoginUser User user,@PathVariable Long familySpaceId, @PathVariable Long familyEmoticonId) {
+    public ApiResponse<String> deleteFamilyEmoticon(@Parameter(hidden = true) @LoginUser User user,@PathVariable Long familySpaceId, @PathVariable Long familyEmoticonId) {
         return ApiResponse.onSuccess(null);
     }
 
