@@ -1,7 +1,6 @@
 package backend.like_house.domain.family_space.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,19 +10,6 @@ import lombok.NoArgsConstructor;
 
 public class FamilySpaceDTO {
 
-    public static class FamilySpaceRequest {
-
-        @Getter
-        public static class EnterFamilySpaceRequest {
-            @NotNull
-            @Schema(description = "입장할 유저 아이디", example = "1")
-            private Long userId;
-            @NotNull
-            @Schema(description = "입장할 가족 공간 아이디", example = "1")
-            private Long familySpaceId;
-        }
-    }
-
     public static class FamilySpaceResponse {
 
         @Builder
@@ -31,8 +17,8 @@ public class FamilySpaceDTO {
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
         public static class CheckFamilySpaceCodeResponse {
-            @Schema(description = "초대 코드에 해당하는 가족 공간이 존재하면 true", example = "true")
-            private Boolean isValid;
+            @Schema(description = "초대 코드에 해당하는 가족 공간 아이디", example = "1")
+            private Long familySpaceId;
         }
 
         @Builder
