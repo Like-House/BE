@@ -68,6 +68,8 @@ public class FamilySpaceDTO {
             private Long familySpaceId;
             @Schema(description = "가족 공간 초대 코드", example = "A1b2C4")
             private String code;
+            @Schema(description = "가족 공간 초대 코드 만료 시간")
+            private LocalDateTime expireAt;
         }
     }
 }
