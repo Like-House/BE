@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v0/schedule")
+@RequestMapping("/api/v0/schedules")
 @Tag(name = "일정 공유 관련 컨트롤러")
 public class ScheduleController {
 
@@ -83,7 +83,7 @@ public class ScheduleController {
         return ApiResponse.onSuccess(null);
     }
 
-    @PatchMapping("/modify")
+    @PatchMapping("/")
     @Operation(summary = "일정 수정 API", description = "일정 수정 완료하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -94,7 +94,7 @@ public class ScheduleController {
         return ApiResponse.onSuccess(null);
     }
 
-    @PostMapping("/save")
+    @PostMapping("/")
     @Operation(summary = "일정 저장 API", description = "새로운 일정을 저장하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
