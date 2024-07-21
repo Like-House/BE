@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/chatRooms")
+@RequestMapping("/api/v0/chat-rooms")
 @Tag(name = "채팅 관련 컨트 롤러, 소켓 엔드 포인트는 /chat")
 public class ChatController {
 
