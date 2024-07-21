@@ -55,7 +55,7 @@ public class FamilyEmoticonController {
     @Operation(summary = "가족 이모 티콘 삭제 API", description = "가족 이모 티콘 삭제 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_EMOTICON4001", description = "존재하지 가족 이모티콘 입니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_EMOTICON4001", description = "존재하지 않는 가족 이모티콘 입니다.")
     })
     public ApiResponse<String> deleteFamilyEmoticon(@PathVariable Long familyEmoticonId) {
         return ApiResponse.onSuccess(null);

@@ -34,7 +34,7 @@ public enum ErrorStatus implements BaseErrorCode {
     SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "SCHEDULE4001", "존재하지 않는 일정 입니다."),
 
     // 가족 이모티콘 관련 에러
-    FAMILY_EMOTICON_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_EMOTICON4001", "존재하지 가족 이모티콘 입니다."),
+    FAMILY_EMOTICON_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_EMOTICON4001", "존재하지 않는 가족 이모티콘 입니다."),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");
