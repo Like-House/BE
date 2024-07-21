@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v0/family-space")
 public class FamilyEmoticonController {
 
-    @GetMapping("/{familySpaceId}")
+    @GetMapping("/{familySpaceId}/family-emoticon")
     @Operation(summary = "가족 이모 티콘 전체 조회 API", description = "가족 이모 티콘 전체 조회 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -41,7 +41,7 @@ public class FamilyEmoticonController {
         return ApiResponse.onSuccess(null);
     }
 
-    @PostMapping("")
+    @PostMapping("/family-emoticon")
     @Operation(summary = "가족 이모 티콘 생성 API", description = "가족 이모 티콘 생성 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -51,7 +51,7 @@ public class FamilyEmoticonController {
         return ApiResponse.onSuccess(null);
     }
 
-    @DeleteMapping("/{familyEmoticonId}")
+    @DeleteMapping("/family-emoticon/{familyEmoticonId}")
     @Operation(summary = "가족 이모 티콘 삭제 API", description = "가족 이모 티콘 삭제 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
