@@ -16,6 +16,7 @@ public class FamilySpaceConverter {
     public static NewFamilySpaceResponse toNewFamilySpaceResponse(FamilySpace familySpace) {
         return NewFamilySpaceResponse.builder()
                 .familySpaceId(familySpace.getId())
+                .expireAt(familySpace.getExpireAt())
                 .createdAt(familySpace.getCreatedAt())
                 .build();
     }
