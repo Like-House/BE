@@ -50,7 +50,6 @@ public class UserManagementController {
         return ApiResponse.onSuccess(null);
     }
 
-    // 가족 해제 deletemapping할까?
     @PostMapping("/remove/{userId}")
     @Operation(summary = "가족 해제 API", description = "특정 유저를 가족 공간에서 내보내는 API입니다.")
     @ApiResponses({
@@ -70,7 +69,6 @@ public class UserManagementController {
         return ApiResponse.onSuccess("Family removal completed successfully.");
     }
 
-    // 차단 & 차단 해제 deletemapping할까?
     @PostMapping("block/{userId}")
     @Operation(summary = "가족 차단 API", description = "특정 유저를 가족 공간에서 내보내는 API입니다. "
             + "차단되면 초대받더라도 다시 해당 공간에 소속될 수 없습니다.")
