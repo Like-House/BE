@@ -30,8 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class FamilySpaceController {
 
     @PostMapping("/check")
-    @Operation(summary = "가족 공간 초대 코드 확인 API", description = "가족 공간 초대 코드가 유효한지 확인하는 API입니다. "
-            + "가족 공간 초대 코드가 존재하면 해당 가족 공간 아이디를 반환합니다. query string 으로 가족 공간 초대 코드를 주세요.")
+    @Operation(summary = "가족 공간 초대 코드 유효성 확인 API", description = "가족 공간 초대 코드가 유효한지 확인하는 API입니다. "
+            + "가족 공간 초대 코드가 존재하면 해당 가족 공간 아이디를 반환합니다. 존재하지 않는다면 0을 반환합니다. "
+            + "query string 으로 가족 공간 초대 코드를 주세요.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
@@ -80,7 +81,7 @@ public class FamilySpaceController {
         return ApiResponse.onSuccess(FamilySpaceConverter.toEnterFamilySpaceResponse(user, familySpace));
     }
 
-    @GetMapping("/check/code")
+    @GetMapping("/code")
     @Operation(summary = "가족 공간 초대 코드 확인 API", description = "가족 공간 초대 코드를 확인하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -102,7 +103,7 @@ public class FamilySpaceController {
         // TODO 연결된 것 싹 다 삭제
         // TODO 주최자 isRoomManager -> false로 변경
         // TODO 주최자만 가능하도록!
-        return ApiResponse.onSuccess("Family space deletion completed");
+        return ApiResponse.onSuccess("Family space deletion completed successfully.");
     }
 
     @PatchMapping("/")
