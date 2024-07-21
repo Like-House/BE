@@ -45,7 +45,7 @@ public class AuthController {
         return ApiResponse.onSuccess(null);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     @Operation(summary = "회원탈퇴 API", description = "회원탈퇴 API 입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
