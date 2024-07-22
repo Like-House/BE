@@ -20,11 +20,16 @@ public enum ErrorStatus implements BaseErrorCode {
     ALREADY_EXIST_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4001", "이미 존재하는 가족 공간 입니다."),
     FAMILY_SPACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4002", "존재하지 않는 가족 공간 입니다."),
     NOT_INCLUDE_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4003", "유저가 해당 가족 공간에 속해 있지 않습니다."),
+    ALREADY_BELONG_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4004", "이미 가족 공간에 소속되어 있습니다."),
 
-    // 유저 관려 에러
+    // 유저 관련 에러
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "사용자를 찾을 수 없습니다."),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER4002", "이미 가입된 유저 입니다."),
-    ALREADY_BELONG_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "USER4003", "이미 가족 공간에 소속되어 있습니다."),
+    USER_NOT_MANAGER(HttpStatus.BAD_REQUEST, "USER4004", "주최자가 아닙니다."),
+    ALREADY_REMOVED_USER(HttpStatus.BAD_REQUEST, "USER4005", "이미 해제된 유저입니다."),
+    ALREADY_BLOCKED_USER(HttpStatus.BAD_REQUEST, "USER4006", "이미 차단된 유저입니다."),
+    ALREADY_RELEASE_REMOVE_USER(HttpStatus.BAD_REQUEST, "USER4007", "이미 해제가 풀어진 유저입니다."),
+    ALREADY_RELEASE_BLOCK_USER(HttpStatus.BAD_REQUEST, "USER4008", "이미 차단이 풀어진 유저입니다."),
 
     // 인증 관련 에러
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "유효하지 않은 토큰입니다."),

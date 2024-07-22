@@ -30,6 +30,8 @@ public class FamilySpaceDTO {
             private Long familySpaceId;
             @Schema(description = "새로 만들어진 가족 공간 초대 코드", example = "A1b2C4")
             private String code;
+            @Schema(description = "가족 공간 초대 코드 만료 시간")
+            private LocalDateTime expireAt;
             @Schema(description = "가족 공간이 새로 만들어진 시간")
             private LocalDateTime createdAt;
         }
@@ -43,6 +45,19 @@ public class FamilySpaceDTO {
             private Long userId;
             @Schema(description = "입장한 가족 공간 아이디", example = "1")
             private Long familySpaceId;
+        }
+
+        @Builder
+        @Getter
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class GetFamilySpaceCodeResponse {
+            @Schema(description = "가족 공간 아이디", example = "1")
+            private Long familySpaceId;
+            @Schema(description = "가족 공간 초대 코드", example = "A1b2C4")
+            private String code;
+            @Schema(description = "가족 공간 초대 코드 만료 시간")
+            private LocalDateTime expireAt;
         }
     }
 }
