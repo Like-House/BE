@@ -37,6 +37,17 @@ public enum ErrorStatus implements BaseErrorCode {
     // 가족 이모티콘 관련 에러
     FAMILY_EMOTICON_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_EMOTICON4001", "존재하지 않는 가족 이모티콘 입니다."),
 
+    // 멤버 관려 에러
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
+    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),
+
+    // 채팅 관련 에러
+    INVALID_CHAT_SCROLL(HttpStatus.BAD_REQUEST, "CHAT4001", "더 이상 채팅이 존재하지 않습니다."),
+
+    // 채팅방 관련 에러
+    INVALID_CHATROOM_SCROLL(HttpStatus.BAD_REQUEST, "CHATROOM4001", "더 이상 채팅방이 존재하지 않습니다."),
+    CHATROOM_NOT_FOUND(HttpStatus.BAD_REQUEST, "CHATROOM4002", "해당 채팅방이 존재하지 않습니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");
 

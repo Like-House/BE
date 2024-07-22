@@ -20,7 +20,7 @@ public class ScheduleDTO {
         public static class ModifyScheduleRequest {
             @NotNull
             @Schema(description = "수정할 일정 아이디", example = "1")
-            private Long id;
+            private Long scheduleId;
             @Schema(description = "수정할 일정 날짜")
             private LocalDate date;
             @Schema(description = "수정할 일정 유형", example = "생일")
@@ -33,9 +33,6 @@ public class ScheduleDTO {
 
         @Getter
         public static class SaveScheduleRequest {
-            @NotNull
-            @Schema(description = "일정을 저장하는 유저 아이디", example = "1")
-            private Long userId;
             @NotNull
             @Schema(description = "저장할 일정 날짜")
             private LocalDate date;
@@ -67,7 +64,7 @@ public class ScheduleDTO {
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
         public static class ScheduleDataResponse {
             @Schema(description = "조회한 일정 아이디", example = "1")
-            private Long id;
+            private Long scheduleId;
             @Schema(description = "조회한 일정 날짜")
             private LocalDate date;
             @Schema(description = "조회한 일정 타입", example = "생일")
@@ -84,7 +81,7 @@ public class ScheduleDTO {
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
         public static class SaveScheduleResponse {
             @Schema(description = "저장/수정한 일정 아이디", example = "1")
-            private Long id;
+            private Long scheduleId;
             @Schema(description = "일정이 만들어진 시간")
             private LocalDateTime createdAt;
         }

@@ -25,8 +25,5 @@ public class FamilyEmoticon extends BaseEntity {
     private FamilySpace familySpace;
 
     @Column(nullable = false)
-    private String imageUrl;
-
-    @Column(nullable = false)
-    private String emoticonGroup;
+    private String filename;
 }
