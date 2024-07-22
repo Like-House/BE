@@ -49,7 +49,7 @@ public class FamilySpaceController {
     }
 
 
-    @PostMapping("/")
+    @PostMapping("")
     @Operation(summary = "가족 공간 생성 API", description = "새로운 가족 공간을 생성하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -92,7 +92,7 @@ public class FamilySpaceController {
         return ApiResponse.onSuccess(null);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("")
     @Operation(summary = "가족 공간 삭제 API", description = "가족 공간을 삭제하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -106,7 +106,7 @@ public class FamilySpaceController {
         return ApiResponse.onSuccess("Family space deletion completed successfully.");
     }
 
-    @PatchMapping("/")
+    @PatchMapping("")
     @Operation(summary = "가족 공간 초대 코드 재발급 API", description = "초대 코드를 재발급하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),

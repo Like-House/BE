@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "유저와 유저 관계 관련 컨트롤러")
 public class UserManagementController {
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "가족 목록 확인 API", description = "가족 공간에 속한 가족 목록을 확인하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -37,7 +37,7 @@ public class UserManagementController {
         return ApiResponse.onSuccess(null);
     }
 
-    @PatchMapping("/")
+    @PatchMapping("")
     @Operation(summary = "가족 정보 수정 API", description = "가족 별명, 메모를 수정하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
