@@ -27,6 +27,8 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NOT_MANAGER(HttpStatus.BAD_REQUEST, "USER4004", "주최자가 아닙니다."),
     ALREADY_REMOVED_USER(HttpStatus.BAD_REQUEST, "USER4005", "이미 해제된 유저입니다."),
     ALREADY_BLOCKED_USER(HttpStatus.BAD_REQUEST, "USER4006", "이미 차단된 유저입니다."),
+    ALREADY_RELEASE_REMOVE_USER(HttpStatus.BAD_REQUEST, "USER4007", "이미 해제가 풀어진 유저입니다."),
+    ALREADY_RELEASE_BLOCK_USER(HttpStatus.BAD_REQUEST, "USER4008", "이미 차단이 풀어진 유저입니다."),
 
     // 인증 관련 에러
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "유효하지 않은 토큰입니다."),

@@ -65,8 +65,28 @@ public class UserManagementController {
             @Parameter(hidden = true) @LoginUser User user,
             @PathVariable(name = "userId") Long userId) {
         // TODO 주최자만 가능!!
-        // TODO 특정 유저를 가족 공간에서 내보내기 + 유저와 연결된 것 모두 삭제
+        // TODO 특정 유저를 가족 공간에서 내보내기 + 이전 데이터 유지
+        // TODO user - family space FK 끊기 + remove user에 저장
         return ApiResponse.onSuccess("Family removal completed successfully.");
+    }
+
+    @PostMapping("/remove/release/{userId}")
+    @Operation(summary = "가족 해제 풀기 API", description = "특정 유저를 가족 공간에 다시 합류시키는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4007", description = "이미 해제가 풀어진 유저입니다.")
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
+    })
+    public ApiResponse<String> releaseRemoveFamily(
+            @Parameter(hidden = true) @LoginUser User user,
+            @PathVariable(name = "userId") Long userId) {
+        // TODO 주최자만 가능!
+        // TODO user - family space FK 연결 + remove user 에서 삭제
+        return ApiResponse.onSuccess("Family removal release completed successfully.");
     }
 
     @PostMapping("block/{userId}")
@@ -88,5 +108,24 @@ public class UserManagementController {
         // TODO 특정 유저를 가족 공간에서 내보내기 + 유저와 연결된 것 모두 삭제
         // TODO block user 테이블에 추가
         return ApiResponse.onSuccess("Family block completed successfully");
+    }
+
+    @PostMapping("block/release/{userId}")
+    @Operation(summary = "가족 차단 풀기 API", description = "특정 유저를 가족 공간에 다시 합류시키는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4008", description = "이미 차단이 풀어진 유저입니다.")
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
+    })
+    public ApiResponse<String> releaseBlockFamily(
+            @Parameter(hidden = true) @LoginUser User user,
+            @PathVariable(name = "userId") Long userId) {
+        // TODO 주최자만 가능!!
+        // TODO user - family space FK 연결 + block user 에서 삭제
+        return ApiResponse.onSuccess("Family block release completed successfully");
     }
 }
