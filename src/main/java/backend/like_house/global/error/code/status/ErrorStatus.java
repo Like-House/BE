@@ -19,6 +19,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // 가족 공간 관련 에러
     ALREADY_EXIST_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4001", "이미 존재하는 가족 공간 입니다."),
     FAMILY_SPACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4002", "존재하지 않는 가족 공간 입니다."),
+    NOT_INCLUDE_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4003", "유저가 해당 가족 공간에 속해 있지 않습니다."),
 
     // 유저 관려 에러
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "사용자를 찾을 수 없습니다."),
@@ -32,6 +33,9 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 일정 관련 에러
     SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "SCHEDULE4001", "존재하지 않는 일정 입니다."),
+
+    // 가족 이모티콘 관련 에러
+    FAMILY_EMOTICON_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_EMOTICON4001", "존재하지 않는 가족 이모티콘 입니다."),
 
     // 멤버 관려 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
