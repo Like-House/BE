@@ -48,7 +48,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @GetMapping("/get/detail/{postId}/{userId}")
+    @GetMapping("/detail/{postId}/{userId}")
     @Operation(summary = "게시글 상세 페이지 조회 API", description = "특정 게시글의 상세 페이지를 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -67,7 +67,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @GetMapping("/get/family-tags/{familySpaceId}")
+    @GetMapping("/family-tags/{familySpaceId}")
     @Operation(summary = "가족 태그 조회 API", description = "특정 가족 공간의 멤버들을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -86,7 +86,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PostMapping("/create/{userId}")
+    @PostMapping("/{userId}")
     @Operation(summary = "게시글 작성 API", description = "새로운 게시글을 작성하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -102,7 +102,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PutMapping("/update/{postId}/{userId}")
+    @PutMapping("/{postId}/{userId}")
     @Operation(summary = "게시글 수정 API", description = "특정 게시글을 수정하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -123,7 +123,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @DeleteMapping("/delete/{postId}/{userId}")
+    @DeleteMapping("/{postId}/{userId}")
     @Operation(summary = "게시글 삭제 API", description = "특정 게시글을 삭제하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),

@@ -2,6 +2,7 @@ package backend.like_house.domain.family_space.entity;
 
 import backend.like_house.global.common.BaseEntity;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -20,5 +21,8 @@ public class FamilySpace extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String link;
+    private String code;
+
+    @Column(nullable = false)
+    private LocalDateTime expireAt;
 }

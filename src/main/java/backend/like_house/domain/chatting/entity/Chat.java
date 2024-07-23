@@ -1,5 +1,6 @@
 package backend.like_house.domain.chatting.entity;
 
+import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,8 +21,12 @@ public class Chat extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_chat_room_id")
-    private UserChatRoom userChatRoom;
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false)
     private String content;
