@@ -39,7 +39,7 @@ public class CommentController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PutMapping("/{commentId}/{userId}")
+    @PutMapping("/{commentId}")
     @Operation(summary = "댓글 수정 API", description = "특정 댓글을 수정하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -58,7 +58,7 @@ public class CommentController {
         return ApiResponse.onSuccess(response);
     }
 
-    @DeleteMapping("/{commentId}/{userId}")
+    @DeleteMapping("/{commentId}")
     @Operation(summary = "댓글 삭제 API", description = "특정 댓글을 삭제하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),

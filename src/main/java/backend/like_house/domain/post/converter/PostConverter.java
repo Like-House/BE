@@ -39,13 +39,6 @@ public class PostConverter {
                 .build();
     }
 
-    public static FamilyTagResponse toGetFamilyTagResponse(Long userId, String nickname) {
-        return FamilyTagResponse.builder()
-                .userId(userId)
-                .nickname(nickname)
-                .build();
-    }
-
     public static CreatePostResponse toCreatePostResponse(Post post) {
         return CreatePostResponse.builder()
                 .postId(post.getId())

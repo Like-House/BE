@@ -66,18 +66,6 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public List<FamilyTagResponse> getFamilyTags(Long familySpaceId, User user) {
-        List<User> users = null; // 가족 공간 멤버 조회
-        // 특정 사용자가 해당 가족 공간의 멤버들에게 설정한 별명
-
-        // TODO: familySpaceId를 기반으로 가족 태그를 조회하는 로직
-        // 1. familySpaceId와 userId를 기반으로 해당 가족 공간의 멤버들 조회
-        // 2. 각 멤버에 대해 사용자가 설정한 별명으로 반환
-
-        return null;
-    }
-
-    @Override
     public List<GetMyPostListResponse> getMyPosts(User user) {
         List<Post> posts = null;
 

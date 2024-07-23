@@ -7,6 +7,5 @@ import java.util.List;
 public interface PostQueryService {
     List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Long cursor, int take);
     GetPostDetailResponse getPostDetail(Long postId, User user);
-    List<FamilyTagResponse> getFamilyTags(Long familySpaceId, User user);
     List<GetMyPostListResponse> getMyPosts(User user);
 }
