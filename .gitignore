@@ -41,3 +41,5 @@ src/main/generated
 
 # git message
 .gitmessage.txt
+
+.DS_Store

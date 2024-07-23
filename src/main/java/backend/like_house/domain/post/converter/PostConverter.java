@@ -56,4 +56,14 @@ public class PostConverter {
                 .createdAt(post.getCreatedAt())
                 .build();
     }
+
+    public static PostResponse.GetMyPostListResponse toGetMyPostListResponse(Post post, List<PostResponse.FamilyTagResponse> taggedUsers, List<String> imageUrls) {
+        return PostResponse.GetMyPostListResponse.builder()
+                .postId(post.getId())
+                .content(post.getContent())
+                .taggedUsers(taggedUsers)
+                .createdAt(post.getCreatedAt())
+                .imageUrls(imageUrls)
+                .build();
+    }
 }
