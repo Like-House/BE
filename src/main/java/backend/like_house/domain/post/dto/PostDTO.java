@@ -14,9 +14,6 @@ public class PostDTO {
     public static class PostRequest {
 
         @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @Builder
         public static class CreatePostRequest {
             @NotNull
             private Long userId;
@@ -27,9 +24,6 @@ public class PostDTO {
         }
 
         @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @Builder
         public static class UpdatePostRequest {
             @NotNull
             private Long postId;
@@ -90,6 +84,18 @@ public class PostDTO {
         public static class CreatePostResponse {
             private Long postId;
             private LocalDateTime createdAt;
+        }
+
+        @Builder
+        @Getter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class GetMyPostListResponse {
+            private Long postId;
+            private String content;
+            private List<FamilyTagResponse> taggedUsers;
+            private LocalDateTime createdAt;
+            private List<String> imageUrls;
         }
     }
 }

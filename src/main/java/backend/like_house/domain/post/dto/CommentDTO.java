@@ -12,9 +12,6 @@ public class CommentDTO {
     public static class CommentRequest {
 
         @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @Builder
         public static class CreateCommentRequest {
             @NotNull
             private Long postId;
@@ -24,9 +21,6 @@ public class CommentDTO {
         }
 
         @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @Builder
         public static class UpdateCommentRequest {
             @NotNull
             private Long commentId;

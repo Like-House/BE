@@ -17,6 +17,17 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
 
+    // 게시글 관련 에러
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4001", "존재하지 않는 게시글입니다."),
+    POST_CREATE_FAILED(HttpStatus.BAD_REQUEST, "POST4002", "게시글 작성 실패."),
+    POST_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "POST4003", "게시글 수정 실패."),
+    POST_DELETE_FAILED(HttpStatus.BAD_REQUEST, "POST4004", "게시글 삭제 실패."),
+
+    // 댓글 관련 에러
+    COMMENT_CREATE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4001", "댓글 작성 실패."),
+    COMMENT_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4002", "댓글 수정 실패."),
+    COMMENT_DELETE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4003", "댓글 삭제 실패."),
+
     // 멤버 관려 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),

@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostQueryServiceImpl implements PostQueryService {
 
-    @Transactional(readOnly = true)
     @Override
     public List<PostDTO.PostResponse.GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, Long userId, Long cursor, int take) {
         List<Post> posts = null;
@@ -39,7 +39,6 @@ public class PostQueryServiceImpl implements PostQueryService {
         return postListResponses;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public PostDTO.PostResponse.GetPostDetailResponse getPostDetail(Long postId, Long userId) {
         Post post = null;
@@ -67,7 +66,6 @@ public class PostQueryServiceImpl implements PostQueryService {
         return PostConverter.toGetPostDetailResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls, taggedUsers, commentResponses);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<PostDTO.PostResponse.FamilyTagResponse> getFamilyTags(Long familySpaceId, Long userId) {
         List<User> users = null; // 가족 공간 멤버 조회
@@ -85,6 +83,20 @@ public class PostQueryServiceImpl implements PostQueryService {
                             .map(Custom::getNickname)
                             .orElse(user.getName());
                     return PostConverter.toGetFamilyTagResponse(user.getId(), nickname);
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostDTO.PostResponse.GetMyPostListResponse> getMyPosts(Long userId) {
+        List<Post> posts = null;
+
+        // TODO: userId를 기반으로 사용자가 작성한 게시글을 조회하는 로직
+        return posts.stream()
+                .map(post -> {
+                    List<PostDTO.PostResponse.FamilyTagResponse> taggedUsers = null; // 1. 태그된 사용자 리스트 조회
+                    List<String> imageUrls = null; // 2. 이미지 URL 리스트 조회
+                    return PostConverter.toGetMyPostListResponse(post, taggedUsers, imageUrls);
                 })
                 .collect(Collectors.toList());
     }
