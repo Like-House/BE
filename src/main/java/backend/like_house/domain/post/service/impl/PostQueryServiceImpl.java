@@ -1,10 +1,9 @@
 package backend.like_house.domain.post.service.impl;
 
-import backend.like_house.domain.account.entity.Custom;
+import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
+import backend.like_house.domain.post.dto.CommentDTO.CommentResponse.*;
 import backend.like_house.domain.post.converter.CommentConverter;
 import backend.like_house.domain.post.converter.PostConverter;
-import backend.like_house.domain.post.dto.CommentDTO;
-import backend.like_house.domain.post.dto.PostDTO;
 import backend.like_house.domain.post.entity.Comment;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.service.PostQueryService;
@@ -22,10 +21,10 @@ import java.util.stream.Collectors;
 public class PostQueryServiceImpl implements PostQueryService {
 
     @Override
-    public List<PostDTO.PostResponse.GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, Long userId, Long cursor, int take) {
+    public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, Long userId, Long cursor, int take) {
         List<Post> posts = null;
 
-        List<PostDTO.PostResponse.GetPostListResponse> postListResponses = posts.stream().map(post -> {
+        List<GetPostListResponse> postListResponses = posts.stream().map(post -> {
             String authorNickname = null;
             String profileImage = null;
             int likeCount = 0;
@@ -40,17 +39,17 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public PostDTO.PostResponse.GetPostDetailResponse getPostDetail(Long postId, Long userId) {
+    public GetPostDetailResponse getPostDetail(Long postId, Long userId) {
         Post post = null;
         String authorNickname = null;
         String profileImage = null;
         int likeCount = 0;
         int commentCount = 0;
         List<String> imageUrls = null;
-        List<PostDTO.PostResponse.FamilyTagResponse> taggedUsers = null;
+        List<FamilyTagResponse> taggedUsers = null;
 
         List<Comment> comments = null;
-        List<CommentDTO.CommentResponse.GetCommentResponse> commentResponses = comments.stream()
+        List<GetCommentResponse> commentResponses = comments.stream()
                 .map(comment -> {
                     // User user = userRepository.findById(comment.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
                     // String userNickname = user.getNickname();
@@ -67,34 +66,25 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public List<PostDTO.PostResponse.FamilyTagResponse> getFamilyTags(Long familySpaceId, Long userId) {
+    public List<FamilyTagResponse> getFamilyTags(Long familySpaceId, Long userId) {
         List<User> users = null; // 가족 공간 멤버 조회
-        List<Custom> customs = null; // 특정 사용자가 해당 가족 공간의 멤버들에게 설정한 별명
+        // 특정 사용자가 해당 가족 공간의 멤버들에게 설정한 별명
 
         // TODO: familySpaceId를 기반으로 가족 태그를 조회하는 로직
         // 1. familySpaceId와 userId를 기반으로 해당 가족 공간의 멤버들 조회
         // 2. 각 멤버에 대해 사용자가 설정한 별명으로 반환
 
-        return users.stream()
-                .map(user -> {
-                    String nickname = customs.stream()
-                            .filter(custom -> custom.getContact().getProfileId().equals(user.getId()))
-                            .findFirst()
-                            .map(Custom::getNickname)
-                            .orElse(user.getName());
-                    return PostConverter.toGetFamilyTagResponse(user.getId(), nickname);
-                })
-                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
-    public List<PostDTO.PostResponse.GetMyPostListResponse> getMyPosts(Long userId) {
+    public List<GetMyPostListResponse> getMyPosts(Long userId) {
         List<Post> posts = null;
 
         // TODO: userId를 기반으로 사용자가 작성한 게시글을 조회하는 로직
         return posts.stream()
                 .map(post -> {
-                    List<PostDTO.PostResponse.FamilyTagResponse> taggedUsers = null; // 1. 태그된 사용자 리스트 조회
+                    List<FamilyTagResponse> taggedUsers = null; // 1. 태그된 사용자 리스트 조회
                     List<String> imageUrls = null; // 2. 이미지 URL 리스트 조회
                     return PostConverter.toGetMyPostListResponse(post, taggedUsers, imageUrls);
                 })

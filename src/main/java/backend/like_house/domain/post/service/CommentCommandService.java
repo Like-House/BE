@@ -1,9 +1,10 @@
 package backend.like_house.domain.post.service;
 
-import backend.like_house.domain.post.dto.CommentDTO;
+import backend.like_house.domain.post.dto.CommentDTO.CommentResponse.*;
+import backend.like_house.domain.post.dto.CommentDTO.CommentRequest.*;
 
 public interface CommentCommandService {
-    CommentDTO.CommentResponse.CreateCommentResponse createComment(Long userId, CommentDTO.CommentRequest.CreateCommentRequest request);
-    CommentDTO.CommentResponse.CreateCommentResponse updateComment(Long userId, Long commentId, CommentDTO.CommentRequest.UpdateCommentRequest request);
+    CreateCommentResponse createComment(Long userId, CreateCommentRequest request);
+    CreateCommentResponse updateComment(Long userId, Long commentId, UpdateCommentRequest request);
     void deleteComment(Long userId, Long commentId);
 }

@@ -1,5 +1,6 @@
 package backend.like_house.domain.post.service.impl;
-
+import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
+import backend.like_house.domain.post.dto.PostDTO.PostRequest.*;
 import backend.like_house.domain.post.converter.PostConverter;
 import backend.like_house.domain.post.dto.PostDTO;
 import backend.like_house.domain.post.entity.Post;
@@ -20,7 +21,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public PostDTO.PostResponse.CreatePostResponse createPost(PostDTO.PostRequest.CreatePostRequest createPostRequest, List<MultipartFile> files, Long userId) {
+    public CreatePostResponse createPost(CreatePostRequest createPostRequest, List<MultipartFile> files, Long userId) {
         List<String> imageUrls = s3Manager.uploadFiles(files);
         Post post = null;
         // TODO: 새로운 게시글을 작성하는 로직
@@ -32,7 +33,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, PostDTO.PostRequest.UpdatePostRequest updatePostRequest, List<MultipartFile> files, Long userId) {
+    public PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, List<MultipartFile> files, Long userId) {
         List<String> imageUrls = s3Manager.uploadFiles(files);
         Post post = null;
         // TODO: 특정 게시글을 수정하는 로직

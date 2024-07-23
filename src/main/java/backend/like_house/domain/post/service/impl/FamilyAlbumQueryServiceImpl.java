@@ -1,7 +1,6 @@
 package backend.like_house.domain.post.service.impl;
-
+import backend.like_house.domain.post.dto.FamilyAlbumDTO.*;
 import backend.like_house.domain.post.converter.FamilyAlbumConverter;
-import backend.like_house.domain.post.dto.FamilyAlbumDTO;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.service.FamilyAlbumQueryService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 public class FamilyAlbumQueryServiceImpl implements FamilyAlbumQueryService {
     @Transactional(readOnly = true)
     @Override
-    public List<FamilyAlbumDTO.AlbumPhotoResponse> viewFamilyAlbum(Long familySpaceId, LocalDate date, List<Long> taggedUserIds) {
+    public List<AlbumPhotoResponse> viewFamilyAlbum(Long familySpaceId, LocalDate date, List<Long> taggedUserIds) {
         List<Post> posts = null;
 
         // TODO: 가족 앨범 보기 로직
@@ -31,7 +30,7 @@ public class FamilyAlbumQueryServiceImpl implements FamilyAlbumQueryService {
 
     @Transactional(readOnly = true)
     @Override
-    public FamilyAlbumDTO.PostPreviewResponse getPostPreview(Long postId) {
+    public PostPreviewResponse getPostPreview(Long postId) {
         Post post = null;
         String authorNickname = null;
         String profileImage = null;

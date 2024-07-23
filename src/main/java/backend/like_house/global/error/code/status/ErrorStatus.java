@@ -64,6 +64,9 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_CHATROOM_SCROLL(HttpStatus.BAD_REQUEST, "CHATROOM4001", "더 이상 채팅방이 존재하지 않습니다."),
     CHATROOM_NOT_FOUND(HttpStatus.BAD_REQUEST, "CHATROOM4002", "해당 채팅방이 존재하지 않습니다."),
 
+    // 가족 앨범 관련 에러
+    FAMILY_ALBUM_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_ALBUM4001", "존재하지 않는 가족 앨범 입니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");
 

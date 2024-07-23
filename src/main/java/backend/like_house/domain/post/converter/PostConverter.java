@@ -1,15 +1,10 @@
 package backend.like_house.domain.post.converter;
 
-import backend.like_house.domain.account.entity.Custom;
 import backend.like_house.domain.post.dto.CommentDTO;
 import backend.like_house.domain.post.dto.PostDTO.*;
 import backend.like_house.domain.post.entity.Post;
-import backend.like_house.domain.post.entity.PostImage;
-import backend.like_house.domain.post.entity.UserPostTag;
-import backend.like_house.domain.user.entity.User;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PostConverter {
 

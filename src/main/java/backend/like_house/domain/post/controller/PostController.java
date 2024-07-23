@@ -1,6 +1,7 @@
 package backend.like_house.domain.post.controller;
 
-import backend.like_house.domain.post.dto.PostDTO;
+import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
+import backend.like_house.domain.post.dto.PostDTO.PostRequest.*;
 import backend.like_house.domain.post.service.PostCommandService;
 import backend.like_house.domain.post.service.PostQueryService;
 import backend.like_house.global.common.ApiResponse;
@@ -38,13 +39,13 @@ public class PostController {
             @Parameter(name = "cursor", description = "커서 ID, query parameter 입니다."),
             @Parameter(name = "take", description = "가져올 게시글 수, query parameter 입니다.")
     })
-    public ApiResponse<List<PostDTO.PostResponse.GetPostListResponse>> getPostsByFamilySpace(
+    public ApiResponse<List<GetPostListResponse>> getPostsByFamilySpace(
             @PathVariable Long familySpaceId,
             @PathVariable Long userId,
             @RequestParam(required = false) Long cursor,
             @RequestParam int take
     ) {
-        List<PostDTO.PostResponse.GetPostListResponse> response = postQueryService.getPostsByFamilySpace(familySpaceId, userId, cursor, take);
+        List<GetPostListResponse> response = postQueryService.getPostsByFamilySpace(familySpaceId, userId, cursor, take);
         return ApiResponse.onSuccess(response);
     }
 
@@ -59,11 +60,11 @@ public class PostController {
             @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다."),
             @Parameter(name = "userId", description = "사용자의 ID, path variable 입니다.")
     })
-    public ApiResponse<PostDTO.PostResponse.GetPostDetailResponse> getPostDetail(
+    public ApiResponse<GetPostDetailResponse> getPostDetail(
             @PathVariable Long postId,
             @PathVariable Long userId
     ) {
-        PostDTO.PostResponse.GetPostDetailResponse response = postQueryService.getPostDetail(postId, userId);
+        GetPostDetailResponse response = postQueryService.getPostDetail(postId, userId);
         return ApiResponse.onSuccess(response);
     }
 
@@ -78,11 +79,11 @@ public class PostController {
             @Parameter(name = "familySpaceId", description = "가족 공간의 ID, path variable 입니다."),
             @Parameter(name = "userId", description = "사용자의 ID, path variable 입니다.")
     })
-    public ApiResponse<List<PostDTO.PostResponse.FamilyTagResponse>> getFamilyTags(
+    public ApiResponse<List<FamilyTagResponse>> getFamilyTags(
             @PathVariable Long familySpaceId,
             @PathVariable Long userId
     ) {
-        List<PostDTO.PostResponse.FamilyTagResponse> response = postQueryService.getFamilyTags(familySpaceId, userId);
+        List<FamilyTagResponse> response = postQueryService.getFamilyTags(familySpaceId, userId);
         return ApiResponse.onSuccess(response);
     }
 
@@ -93,12 +94,12 @@ public class PostController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST4002", description = "게시글 작성 실패."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
     })
-    public ApiResponse<PostDTO.PostResponse.CreatePostResponse> createPost(
+    public ApiResponse<CreatePostResponse> createPost(
             @PathVariable Long userId,
-            @RequestPart("createPostRequest") @Valid PostDTO.PostRequest.CreatePostRequest createPostRequest,
+            @RequestPart("createPostRequest") @Valid CreatePostRequest createPostRequest,
             @RequestPart("files") List<MultipartFile> files
     ) {
-        PostDTO.PostResponse.CreatePostResponse response = postCommandService.createPost(createPostRequest, files, userId);
+        CreatePostResponse response = postCommandService.createPost(createPostRequest, files, userId);
         return ApiResponse.onSuccess(response);
     }
 
@@ -113,13 +114,13 @@ public class PostController {
             @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다."),
             @Parameter(name = "userId", description = "사용자의 ID, path variable 입니다.")
     })
-    public ApiResponse<PostDTO.PostResponse.CreatePostResponse> updatePost(
+    public ApiResponse<CreatePostResponse> updatePost(
             @PathVariable Long postId,
             @PathVariable Long userId,
-            @RequestPart("updatePostRequest") @Valid PostDTO.PostRequest.UpdatePostRequest updatePostRequest,
+            @RequestPart("updatePostRequest") @Valid UpdatePostRequest updatePostRequest,
             @RequestPart("files") List<MultipartFile> files
     ) {
-        PostDTO.PostResponse.CreatePostResponse response = postCommandService.updatePost(postId, updatePostRequest, files, userId);
+        CreatePostResponse response = postCommandService.updatePost(postId, updatePostRequest, files, userId);
         return ApiResponse.onSuccess(response);
     }
 
@@ -152,8 +153,8 @@ public class PostController {
     @Parameters({
             @Parameter(name = "userId", description = "사용자의 ID, path variable 입니다.")
     })
-    public ApiResponse<List<PostDTO.PostResponse.GetMyPostListResponse>> getMyPosts(@PathVariable Long userId) {
-        List<PostDTO.PostResponse.GetMyPostListResponse> response = postQueryService.getMyPosts(userId);
+    public ApiResponse<List<GetMyPostListResponse>> getMyPosts(@PathVariable Long userId) {
+        List<GetMyPostListResponse> response = postQueryService.getMyPosts(userId);
         return ApiResponse.onSuccess(response);
     }
 }

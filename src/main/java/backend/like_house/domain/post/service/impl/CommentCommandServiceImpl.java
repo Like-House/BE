@@ -1,7 +1,7 @@
 package backend.like_house.domain.post.service.impl;
-
+import backend.like_house.domain.post.dto.CommentDTO.CommentResponse.*;
+import backend.like_house.domain.post.dto.CommentDTO.CommentRequest.*;
 import backend.like_house.domain.post.converter.CommentConverter;
-import backend.like_house.domain.post.dto.CommentDTO;
 import backend.like_house.domain.post.entity.Comment;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.service.CommentCommandService;
@@ -16,7 +16,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
     @Transactional
     @Override
-    public CommentDTO.CommentResponse.CreateCommentResponse createComment(Long userId, CommentDTO.CommentRequest.CreateCommentRequest request) {
+    public CreateCommentResponse createComment(Long userId, CreateCommentRequest request) {
         User user = null;
         Post post = null;
         // Comment parent = request.getParentId() != null ? commentRepository.findById(request.getParentId()).orElseThrow() : null;
@@ -34,7 +34,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
     @Transactional
     @Override
-    public CommentDTO.CommentResponse.CreateCommentResponse updateComment(Long userId, Long commentId, CommentDTO.CommentRequest.UpdateCommentRequest request) {
+    public CreateCommentResponse updateComment(Long userId, Long commentId, UpdateCommentRequest request) {
         Comment comment = null;
 
         // TODO: 특정 댓글을 수정하는 로직
