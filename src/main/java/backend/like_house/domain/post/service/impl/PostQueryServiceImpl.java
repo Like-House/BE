@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class PostQueryServiceImpl implements PostQueryService {
 
     @Override
-    public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, Long userId, Long cursor, int take) {
+    public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Long cursor, int take) {
         List<Post> posts = null;
 
         List<GetPostListResponse> postListResponses = posts.stream().map(post -> {
@@ -39,7 +39,7 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public GetPostDetailResponse getPostDetail(Long postId, Long userId) {
+    public GetPostDetailResponse getPostDetail(Long postId, User user) {
         Post post = null;
         String authorNickname = null;
         String profileImage = null;
@@ -66,7 +66,7 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public List<FamilyTagResponse> getFamilyTags(Long familySpaceId, Long userId) {
+    public List<FamilyTagResponse> getFamilyTags(Long familySpaceId, User user) {
         List<User> users = null; // 가족 공간 멤버 조회
         // 특정 사용자가 해당 가족 공간의 멤버들에게 설정한 별명
 
@@ -78,7 +78,7 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public List<GetMyPostListResponse> getMyPosts(Long userId) {
+    public List<GetMyPostListResponse> getMyPosts(User user) {
         List<Post> posts = null;
 
         // TODO: userId를 기반으로 사용자가 작성한 게시글을 조회하는 로직

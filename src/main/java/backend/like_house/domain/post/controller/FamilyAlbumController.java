@@ -22,7 +22,7 @@ public class FamilyAlbumController {
 
     private final FamilyAlbumQueryService familyAlbumQueryService;
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "가족 앨범 보기 API", description = "특정 날짜와 태그된 가족 구성원에 따라 필터링된 게시글의 사진을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),

@@ -5,6 +5,7 @@ import backend.like_house.domain.post.converter.PostConverter;
 import backend.like_house.domain.post.dto.PostDTO;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.service.PostCommandService;
+import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.s3.S3Manager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public CreatePostResponse createPost(CreatePostRequest createPostRequest, List<MultipartFile> files, Long userId) {
+    public CreatePostResponse createPost(CreatePostRequest createPostRequest, List<MultipartFile> files, User user) {
         List<String> imageUrls = s3Manager.uploadFiles(files);
         Post post = null;
         // TODO: 새로운 게시글을 작성하는 로직
@@ -33,7 +34,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, List<MultipartFile> files, Long userId) {
+    public PostDTO.PostResponse.CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, List<MultipartFile> files, User user) {
         List<String> imageUrls = s3Manager.uploadFiles(files);
         Post post = null;
         // TODO: 특정 게시글을 수정하는 로직
@@ -45,7 +46,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public void deletePost(Long postId, Long userId) {
+    public void deletePost(Long postId, User user) {
         // TODO: 특정 게시글을 삭제하는 로직
         // 1. postId를 기반으로 게시글 조회
         // 2. 조회한 게시글 삭제

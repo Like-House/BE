@@ -16,8 +16,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
     @Transactional
     @Override
-    public CreateCommentResponse createComment(Long userId, CreateCommentRequest request) {
-        User user = null;
+    public CreateCommentResponse createComment(User user, CreateCommentRequest request) {
         Post post = null;
         // Comment parent = request.getParentId() != null ? commentRepository.findById(request.getParentId()).orElseThrow() : null;
         Comment parent = null;
@@ -34,7 +33,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
     @Transactional
     @Override
-    public CreateCommentResponse updateComment(Long userId, Long commentId, UpdateCommentRequest request) {
+    public CreateCommentResponse updateComment(User user, Long commentId, UpdateCommentRequest request) {
         Comment comment = null;
 
         // TODO: 특정 댓글을 수정하는 로직
@@ -47,7 +46,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
     @Transactional
     @Override
-    public void deleteComment(Long userId, Long commentId) {
+    public void deleteComment(User user, Long commentId) {
         // TODO: 특정 댓글을 삭제하는 로직
         // 1. commentId를 사용하여 commentRepository에서 삭제할 댓글 조회
         // 2. 댓글 삭제

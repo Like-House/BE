@@ -1,15 +1,16 @@
 package backend.like_house.domain.post.converter;
 
 import backend.like_house.domain.post.dto.CommentDTO;
-import backend.like_house.domain.post.dto.PostDTO.*;
+import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
+import backend.like_house.domain.post.dto.PostDTO.PostRequest.*;
 import backend.like_house.domain.post.entity.Post;
 
 import java.util.List;
 
 public class PostConverter {
 
-    public static PostResponse.GetPostListResponse toGetPostListResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls) {
-        return PostResponse.GetPostListResponse.builder()
+    public static GetPostListResponse toGetPostListResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls) {
+        return GetPostListResponse.builder()
                 .postId(post.getId())
                 .content(post.getContent())
                 .authorNickname(authorNickname)
@@ -22,8 +23,8 @@ public class PostConverter {
                 .build();
     }
 
-    public static PostResponse.GetPostDetailResponse toGetPostDetailResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls, List<PostResponse.FamilyTagResponse> taggedUsers, List<CommentDTO.CommentResponse.GetCommentResponse> comments) {
-        return PostResponse.GetPostDetailResponse.builder()
+    public static GetPostDetailResponse toGetPostDetailResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls, List<FamilyTagResponse> taggedUsers, List<CommentDTO.CommentResponse.GetCommentResponse> comments) {
+        return GetPostDetailResponse.builder()
                 .postId(post.getId())
                 .content(post.getContent())
                 .authorNickname(authorNickname)
@@ -38,22 +39,22 @@ public class PostConverter {
                 .build();
     }
 
-    public static PostResponse.FamilyTagResponse toGetFamilyTagResponse(Long userId, String nickname) {
-        return PostResponse.FamilyTagResponse.builder()
+    public static FamilyTagResponse toGetFamilyTagResponse(Long userId, String nickname) {
+        return FamilyTagResponse.builder()
                 .userId(userId)
                 .nickname(nickname)
                 .build();
     }
 
-    public static PostResponse.CreatePostResponse toCreatePostResponse(Post post) {
-        return PostResponse.CreatePostResponse.builder()
+    public static CreatePostResponse toCreatePostResponse(Post post) {
+        return CreatePostResponse.builder()
                 .postId(post.getId())
                 .createdAt(post.getCreatedAt())
                 .build();
     }
 
-    public static PostResponse.GetMyPostListResponse toGetMyPostListResponse(Post post, List<PostResponse.FamilyTagResponse> taggedUsers, List<String> imageUrls) {
-        return PostResponse.GetMyPostListResponse.builder()
+    public static GetMyPostListResponse toGetMyPostListResponse(Post post, List<FamilyTagResponse> taggedUsers, List<String> imageUrls) {
+        return GetMyPostListResponse.builder()
                 .postId(post.getId())
                 .content(post.getContent())
                 .taggedUsers(taggedUsers)

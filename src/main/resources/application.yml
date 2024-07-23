@@ -25,6 +25,7 @@ spring:
       - database
       - jwt
       - redis
+      - s3
   data:
     redis:
       repositories:
