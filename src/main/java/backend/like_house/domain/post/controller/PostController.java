@@ -22,13 +22,13 @@ import java.util.List;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/api/v0/posts")
+@RequestMapping("/api/v0")
 public class PostController {
 
     private final PostQueryService postQueryService;
     private final PostCommandService postCommandService;
 
-    @GetMapping("/family-space/{familySpaceId}")
+    @GetMapping("/family-space/{familySpaceId}/posts")
     @Operation(summary = "홈 (게시글 조회) API", description = "특정 가족 공간의 게시글을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -50,7 +50,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/posts/{postId}")
     @Operation(summary = "게시글 상세 페이지 조회 API", description = "특정 게시글의 상세 페이지를 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -68,7 +68,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PostMapping("")
+    @PostMapping("/posts")
     @Operation(summary = "게시글 작성 API", description = "새로운 게시글을 작성하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -84,7 +84,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PutMapping("/{postId}")
+    @PutMapping("/posts/{postId}")
     @Operation(summary = "게시글 수정 API", description = "특정 게시글을 수정하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -104,7 +104,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/posts/{postId}")
     @Operation(summary = "게시글 삭제 API", description = "특정 게시글을 삭제하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -122,7 +122,7 @@ public class PostController {
         return ApiResponse.onSuccess(null);
     }
 
-    @GetMapping("/my-posts")
+    @GetMapping("/posts/my-posts")
     @Operation(summary = "내가 쓴 글 조회 API", description = "사용자가 작성한 모든 게시글을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
