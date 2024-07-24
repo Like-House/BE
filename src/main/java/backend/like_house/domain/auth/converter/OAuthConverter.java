@@ -1,5 +1,6 @@
 package backend.like_house.domain.auth.converter;
 
+import backend.like_house.domain.auth.dto.GoogleDTO;
 import backend.like_house.domain.auth.dto.NaverDTO;
 import backend.like_house.domain.user.entity.User;
 
@@ -33,6 +34,15 @@ public class OAuthConverter {
                 .profileImage(request.getResponse().getProfile_image())
                 .birthDate(birthDate)
                 .socialName("NAVER")
+                .build();
+    }
+
+    public static User toGoogleUser(GoogleDTO.GoogleProfile request) {
+        return User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .profileImage(request.getPicture())
+                .socialName("GOOGLE")
                 .build();
     }
 }
