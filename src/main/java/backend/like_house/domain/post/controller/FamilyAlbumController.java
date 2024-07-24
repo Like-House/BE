@@ -43,7 +43,7 @@ public class FamilyAlbumController {
         return ApiResponse.onSuccess(response);
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/posts/{postId}")
     @Operation(summary = "앨범 사진 클릭 API", description = "앨범 사진 클릭 시 해당 게시글의 미리보기 정보를 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
