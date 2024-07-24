@@ -119,7 +119,7 @@ public class FamilySpaceController {
     })
     public ApiResponse<String> deleteFamilySpace(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user) {
-        // TODO 연결된 것 싹 다 삭제
+        familySpaceCommandService.deleteFamilySpace(user);
         familySpaceCommandService.depriveRoomManager(user);
         return ApiResponse.onSuccess("Family space deletion completed successfully.");
     }

@@ -10,4 +10,6 @@ public interface FamilySpaceCommandService {
     void userConnectWithFamilySpace(User user, FamilySpace familySpace);
 
     void depriveRoomManager(User user);
+
+    void deleteFamilySpace(User user);
 }
