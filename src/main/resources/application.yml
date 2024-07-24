@@ -26,6 +26,7 @@ spring:
       - jwt
       - redis
       - s3
+      - oauth
   data:
     redis:
       repositories:

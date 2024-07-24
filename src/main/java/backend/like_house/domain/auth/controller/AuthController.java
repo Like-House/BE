@@ -1,9 +1,13 @@
 package backend.like_house.domain.auth.controller;
 
 import backend.like_house.domain.auth.dto.AuthDTO;
+import backend.like_house.domain.auth.dto.KakaoDTO;
 import backend.like_house.domain.auth.service.AuthCommandService;
+import backend.like_house.domain.auth.service.OAuthCommandService;
 import backend.like_house.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthCommandService authCommandService;
+    private final OAuthCommandService oAuthCommandService;
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입 API", description = "일반 회원가입 API 입니다.")
@@ -56,15 +61,16 @@ public class AuthController {
         return ApiResponse.onSuccess(null);
     }
 
-    @GetMapping("/oauth/kakao/login")
+    @GetMapping("/login/kakao")
     @Operation(summary = "카카오 로그인 API", description = "카카오 로그인 API 입니다.")
+    @Parameters({
+            @Parameter(name = "code", description = "카카오에서 받은 인가 코드입니다.")
+    })
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<?> kakaoLogin(@RequestParam("code") String accessCode) {
-        // 카카오의 인가코드를 통해 유저 정보 얻고
-        // 회원가입 or 로그인 진행
-        return ApiResponse.onSuccess(null);
+    public ApiResponse<KakaoDTO.LogInResponse> kakaoLogin(@RequestParam("code") String accessCode) {
+        return ApiResponse.onSuccess(oAuthCommandService.kakaoLogin(accessCode));
     }
 
     @GetMapping("/oauth/naver/login")
