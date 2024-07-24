@@ -67,7 +67,7 @@ public class User extends BaseEntity {
         this.familySpace = familySpace;
     }
 
-    public void setRoomManager() {
-        this.isRoomManager = Boolean.TRUE;
+    public void setIsRoomManager(Boolean isRoomManager) {
+        this.isRoomManager = isRoomManager;
     }
 }

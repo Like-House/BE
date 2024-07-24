@@ -13,6 +13,7 @@ import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
 import backend.like_house.global.validation.annotation.HasNotFamilySpaceUser;
 import backend.like_house.global.validation.annotation.IsRoomManager;
+import backend.like_house.global.validation.annotation.NotBlockedUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -86,12 +87,11 @@ public class FamilySpaceController {
             @Parameter(name = "familySpaceId", description = "가족 공간 아이디, path variable 입니다.")
     })
     public ApiResponse<EnterFamilySpaceResponse> enterFamilySpace(
-            @Parameter(hidden = true) @LoginUser @HasNotFamilySpaceUser User user,
+            @Parameter(hidden = true) @LoginUser @HasNotFamilySpaceUser @NotBlockedUser User user,
             @PathVariable(name = "familySpaceId") @ExistFamilySpace Long familySpaceId
     ) {
-        // TODO 차단되어있는 상태이면 입장 X (어노테이션 만들기)
-        // TODO user에 familySpace 연결
-        FamilySpace familySpace = null;
+        FamilySpace familySpace = familySpaceQueryService.findFamilySpace(familySpaceId).get();
+        familySpaceCommandService.userConnectWithFamilySpace(user, familySpace);
         return ApiResponse.onSuccess(FamilySpaceConverter.toEnterFamilySpaceResponse(user, familySpace));
     }
 
@@ -120,8 +120,7 @@ public class FamilySpaceController {
     public ApiResponse<String> deleteFamilySpace(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user) {
         // TODO 연결된 것 싹 다 삭제
-        // TODO 주최자 isRoomManager -> false로 변경
-        // TODO 주최자만 가능하도록!
+        familySpaceCommandService.depriveRoomManager(user);
         return ApiResponse.onSuccess("Family space deletion completed successfully.");
     }
 

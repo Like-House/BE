@@ -5,7 +5,6 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.family_space.repository.FamilySpaceRepository;
 import backend.like_house.domain.family_space.service.FamilySpaceCommandService;
 import backend.like_house.domain.user.entity.User;
-import backend.like_house.global.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 public class FamilySpaceCommandServiceImpl implements FamilySpaceCommandService {
 
     private final FamilySpaceRepository familySpaceRepository;
-    private final RedisUtil redisUtil;
 
     @Override
     @Transactional
     public FamilySpace generateNewFamilySpace(User user) {
         FamilySpace familySpace = FamilySpaceConverter.toNewFamilySpace();
         user.setFamilySpace(familySpace);
-        user.setRoomManager();
+        user.setIsRoomManager(Boolean.TRUE);
 
         return familySpaceRepository.save(familySpace);
+    }
+
+    @Override
+    @Transactional
+    public void userConnectWithFamilySpace(User user, FamilySpace familySpace) {
+        user.setFamilySpace(familySpace);
+    }
+
+    @Override
+    public void depriveRoomManager(User user) {
+        user.setIsRoomManager(Boolean.FALSE);
     }
 }
