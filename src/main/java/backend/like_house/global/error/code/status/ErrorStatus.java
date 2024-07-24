@@ -46,6 +46,9 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),
 
+    // 파일 변환 에러
+    FILE_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S3_5001", "파일 변환 중 오류가 발생했습니다."),
+
     // 채팅 관련 에러
     INVALID_CHAT_SCROLL(HttpStatus.BAD_REQUEST, "CHAT4001", "더 이상 채팅이 존재하지 않습니다."),
 
