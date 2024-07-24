@@ -28,27 +28,27 @@ public class FamilySpace extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
 
-    @OneToMany(mappedBy = "family_emoticon", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<FamilyEmoticon> familyEmoticons = new ArrayList<>();
 
-    @OneToMany(mappedBy = "block_user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<BlockUser> blockUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<Contact> contacts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "remove_user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<RemoveUser> removeUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chat_room", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<ChatRoom> chatRooms = new ArrayList<>();
 }

@@ -34,15 +34,15 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post_image", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<PostImage> postImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post_like", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<PostLike> postLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user_post_tag", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<UserPostTag> userPostTags = new ArrayList<>();
 }

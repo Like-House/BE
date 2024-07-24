@@ -74,31 +74,31 @@ public class User extends BaseEntity {
 
     private String socialName;
 
-    @OneToMany(mappedBy = "notification", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Notification> notifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Contact> contacts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Chat> chats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "block_user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<BlockUser> blockUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "remove_user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RemoveUser> removeUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user_post_tag", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<UserPostTag> userPostTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user_chat_room", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
     public void setFamilySpace(FamilySpace familySpace) {

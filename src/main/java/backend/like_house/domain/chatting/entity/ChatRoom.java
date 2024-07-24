@@ -34,9 +34,9 @@ public class ChatRoom extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ChatRoomType dtype;
 
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
     private List<Chat> chats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user_chat_room", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
     private List<UserChatRoom> userChatRooms = new ArrayList<>();
 }
