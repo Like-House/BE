@@ -1,8 +1,11 @@
 package backend.like_house.domain.chatting.entity;
 
+import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.global.common.BaseEntity;
 import backend.like_house.global.common.enums.ChatRoomType;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -20,10 +23,20 @@ public class ChatRoom extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "family_space_id")
+    private FamilySpace familySpace;
+
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ChatRoomType dtype;
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+    private List<Chat> chats = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user_chat_room", cascade = CascadeType.REMOVE)
+    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 }
