@@ -5,10 +5,14 @@ import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.validation.annotation.IsRoomManager;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserIsRoomManagerValidator implements ConstraintValidator<IsRoomManager, User> {
+
+    private final UserHasFamilySpaceValidator hasFamilySpaceValidator;
 
     @Override
     public void initialize(IsRoomManager constraintAnnotation) {
@@ -17,6 +21,10 @@ public class UserIsRoomManagerValidator implements ConstraintValidator<IsRoomMan
 
     @Override
     public boolean isValid(User value, ConstraintValidatorContext context) {
+        if (!hasFamilySpaceValidator.isValid(value, context)) {
+            return false;
+        }
+
         if (value.getIsRoomManager().equals(Boolean.FALSE)) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(ErrorStatus.USER_NOT_MANAGER.toString())
