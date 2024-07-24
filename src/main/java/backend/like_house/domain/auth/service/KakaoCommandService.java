@@ -1,9 +1,10 @@
 package backend.like_house.domain.auth.service;
 
+import backend.like_house.domain.auth.dto.AuthDTO;
 import backend.like_house.domain.auth.dto.KakaoDTO;
 
-public interface OAuthCommandService {
+public interface KakaoCommandService {
     KakaoDTO.OAuthToken getOAuthToken(String accessCode);
     KakaoDTO.KakaoProfile getKakaoProfile(KakaoDTO.OAuthToken request);
-    KakaoDTO.LogInResponse kakaoLogin(String accessCode);
+    AuthDTO.SignInResponse kakaoLogin(String accessCode);
 }

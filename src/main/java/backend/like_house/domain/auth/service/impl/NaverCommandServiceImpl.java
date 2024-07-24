@@ -1,12 +1,13 @@
 package backend.like_house.domain.auth.service.impl;
 
+import backend.like_house.domain.auth.converter.AuthConverter;
 import backend.like_house.domain.auth.converter.OAuthConverter;
-import backend.like_house.domain.auth.dto.KakaoDTO;
-import backend.like_house.domain.auth.dto.KakaoDTO.OAuthToken;
-import backend.like_house.domain.auth.dto.KakaoDTO.KakaoProfile;
-
+import backend.like_house.domain.auth.dto.AuthDTO;
+import backend.like_house.domain.auth.dto.NaverDTO;
+import backend.like_house.domain.auth.dto.NaverDTO.NaverProfile;
+import backend.like_house.domain.auth.dto.NaverDTO.OAuthToken;
 import backend.like_house.domain.auth.repository.AuthRepository;
-import backend.like_house.domain.auth.service.OAuthCommandService;
+import backend.like_house.domain.auth.service.NaverCommandService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
@@ -30,21 +31,23 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class OAuthCommandServiceImpl implements OAuthCommandService {
+public class NaverCommandServiceImpl implements NaverCommandService {
 
-    @Value("${oauth2.kakao.client-id}")
+    @Value("${oauth2.naver.client-id}")
     private String client;
 
-    @Value("${KAKAO_CLIENT_SECRET}")
+    @Value("${oauth2.naver.client-secret}")
     private String secret;
 
-    @Value("${oauth2.kakao.redirect-uri}")
+    @Value("${oauth2.naver.redirect-uri}")
     private String redirect;
 
     private final AuthRepository authRepository;
     private final JWTUtil jwtUtil;
+
     @Override
     public OAuthToken getOAuthToken(String accessCode) {
+
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -53,7 +56,6 @@ public class OAuthCommandServiceImpl implements OAuthCommandService {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("grant_type", "authorization_code");
         map.add("client_id", client);
-        map.add("redirect_uri", redirect);
         map.add("code", accessCode);
         map.add("client_secret", secret);
 
@@ -61,9 +63,10 @@ public class OAuthCommandServiceImpl implements OAuthCommandService {
 
         ResponseEntity<String> response;
 
+
         try {
             response = restTemplate.exchange(
-                    "https://kauth.kakao.com/oauth/token",
+                    "https://nid.naver.com/oauth2.0/token",
                     HttpMethod.POST,
                     request,
                     String.class
@@ -80,65 +83,62 @@ public class OAuthCommandServiceImpl implements OAuthCommandService {
         } catch (JsonProcessingException e) {
             throw new AuthException(ErrorStatus._BAD_REQUEST);
         }
-
+        System.out.println(oAuthToken.getAccess_token());
         return oAuthToken;
     }
 
     @Override
-    public KakaoProfile getKakaoProfile(OAuthToken oAuthToken) {
+    public NaverProfile getNaverProfile(OAuthToken oAuthToken) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
 
         httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
         httpHeaders.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
 
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(httpHeaders);
+        HttpEntity<MultiValueMap<String, String>> naverProfileRequest = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<String> response =
                 restTemplate.exchange(
-                        "https://kapi.kakao.com/v2/user/me",
+                        "https://openapi.naver.com/v1/nid/me",
                         HttpMethod.GET,
-                        kakaoProfileRequest,
+                        naverProfileRequest,
                         String.class
                 );
 
         ObjectMapper objectMapper = new ObjectMapper();
-        KakaoProfile kakaoProfile = null;
+        NaverDTO.NaverProfile naverProfile = null;
 
         try {
-            kakaoProfile = objectMapper.readValue(response.getBody(), KakaoProfile.class);
+            naverProfile = objectMapper.readValue(response.getBody(), NaverProfile.class);
         } catch (JsonProcessingException e) {
             throw new AuthException(ErrorStatus._BAD_REQUEST);
         }
-
-        return kakaoProfile;
+        System.out.println(naverProfile.getResponse().getBirthyear() + naverProfile.getResponse().getBirthday());
+        return naverProfile;
     }
 
     @Override
-    public KakaoDTO.LogInResponse kakaoLogin(String accessCode) {
+    public AuthDTO.SignInResponse naverLogin(String accessCode) {
+        OAuthToken oAuthToken = getOAuthToken(accessCode);
+        NaverProfile naverProfile = getNaverProfile(oAuthToken);
 
-        KakaoDTO.OAuthToken oAuthToken = getOAuthToken(accessCode);
-        KakaoDTO.KakaoProfile kakaoProfile = getKakaoProfile(oAuthToken);
+        Optional<User> requestUser = authRepository.findByEmailAndSocialName(naverProfile.getResponse().getEmail(), "NAVER");
 
-        Optional<User> requestUser = authRepository.findByEmail(kakaoProfile.getKakao_account().getEmail());
         User user = null;
         if (requestUser.isPresent()) {
             // 로그인
             user = requestUser.get();
         } else {
-            // 회원가입
-            user = OAuthConverter.toKakaoUser(
-                    kakaoProfile.getKakao_account().getProfile().getNickname(),
-                    kakaoProfile.getKakao_account().getProfile().getProfile_image_url(),
-                    kakaoProfile.getKakao_account().getEmail());
+            user = OAuthConverter.toNaverUser(naverProfile);
             authRepository.save(user);
         }
 
         String accessToken = jwtUtil.generateAccessToken(user.getEmail());
         String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
 
-        return OAuthConverter.toKakaoLoginResponse(accessToken, refreshToken);
+        return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }
 
 
 }
+

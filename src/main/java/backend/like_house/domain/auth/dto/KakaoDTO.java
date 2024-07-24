@@ -1,11 +1,7 @@
 package backend.like_house.domain.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 public class KakaoDTO {
 
@@ -45,16 +41,5 @@ public class KakaoDTO {
             private String nickname;
             private String profile_image_url;
         }
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class LogInResponse {
-        @Schema(description = "로그인한 유저의 accessToken")
-        private String accessToken;
-        @Schema(description = "로그인한 유저의 refreshToken")
-        private String refreshToken;
     }
 }

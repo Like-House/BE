@@ -1,9 +1,9 @@
 package backend.like_house.domain.auth.controller;
 
 import backend.like_house.domain.auth.dto.AuthDTO;
-import backend.like_house.domain.auth.dto.KakaoDTO;
 import backend.like_house.domain.auth.service.AuthCommandService;
-import backend.like_house.domain.auth.service.OAuthCommandService;
+import backend.like_house.domain.auth.service.NaverCommandService;
+import backend.like_house.domain.auth.service.KakaoCommandService;
 import backend.like_house.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthCommandService authCommandService;
-    private final OAuthCommandService oAuthCommandService;
+    private final KakaoCommandService kakaoCommandService;
+    private final NaverCommandService naverCommandService;
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입 API", description = "일반 회원가입 API 입니다.")
@@ -61,7 +62,7 @@ public class AuthController {
         return ApiResponse.onSuccess(null);
     }
 
-    @GetMapping("/login/kakao")
+    @GetMapping("oauth/kakao/login")
     @Operation(summary = "카카오 로그인 API", description = "카카오 로그인 API 입니다.")
     @Parameters({
             @Parameter(name = "code", description = "카카오에서 받은 인가 코드입니다.")
@@ -69,19 +70,20 @@ public class AuthController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<KakaoDTO.LogInResponse> kakaoLogin(@RequestParam("code") String accessCode) {
-        return ApiResponse.onSuccess(oAuthCommandService.kakaoLogin(accessCode));
+    public ApiResponse<AuthDTO.SignInResponse> kakaoLogin(@RequestParam("code") String accessCode) {
+        return ApiResponse.onSuccess(kakaoCommandService.kakaoLogin(accessCode));
     }
 
-    @GetMapping("/oauth/naver/login")
+    @GetMapping("oauth/naver/login")
     @Operation(summary = "네이버 로그인 API", description = "네이버 로그인 API 입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<?> naverLogin(@RequestParam("code") String accessCode) {
+    public ApiResponse<AuthDTO.SignInResponse> naverLogin(@RequestParam("code") String accessCode) {
         // 네이버 인가코드를 통해 유저 정보 얻고
         // 회원가입 or 로그인 진행
-        return ApiResponse.onSuccess(null);
+
+        return ApiResponse.onSuccess(naverCommandService.naverLogin(accessCode));
     }
 
     @GetMapping("/oauth/google/login")
