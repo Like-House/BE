@@ -42,6 +42,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 가족 이모티콘 관련 에러
     FAMILY_EMOTICON_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_EMOTICON4001", "존재하지 않는 가족 이모티콘 입니다."),
 
+    // 파일 변환 에러
+    FILE_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S3_5001", "파일 변환 중 오류가 발생했습니다."),
+
     // 채팅 관련 에러
     INVALID_CHAT_SCROLL(HttpStatus.BAD_REQUEST, "CHAT4001", "더 이상 채팅이 존재하지 않습니다."),
 
