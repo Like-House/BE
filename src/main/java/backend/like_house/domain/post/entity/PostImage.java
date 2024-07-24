@@ -24,5 +24,5 @@ public class PostImage extends BaseEntity {
     private Post post;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String filename;
 }
