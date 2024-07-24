@@ -22,13 +22,13 @@ import java.util.List;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/api/v0/post")
+@RequestMapping("/api/v0/posts")
 public class PostController {
 
     private final PostQueryService postQueryService;
     private final PostCommandService postCommandService;
 
-    @GetMapping("/home/{familySpaceId}")
+    @GetMapping("/{familySpaceId}")
     @Operation(summary = "홈 (게시글 조회) API", description = "특정 가족 공간의 게시글을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -50,7 +50,7 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @GetMapping("/detail/{postId}")
+    @GetMapping("/{postId}")
     @Operation(summary = "게시글 상세 페이지 조회 API", description = "특정 게시글의 상세 페이지를 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
