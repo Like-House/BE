@@ -28,7 +28,7 @@ public class PostController {
     private final PostQueryService postQueryService;
     private final PostCommandService postCommandService;
 
-    @GetMapping("/familySpace/{familySpaceId}")
+    @GetMapping("/family-space/{familySpaceId}")
     @Operation(summary = "홈 (게시글 조회) API", description = "특정 가족 공간의 게시글을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
