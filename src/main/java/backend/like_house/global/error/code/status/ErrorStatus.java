@@ -21,6 +21,7 @@ public enum ErrorStatus implements BaseErrorCode {
     FAMILY_SPACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4002", "존재하지 않는 가족 공간 입니다."),
     NOT_INCLUDE_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4003", "유저가 해당 가족 공간에 속해 있지 않습니다."),
     ALREADY_BELONG_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4004", "이미 가족 공간에 소속되어 있습니다."),
+    FAMILY_SPACE_CODE_EXPIRATION_INVALID(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4005", "초대 코드가 유효하지 않습니다."),
 
     // 유저 관련 에러
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "사용자를 찾을 수 없습니다."),

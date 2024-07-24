@@ -28,7 +28,7 @@ public class FamilySpaceDTO {
         public static class NewFamilySpaceResponse {
             @Schema(description = "새로 만들어진 가족 공간 아이디", example = "1")
             private Long familySpaceId;
-            @Schema(description = "새로 만들어진 가족 공간 초대 코드", example = "A1b2C4")
+            @Schema(description = "새로 만들어진 가족 공간 초대 코드", example = "A1b2C4dnZsd")
             private String code;
             @Schema(description = "가족 공간 초대 코드 만료 시간")
             private LocalDateTime expireAt;
