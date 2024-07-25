@@ -1,4 +1,4 @@
-package backend.like_house.global.error.code.status;
+package backend.like_house.domain.user_management.entity;
 
 import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;

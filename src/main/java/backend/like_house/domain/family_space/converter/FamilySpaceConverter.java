@@ -3,6 +3,7 @@ package backend.like_house.domain.family_space.converter;
 import backend.like_house.domain.family_space.dto.FamilySpaceDTO.FamilySpaceResponse.*;
 import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class FamilySpaceConverter {
@@ -13,10 +14,12 @@ public class FamilySpaceConverter {
                 .build();
     }
 
-    public static NewFamilySpaceResponse toNewFamilySpaceResponse(FamilySpace familySpace) {
+    public static NewFamilySpaceResponse toNewFamilySpaceResponse(FamilySpace familySpace, String code,
+                                                                  LocalDateTime expireAt) {
         return NewFamilySpaceResponse.builder()
                 .familySpaceId(familySpace.getId())
-                .expireAt(familySpace.getExpireAt())
+                .code(code)
+                .expireAt(expireAt)
                 .createdAt(familySpace.getCreatedAt())
                 .build();
     }
@@ -25,6 +28,20 @@ public class FamilySpaceConverter {
         return EnterFamilySpaceResponse.builder()
                 .userId(user.getId())
                 .familySpaceId(familySpace.getId())
+                .build();
+    }
+
+    public static GetFamilySpaceCodeResponse toGetFamilySpaceCodeResponse(Long familySpaceId, String code,
+                                                                          LocalDateTime expireAt) {
+        return GetFamilySpaceCodeResponse.builder()
+                .familySpaceId(familySpaceId)
+                .code(code)
+                .expireAt(expireAt)
+                .build();
+    }
+
+    public static FamilySpace toNewFamilySpace() {
+        return FamilySpace.builder()
                 .build();
     }
 }

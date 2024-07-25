@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/api/v0/schedules")
 @Tag(name = "일정 공유 관련 컨트롤러")
 public class ScheduleController {

@@ -4,6 +4,8 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.BaseEntity;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -31,4 +33,16 @@ public class Post extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<PostImage> postImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<PostLike> postLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<UserPostTag> userPostTags = new ArrayList<>();
 }

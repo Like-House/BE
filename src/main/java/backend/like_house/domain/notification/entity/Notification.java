@@ -1,5 +1,6 @@
 package backend.like_house.domain.notification.entity;
 
+import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.BaseEntity;
 import backend.like_house.global.common.enums.NotificationType;
@@ -26,6 +27,10 @@ public class Notification extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "family_space_id")
+    private FamilySpace familySpace;
 
     @Column(nullable = false)
     private LocalDate date;
