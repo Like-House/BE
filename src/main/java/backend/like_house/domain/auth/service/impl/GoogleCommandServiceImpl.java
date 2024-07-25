@@ -10,6 +10,7 @@ import backend.like_house.domain.user.entity.SocialName;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
+import backend.like_house.global.redis.RedisUtil;
 import backend.like_house.global.security.util.JWTUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +46,7 @@ public class GoogleCommandServiceImpl implements GoogleCommandService {
 
     private final AuthRepository authRepository;
     private final JWTUtil jwtUtil;
+    private final RedisUtil redisUtil;
 
 
     @Override
@@ -135,6 +137,9 @@ public class GoogleCommandServiceImpl implements GoogleCommandService {
         }
         String accessToken = jwtUtil.generateAccessToken(user.getEmail(), SocialName.GOOGLE);
         String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), SocialName.GOOGLE);
+
+        // Redis에 RefreshToken 저장
+        redisUtil.saveRefreshToken(user.getEmail(), user.getSocialName(), refreshToken);
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
 

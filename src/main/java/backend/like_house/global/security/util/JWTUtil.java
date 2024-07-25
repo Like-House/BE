@@ -1,7 +1,6 @@
 package backend.like_house.global.security.util;
 
 import backend.like_house.domain.user.entity.SocialName;
-import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.security.principal.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
