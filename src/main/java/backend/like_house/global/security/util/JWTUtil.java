@@ -1,5 +1,7 @@
 package backend.like_house.global.security.util;
 
+import backend.like_house.domain.user.entity.SocialName;
+import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.security.principal.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -43,20 +45,25 @@ public class JWTUtil {
         this.redisTemplate = redisTemplate;
     }
 
-    public String generateAccessToken(String email) {
-        return generateToken(email, jwtExpirationInMs);
+    public String generateAccessToken(String email, SocialName socialName) {
+        return generateToken(email, socialName, jwtExpirationInMs);
     }
 
-    public String generateRefreshToken(String email) {
-        return generateToken(email, jwtRefreshExpirationInMs);
+
+    public String generateRefreshToken(String email, SocialName socialName) {
+        return generateToken(email, socialName, jwtRefreshExpirationInMs);
     }
 
-    private String generateToken(String subject, long expirationMs) {
+    private String generateToken(String email, SocialName socialName, long expirationMs) {
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime expirationDateTime = now.plusSeconds(expirationMs / 1000);
 
+        Claims claims = Jwts.claims();
+        claims.put("email", email);
+        claims.put("socialName", socialName.toString());
+
         return Jwts.builder()
-                .setSubject(subject)
+                .setClaims(claims)
                 .setIssuedAt(Date.from(now.toInstant()))
                 .setExpiration(Date.from(expirationDateTime.toInstant()))
                 .signWith(secretKey, SignatureAlgorithm.HS512)
@@ -64,7 +71,11 @@ public class JWTUtil {
     }
 
     public String extractEmail(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractClaim(token, claims -> claims.get("email", String.class));
+    }
+
+    public SocialName extractSocialName(String token) {
+        return SocialName.valueOf(extractClaim(token, claims -> claims.get("socialName", String.class)));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -91,14 +102,16 @@ public class JWTUtil {
     // AccessToken 갱신
     public String renewAccessToken(String refreshToken) {
         String email = extractEmail(refreshToken);
+        SocialName socialName = extractSocialName(refreshToken);
+
         if (email != null && !isTokenExpired(refreshToken)) {
-            return generateAccessToken(email);
+            return generateAccessToken(email, socialName);
         }
         return null;
     }
 
-    public Authentication getAuthentication(String email) {
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+    public Authentication getAuthentication(String email, SocialName socialName) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email + ":" + socialName.toString());
         if (userDetails != null) {
             Collection<SimpleGrantedAuthority> authorities = userDetails.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))

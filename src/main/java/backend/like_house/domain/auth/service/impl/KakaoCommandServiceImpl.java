@@ -9,6 +9,7 @@ import backend.like_house.domain.auth.dto.KakaoDTO.KakaoProfile;
 
 import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.domain.auth.service.KakaoCommandService;
+import backend.like_house.domain.user.entity.SocialName;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
@@ -122,7 +123,7 @@ public class KakaoCommandServiceImpl implements KakaoCommandService {
         KakaoDTO.OAuthToken oAuthToken = getOAuthToken(accessCode);
         KakaoDTO.KakaoProfile kakaoProfile = getKakaoProfile(oAuthToken);
 
-        Optional<User> requestUser = authRepository.findByEmail(kakaoProfile.getKakao_account().getEmail());
+        Optional<User> requestUser = authRepository.findByEmailAndSocialName(kakaoProfile.getKakao_account().getEmail(), SocialName.KAKAO);
         User user = null;
         if (requestUser.isPresent()) {
             // 로그인
@@ -136,8 +137,8 @@ public class KakaoCommandServiceImpl implements KakaoCommandService {
             authRepository.save(user);
         }
 
-        String accessToken = jwtUtil.generateAccessToken(user.getEmail());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
+        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), SocialName.KAKAO);
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), SocialName.KAKAO);
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }

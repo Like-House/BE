@@ -38,7 +38,7 @@ public class LoginUserResolver implements HandlerMethodArgumentResolver {
         }
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = authRepository.findByEmail(customUserDetails.getUser().getEmail())
+        User user = authRepository.findByEmailAndSocialName(customUserDetails.getUser().getEmail(), customUserDetails.getUser().getSocialName())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         return user;

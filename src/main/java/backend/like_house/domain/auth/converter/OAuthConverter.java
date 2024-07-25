@@ -2,6 +2,7 @@ package backend.like_house.domain.auth.converter;
 
 import backend.like_house.domain.auth.dto.GoogleDTO;
 import backend.like_house.domain.auth.dto.NaverDTO;
+import backend.like_house.domain.user.entity.SocialName;
 import backend.like_house.domain.user.entity.User;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ public class OAuthConverter {
                 .name(nickname)
                 .profileImage(profileImg)
                 .email(email)
-                .socialName("KAKAO")
+                .socialName(SocialName.KAKAO)
                 .build();
     }
 
@@ -33,7 +34,7 @@ public class OAuthConverter {
                 .email(request.getResponse().getEmail())
                 .profileImage(request.getResponse().getProfile_image())
                 .birthDate(birthDate)
-                .socialName("NAVER")
+                .socialName(SocialName.NAVER)
                 .build();
     }
 
@@ -42,7 +43,7 @@ public class OAuthConverter {
                 .name(request.getName())
                 .email(request.getEmail())
                 .profileImage(request.getPicture())
-                .socialName("GOOGLE")
+                .socialName(SocialName.GOOGLE)
                 .build();
     }
 }

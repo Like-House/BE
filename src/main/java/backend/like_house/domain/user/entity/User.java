@@ -68,4 +68,7 @@ public class User extends BaseEntity {
     public void setIsRoomManager(Boolean isRoomManager) {
         this.isRoomManager = isRoomManager;
     }
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SocialName socialName;
 }

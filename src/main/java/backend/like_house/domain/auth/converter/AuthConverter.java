@@ -1,6 +1,7 @@
 package backend.like_house.domain.auth.converter;
 
 import backend.like_house.domain.auth.dto.AuthDTO;
+import backend.like_house.domain.user.entity.SocialName;
 import backend.like_house.domain.user.entity.User;
 
 public class AuthConverter {
@@ -26,6 +27,7 @@ public class AuthConverter {
                 .password(password)
                 .birthDate(signUpRequest.getBirthDate())
                 .profileImage(signUpRequest.getProfileImage())
+                .socialName(SocialName.LOCAL)
                 .build();
     }
 }

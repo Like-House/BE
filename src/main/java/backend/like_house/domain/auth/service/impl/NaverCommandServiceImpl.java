@@ -8,6 +8,7 @@ import backend.like_house.domain.auth.dto.NaverDTO.NaverProfile;
 import backend.like_house.domain.auth.dto.NaverDTO.OAuthToken;
 import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.domain.auth.service.NaverCommandService;
+import backend.like_house.domain.user.entity.SocialName;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
@@ -122,7 +123,7 @@ public class NaverCommandServiceImpl implements NaverCommandService {
         OAuthToken oAuthToken = getOAuthToken(accessCode);
         NaverProfile naverProfile = getNaverProfile(oAuthToken);
 
-        Optional<User> requestUser = authRepository.findByEmailAndSocialName(naverProfile.getResponse().getEmail(), "NAVER");
+        Optional<User> requestUser = authRepository.findByEmailAndSocialName(naverProfile.getResponse().getEmail(), SocialName.NAVER);
 
         User user = null;
         if (requestUser.isPresent()) {
@@ -133,8 +134,8 @@ public class NaverCommandServiceImpl implements NaverCommandService {
             authRepository.save(user);
         }
 
-        String accessToken = jwtUtil.generateAccessToken(user.getEmail());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
+        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), SocialName.NAVER);
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), SocialName.NAVER);
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }

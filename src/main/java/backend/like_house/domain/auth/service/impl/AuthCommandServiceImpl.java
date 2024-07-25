@@ -2,6 +2,7 @@ package backend.like_house.domain.auth.service.impl;
 
 import backend.like_house.domain.auth.converter.AuthConverter;
 import backend.like_house.domain.auth.dto.AuthDTO;
+import backend.like_house.domain.user.entity.SocialName;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.domain.auth.service.AuthCommandService;
@@ -26,8 +27,8 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
     @Override
     public AuthDTO.SignUpResponse signUp(AuthDTO.SignUpRequest signUpRequest) {
-        // 이메일 중복 검사
-        authRepository.findByEmail(signUpRequest.getEmail())
+        // 일반 회원가입 - 이메일 중복 검사
+        authRepository.findByEmailAndSocialName(signUpRequest.getEmail(), SocialName.LOCAL)
                 .ifPresent(user -> {
                     throw new GeneralException(ErrorStatus.USER_ALREADY_EXIST);
                 });
@@ -44,8 +45,8 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
     @Override
     public AuthDTO.SignInResponse signIn(AuthDTO.SignInRequest signInRequest) {
-        // 이메일로 사용자 조회
-        User user = authRepository.findByEmail(signInRequest.getEmail())
+        // 일반 로그인 - 이메일로 사용자 조회
+        User user = authRepository.findByEmailAndSocialName(signInRequest.getEmail(), SocialName.LOCAL)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
         // 비밀번호 일치 여부 확인
         if (!passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
@@ -53,11 +54,11 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         }
 
         // AccessToken & RefreshToken 생성
-        String accessToken = jwtUtil.generateAccessToken(user.getEmail());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
+        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), user.getSocialName());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getSocialName());
 
         // Redis에 RefreshToken 저장
-        redisUtil.saveRefreshToken(user.getEmail(), refreshToken);
+        redisUtil.saveRefreshToken(user.getEmail(), user.getSocialName(), refreshToken);
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }
