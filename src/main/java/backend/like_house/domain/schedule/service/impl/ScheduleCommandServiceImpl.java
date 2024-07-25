@@ -34,7 +34,7 @@ public class ScheduleCommandServiceImpl implements ScheduleCommandService {
     @Transactional
     public Schedule updateSchedule(Long id, ModifyScheduleRequest request) {
         Schedule schedule = scheduleRepository.findById(id).get();
-        Schedule updatedSchedule = ScheduleConverter.updateSchedule(schedule, request);
-        return scheduleRepository.save(updatedSchedule);
+        schedule.setUpdateSchedule(request);
+        return scheduleRepository.save(schedule);
     }
 }

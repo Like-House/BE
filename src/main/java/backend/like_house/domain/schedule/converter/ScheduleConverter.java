@@ -34,14 +34,4 @@ public class ScheduleConverter {
                 .content(request.getContent())
                 .build();
     }
-
-    public static Schedule updateSchedule(Schedule schedule, ModifyScheduleRequest request) {
-        return Schedule.builder()
-                .id(schedule.getId())
-                .date(request.getDate() != null ? request.getDate() : schedule.getDate())
-                .dtype(request.getDtype() != null ? ScheduleType.valueOfKoreanName(request.getDtype()) : schedule.getDtype())
-                .title(request.getTitle() != null ? request.getTitle() : schedule.getTitle())
-                .content(request.getContent() != null ? request.getContent() : schedule.getContent())
-                .build();
-    }
 }
