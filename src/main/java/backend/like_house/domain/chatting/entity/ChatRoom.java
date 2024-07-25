@@ -4,11 +4,11 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.global.common.BaseEntity;
 import backend.like_house.global.common.enums.ChatRoomType;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -25,6 +25,7 @@ public class ChatRoom extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_space_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private FamilySpace familySpace;
 
     @Column(nullable = false)
@@ -33,10 +34,4 @@ public class ChatRoom extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ChatRoomType dtype;
-
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
-    private List<Chat> chats = new ArrayList<>();
-
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
-    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 }
