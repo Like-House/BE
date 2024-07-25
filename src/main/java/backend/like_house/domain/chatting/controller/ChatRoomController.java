@@ -39,7 +39,7 @@ public class ChatRoomController {
     @Operation(summary = "채팅방 생성하기 API", description = "채팅방을 생성합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 없습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
     })
     @PostMapping("")
     public ApiResponse<CreateChatRoomResponse> createChatRoom(
