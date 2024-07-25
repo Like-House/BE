@@ -43,10 +43,17 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 채팅 관련 에러
     INVALID_CHAT_SCROLL(HttpStatus.BAD_REQUEST, "CHAT4001", "더 이상 채팅이 존재하지 않습니다."),
+    CHAT_NOT_SEND(HttpStatus.BAD_REQUEST, "CHAT4002", "전송 중 오류가 발생하였습니다."),
+    INVALID_CHAT_FORMAT(HttpStatus.BAD_REQUEST, "CHAT4003", "채팅 형식이 유효하지 않습니다."),
 
     // 채팅방 관련 에러
     INVALID_CHATROOM_SCROLL(HttpStatus.BAD_REQUEST, "CHATROOM4001", "더 이상 채팅방이 존재하지 않습니다."),
     CHATROOM_NOT_FOUND(HttpStatus.BAD_REQUEST, "CHATROOM4002", "해당 채팅방이 존재하지 않습니다."),
+    ALREADY_JOIN_CHATROOM(HttpStatus.BAD_REQUEST, "CHATROOM4003", "이미 채팅방에 들어와있습니다."),
+    FIRST_JOIN_CHATROOM(HttpStatus.BAD_REQUEST, "CHATROOM4004", "채팅방에 먼저 들어와 있어야 합니다."),
+    NOT_JOIN_CHATROOM(HttpStatus.BAD_REQUEST, "CHATROOM4005", "채팅방에 가입되있지 않습니다."),
+    FAILED_ENTER_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5001", "채팅 방 들어가기에 실패하였습니다"),
+    FAILED_EXIT_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5002", "채팅 방 나가기에 실패하였습니다"),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");

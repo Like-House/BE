@@ -1,15 +1,22 @@
 package backend.like_house.domain.chatting.controller;
 
+import backend.like_house.domain.chatting.converter.ChatRoomConverter;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.ChatRoomListResponse;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.CreateChatRoomRequest;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.CreateChatRoomResponse;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.ExitChatRoomRequest;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.UpdateChatRoomRequest;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.UpdateChatRoomResponse;
+import backend.like_house.domain.chatting.entity.ChatRoom;
+import backend.like_house.domain.chatting.service.ChatRoomCommandService;
+import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
+import backend.like_house.global.security.annotation.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v0/chat-rooms")
+@RequiredArgsConstructor
 @Tag(name = "채팅방 관련 컨트 롤러")
 public class ChatRoomController {
+
+    private final ChatRoomCommandService chatRoomCommandService;
 
     @Operation(summary = "채팅방 불러 오기 API", description = "채팅방을 무한 스크롤로 불러옵니다.")
     @ApiResponses({
@@ -43,9 +53,10 @@ public class ChatRoomController {
     })
     @PostMapping("")
     public ApiResponse<CreateChatRoomResponse> createChatRoom(
-            @RequestBody CreateChatRoomRequest createChatRoomRequest
+            @Parameter(hidden = true) @LoginUser User user, @RequestBody CreateChatRoomRequest createChatRoomRequest
     ) {
-        return ApiResponse.onSuccess(null);
+        ChatRoom chatRoom = chatRoomCommandService.createChatRoom(createChatRoomRequest, user);
+        return ApiResponse.onSuccess(ChatRoomConverter.toCreateChatRoomResponse(chatRoom));
     }
 
     @Operation(summary = "채팅방 수정 하기 API", description = "채팅방 제목, 사진을 수정 합니다.")

@@ -1,6 +1,7 @@
 package backend.like_house.global.socket;
 
 import backend.like_house.global.security.util.JWTUtil;
+import backend.like_house.global.socket.handler.CustomWebSocketExceptionHandler;
 import backend.like_house.global.socket.handler.JWTInterceptor;
 import backend.like_house.global.socket.handler.SocketUtil;
 import backend.like_house.global.socket.handler.TextHandler;
@@ -22,9 +23,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new TextHandler(socketService, socketUtil),"/chat")
-                .addInterceptors(new JWTInterceptor(jwtUtil))
-                .setAllowedOrigins("*")
-                .withSockJS();
+        registry.addHandler(new CustomWebSocketExceptionHandler(new TextHandler(socketService, socketUtil)), "/chat")
+                .addInterceptors(new JWTInterceptor(jwtUtil, socketUtil))
+                .setAllowedOrigins("*");
+//                .withSockJS();
     }
 }
