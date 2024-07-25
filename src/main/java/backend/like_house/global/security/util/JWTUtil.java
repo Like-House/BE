@@ -6,7 +6,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,7 +35,7 @@ public class JWTUtil {
                    @Value("${spring.jwt.expiration}") long jwtExpirationInMs,
                    @Value("${spring.jwt.refreshExpiration}") long jwtRefreshExpirationInMs,
                    CustomUserDetailsService customUserDetailsService,
-                   @Qualifier("redisTemplate") RedisTemplate redisTemplate) {
+                   RedisTemplate redisTemplate) {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.jwtExpirationInMs = jwtExpirationInMs;
         this.jwtRefreshExpirationInMs = jwtRefreshExpirationInMs;
