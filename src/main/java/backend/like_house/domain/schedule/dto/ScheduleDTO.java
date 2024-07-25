@@ -18,9 +18,6 @@ public class ScheduleDTO {
 
         @Getter
         public static class ModifyScheduleRequest {
-            @NotNull
-            @Schema(description = "수정할 일정 아이디", example = "1")
-            private Long scheduleId;
             @Schema(description = "수정할 일정 날짜")
             private LocalDate date;
             @Schema(description = "수정할 일정 유형", example = "생일")
