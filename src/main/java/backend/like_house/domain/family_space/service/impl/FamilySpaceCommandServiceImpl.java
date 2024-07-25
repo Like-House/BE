@@ -45,7 +45,6 @@ public class FamilySpaceCommandServiceImpl implements FamilySpaceCommandService 
     public void deleteFamilySpace(User user) {
         FamilySpace familySpace = user.getFamilySpace();
         familySpaceQueryRepository.deleteAllUserConnectFamilySpace(familySpace);
-        //TODO user에 해당하는 notification 모두 삭제
         familySpaceRepository.deleteById(familySpace.getId());
     }
 }

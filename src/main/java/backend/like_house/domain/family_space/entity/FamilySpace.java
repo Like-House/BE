@@ -1,6 +1,7 @@
 package backend.like_house.domain.family_space.entity;
 
 import backend.like_house.domain.chatting.entity.ChatRoom;
+import backend.like_house.domain.notification.entity.Notification;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.schedule.entity.Schedule;
 import backend.like_house.domain.user.entity.User;
@@ -51,4 +52,7 @@ public class FamilySpace extends BaseEntity {
 
     @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
     private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "familySpace", cascade = CascadeType.REMOVE)
+    private List<Notification> notifications = new ArrayList<>();
 }
