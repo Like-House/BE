@@ -50,7 +50,7 @@ public class ScheduleController {
 
     @GetMapping("/month")
     @Operation(summary = "달별 일정 조회 API", description = "특정 달의 일정들을 조회하는 API입니다. "
-            + ", 페이징을 포함합니다. query string 으로 yearMonth와 page 번호를 주세요.")
+            + "\n페이징을 포함합니다. query string 으로 yearMonth와 page 번호를 주세요.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
@@ -73,9 +73,15 @@ public class ScheduleController {
     }
 
     @GetMapping("/date")
-    @Operation(summary = "날짜별 일정 조회 API", description = "특정 날짜의 일정들을 조회하는 API입니다. "
-            + "스크롤을 포함합니다. query string 으로 특정 날짜, 커서, 가져올 개수를 주세요. "
-            + "반환 값 중 nextCursor = -1L 일 경우 해당 스크롤이 마지막 스크롤임을 뜻합니다.")
+    @Operation(summary = "날짜별 일정 조회 API", description = """
+        특정 날짜의 일정들을 조회하는 API입니다.
+        
+        스크롤을 포함합니다. query string 으로 특정 날짜, 커서, 가져올 개수를 주세요.
+
+        반환 값 중 nextCursor = -1 일 경우 해당 스크롤이 마지막 스크롤임을 뜻합니다.
+        
+        최초 요청의 cursor 값으로는 long의 최댓값인 9223372036854775807 을 주세요.
+        """)
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
@@ -88,10 +94,10 @@ public class ScheduleController {
     public ApiResponse<ScheduleCursorDataListResponse> getScheduleByDay(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @RequestParam(name = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            @RequestParam(name = "cursor") Integer cursor,
-            @RequestParam(name = "size") Integer size) {
-        // TODO 일정 조회 (Day) + 무한 스크롤
-        return ApiResponse.onSuccess(null);
+            @RequestParam(name = "cursor") Long cursor,
+            @RequestParam(name = "size") @CheckSize Integer size) {
+        Page<Schedule> scheduleList = scheduleQueryService.getScheduleByDay(user, date, cursor, size);
+        return ApiResponse.onSuccess(ScheduleConverter.toScheduleCursorDataListResponse(scheduleList, size));
     }
 
     @GetMapping("/{scheduleId}")

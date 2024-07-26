@@ -46,8 +46,13 @@ public class FamilySpaceController {
     private final BlockUserQueryService blockUserQueryService;
 
     @PostMapping("/check")
-    @Operation(summary = "가족 공간 초대 코드 유효성 확인 API", description = "가족 공간 초대 코드가 유효한지 확인하는 API입니다. "
-            + "가족 공간 초대 코드가 존재하면 해당 가족 공간 아이디를 반환합니다. query string 으로 가족 공간 초대 코드를 주세요.")
+    @Operation(summary = "가족 공간 초대 코드 유효성 확인 API", description = """
+        가족 공간 초대 코드가 유효한지 확인하는 API입니다.
+        
+        가족 공간 초대 코드가 존재하면 해당 가족 공간 아이디를 반환합니다.
+        
+        query string 으로 가족 공간 초대 코드를 주세요.
+        """)
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4005", description = "초대 코드가 유효하지 않습니다.")

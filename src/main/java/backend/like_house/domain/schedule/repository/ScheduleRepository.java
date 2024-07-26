@@ -11,4 +11,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     Page<Schedule> findAllByFamilySpaceAndDateBetween(FamilySpace familySpace, LocalDate startDate, LocalDate endDate,
                                                       PageRequest pageRequest);
+
+    Page<Schedule> findAllByFamilySpaceAndDateAndIdLessThanOrderByIdDesc(FamilySpace familySpace, LocalDate date,
+                                                                         Long cursor, PageRequest pageRequest);
 }
