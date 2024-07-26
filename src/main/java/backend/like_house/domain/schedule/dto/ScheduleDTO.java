@@ -51,18 +51,30 @@ public class ScheduleDTO {
         @Getter
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
-        public static class ScheduleDataListResponse {
+        public static class SchedulePageDataListResponse {
             private List<ScheduleDataResponse> scheduleDataResponseList;
             @Schema(description = "리스트의 크기")
-            Integer listSize;
+            private Integer listSize;
             @Schema(description = "전체 페이지 수")
-            Integer totalPage;
+            private Integer totalPage;
             @Schema(description = "전체 요소 수")
-            Long totalElements;
+            private Long totalElements;
             @Schema(description = "첫 번째 페이지 여부")
-            Boolean isFirst;
+            private Boolean isFirst;
             @Schema(description = "마지막 페이지 여부")
-            Boolean isLast;
+            private Boolean isLast;
+        }
+
+        @Builder
+        @Getter
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class ScheduleCursorDataListResponse {
+            private List<ScheduleDataResponse> scheduleDataResponseList;
+            @Schema(description = "전체 요소 수")
+            private Long totalElements;
+            @Schema(description = "다음 스크롤에서 사용할 커서의 값. 다음 스크롤이 존재하지 않을 경우 -1L")
+            private Long nextCursor;
         }
 
         @Builder

@@ -20,11 +20,11 @@ public class ScheduleConverter {
                 .build();
     }
 
-    public static ScheduleDataListResponse toScheduleDataListResponse(Page<Schedule> scheduleList) {
+    public static SchedulePageDataListResponse toSchedulePageDataListResponse(Page<Schedule> scheduleList) {
         List<ScheduleDataResponse> scheduleDataResponseList = scheduleList.stream()
                 .map(ScheduleConverter::toScheduleDataResponse).toList();
 
-        return ScheduleDataListResponse.builder()
+        return SchedulePageDataListResponse.builder()
                 .scheduleDataResponseList(scheduleDataResponseList)
                 .listSize(scheduleDataResponseList.size())
                 .totalPage(scheduleList.getTotalPages())

@@ -62,19 +62,20 @@ public class ScheduleController {
             @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다. query string 입니다."),
             @Parameter(name = "size", description = "가져올 일정의 개수입니다. query string 입니다.")
     })
-    public ApiResponse<ScheduleDataListResponse> getScheduleByMonth(
+    public ApiResponse<SchedulePageDataListResponse> getScheduleByMonth(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @RequestParam(name = "yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
             @RequestParam(required = false, name = "page", defaultValue = "1") @CheckPage Integer page,
             @RequestParam(required = false, name = "size", defaultValue = "20") @CheckSize Integer size) {
         Integer validatedPage = checkPageValidator.validateAndTransformPage(page);
         Page<Schedule> scheduleList = scheduleQueryService.getScheduleByMonth(user, yearMonth, validatedPage, size);
-        return ApiResponse.onSuccess(ScheduleConverter.toScheduleDataListResponse(scheduleList));
+        return ApiResponse.onSuccess(ScheduleConverter.toSchedulePageDataListResponse(scheduleList));
     }
 
     @GetMapping("/date")
     @Operation(summary = "날짜별 일정 조회 API", description = "특정 날짜의 일정들을 조회하는 API입니다. "
-            + "스크롤을 포함합니다. query string 으로 특정 날짜, 커서, 가져올 개수를 주세요.")
+            + "스크롤을 포함합니다. query string 으로 특정 날짜, 커서, 가져올 개수를 주세요. "
+            + "반환 값 중 nextCursor = -1L 일 경우 해당 스크롤이 마지막 스크롤임을 뜻합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
@@ -84,7 +85,7 @@ public class ScheduleController {
             @Parameter(name = "cursor", description = "커서, 마지막으로 받은 일정의 ID입니다. query string 입니다."),
             @Parameter(name = "size", description = "가져올 일정의 개수입니다. query string 입니다."),
     })
-    public ApiResponse<ScheduleDataListResponse> getScheduleByDay(
+    public ApiResponse<ScheduleCursorDataListResponse> getScheduleByDay(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @RequestParam(name = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @RequestParam(name = "cursor") Integer cursor,
