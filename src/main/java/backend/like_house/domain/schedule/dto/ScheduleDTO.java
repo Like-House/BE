@@ -53,6 +53,16 @@ public class ScheduleDTO {
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
         public static class ScheduleDataListResponse {
             private List<ScheduleDataResponse> scheduleDataResponseList;
+            @Schema(description = "리스트의 크기")
+            Integer listSize;
+            @Schema(description = "전체 페이지 수")
+            Integer totalPage;
+            @Schema(description = "전체 요소 수")
+            Long totalElements;
+            @Schema(description = "첫 번째 페이지 여부")
+            Boolean isFirst;
+            @Schema(description = "마지막 페이지 여부")
+            Boolean isLast;
         }
 
         @Builder

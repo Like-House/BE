@@ -9,8 +9,11 @@ import backend.like_house.domain.schedule.service.ScheduleQueryService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
+import backend.like_house.global.validation.annotation.CheckPage;
+import backend.like_house.global.validation.annotation.CheckSize;
 import backend.like_house.global.validation.annotation.ExistSchedule;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
+import backend.like_house.global.validation.validator.CheckPageValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -21,6 +24,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,25 +46,30 @@ public class ScheduleController {
 
     private final ScheduleQueryService scheduleQueryService;
     private final ScheduleCommandService scheduleCommandService;
+    private final CheckPageValidator checkPageValidator;
 
     @GetMapping("/month")
     @Operation(summary = "달별 일정 조회 API", description = "특정 달의 일정들을 조회하는 API입니다. "
             + ", 페이징을 포함합니다. query string 으로 yearMonth와 page 번호를 주세요.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PAGE4001", description = "올바르지 않은 페이징 번호입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SIZE4001", description = "올바르지 않은 사이즈입니다.")
     })
     @Parameters({
             @Parameter(name = "yearMonth", description = "연도와 월, yyyy-MM 형식입니다. query string 입니다."),
-            @Parameter(name = "page", description = "페이지 번호, 0번이 1 페이지 입니다. query string 입니다.")
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다. query string 입니다."),
+            @Parameter(name = "size", description = "가져올 일정의 개수입니다. query string 입니다.")
     })
     public ApiResponse<ScheduleDataListResponse> getScheduleByMonth(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @RequestParam(name = "yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
-            @RequestParam(name = "page") Integer page) {
-        // TODO 일정 조회 (Month) + 페이지네이션
-        // TODO checkPage 어노테이션 만들기
-        return ApiResponse.onSuccess(null);
+            @RequestParam(required = false, name = "page", defaultValue = "1") @CheckPage Integer page,
+            @RequestParam(required = false, name = "size", defaultValue = "20") @CheckSize Integer size) {
+        Integer validatedPage = checkPageValidator.validateAndTransformPage(page);
+        Page<Schedule> scheduleList = scheduleQueryService.getScheduleByMonth(user, yearMonth, validatedPage, size);
+        return ApiResponse.onSuccess(ScheduleConverter.toScheduleDataListResponse(scheduleList));
     }
 
     @GetMapping("/date")
@@ -73,13 +82,13 @@ public class ScheduleController {
     @Parameters({
             @Parameter(name = "date", description = "날짜, yyyy-MM-dd 형식입니다. query string 입니다."),
             @Parameter(name = "cursor", description = "커서, 마지막으로 받은 일정의 ID입니다. query string 입니다."),
-            @Parameter(name = "take", description = "가져올 일정의 개수입니다. query string 입니다."),
+            @Parameter(name = "size", description = "가져올 일정의 개수입니다. query string 입니다."),
     })
     public ApiResponse<ScheduleDataListResponse> getScheduleByDay(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @RequestParam(name = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @RequestParam(name = "cursor") Integer cursor,
-            @RequestParam(name = "take") Integer take) {
+            @RequestParam(name = "size") Integer size) {
         // TODO 일정 조회 (Day) + 무한 스크롤
         return ApiResponse.onSuccess(null);
     }

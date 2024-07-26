@@ -5,6 +5,8 @@ import backend.like_house.domain.schedule.dto.ScheduleDTO.ScheduleResponse.*;
 import backend.like_house.domain.schedule.entity.Schedule;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.enums.ScheduleType;
+import java.util.List;
+import org.springframework.data.domain.Page;
 
 public class ScheduleConverter {
 
@@ -15,6 +17,20 @@ public class ScheduleConverter {
                 .dtype(schedule.getDtype().getKoreanName())
                 .title(schedule.getTitle())
                 .content(schedule.getContent())
+                .build();
+    }
+
+    public static ScheduleDataListResponse toScheduleDataListResponse(Page<Schedule> scheduleList) {
+        List<ScheduleDataResponse> scheduleDataResponseList = scheduleList.stream()
+                .map(ScheduleConverter::toScheduleDataResponse).toList();
+
+        return ScheduleDataListResponse.builder()
+                .scheduleDataResponseList(scheduleDataResponseList)
+                .listSize(scheduleDataResponseList.size())
+                .totalPage(scheduleList.getTotalPages())
+                .totalElements(scheduleList.getTotalElements())
+                .isFirst(scheduleList.isFirst())
+                .isLast(scheduleList.isLast())
                 .build();
     }
 
