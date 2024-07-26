@@ -1,5 +1,6 @@
 package backend.like_house.domain.user_management.service.impl;
 
+import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.repository.BlockUserRepository;
 import backend.like_house.domain.user_management.service.BlockUserQueryService;
@@ -15,7 +16,7 @@ public class BlockUserQueryServiceImpl implements BlockUserQueryService {
     private final BlockUserRepository blockUserRepository;
 
     @Override
-    public boolean existsByUser(User user) {
-        return blockUserRepository.existsByUser(user);
+    public boolean existsByUserAndFamilySpace(User user, FamilySpace familySpace) {
+        return blockUserRepository.existsByUserAndFamilySpace(user, familySpace);
     }
 }

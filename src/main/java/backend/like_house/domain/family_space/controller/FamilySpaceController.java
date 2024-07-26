@@ -7,13 +7,15 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.family_space.service.FamilySpaceCommandService;
 import backend.like_house.domain.family_space.service.FamilySpaceQueryService;
 import backend.like_house.domain.user.entity.User;
+import backend.like_house.domain.user_management.service.BlockUserQueryService;
 import backend.like_house.global.common.ApiResponse;
+import backend.like_house.global.error.code.status.ErrorStatus;
+import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
 import backend.like_house.global.validation.annotation.HasNotFamilySpaceUser;
 import backend.like_house.global.validation.annotation.IsRoomManager;
-import backend.like_house.global.validation.annotation.NotBlockedUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -41,6 +43,7 @@ public class FamilySpaceController {
 
     private final FamilySpaceQueryService familySpaceQueryService;
     private final FamilySpaceCommandService familySpaceCommandService;
+    private final BlockUserQueryService blockUserQueryService;
 
     @PostMapping("/check")
     @Operation(summary = "가족 공간 초대 코드 유효성 확인 API", description = "가족 공간 초대 코드가 유효한지 확인하는 API입니다. "
@@ -87,10 +90,14 @@ public class FamilySpaceController {
             @Parameter(name = "familySpaceId", description = "가족 공간 아이디, path variable 입니다.")
     })
     public ApiResponse<EnterFamilySpaceResponse> enterFamilySpace(
-            @Parameter(hidden = true) @LoginUser @HasNotFamilySpaceUser @NotBlockedUser User user,
+            @Parameter(hidden = true) @LoginUser @HasNotFamilySpaceUser User user,
             @PathVariable(name = "familySpaceId") @ExistFamilySpace Long familySpaceId
     ) {
         FamilySpace familySpace = familySpaceQueryService.findFamilySpace(familySpaceId).get();
+        if (blockUserQueryService.existsByUserAndFamilySpace(user, familySpace)) {
+            // TODO 어노테이션으로 리팩토링
+            throw new GeneralException(ErrorStatus.ALREADY_BLOCKED_USER);
+        }
         familySpaceCommandService.userConnectWithFamilySpace(user, familySpace);
         return ApiResponse.onSuccess(FamilySpaceConverter.toEnterFamilySpaceResponse(user, familySpace));
     }
