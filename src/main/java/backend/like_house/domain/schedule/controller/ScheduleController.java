@@ -60,13 +60,13 @@ public class ScheduleController {
     @Parameters({
             @Parameter(name = "yearMonth", description = "연도와 월, yyyy-MM 형식입니다. query string 입니다."),
             @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다. query string 입니다."),
-            @Parameter(name = "size", description = "가져올 일정의 개수입니다. query string 입니다.")
+            @Parameter(name = "size", description = "가져올 일정의 개수입니다. 1이상의 값으로 주세요. query string 입니다.")
     })
     public ApiResponse<SchedulePageDataListResponse> getScheduleByMonth(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @RequestParam(name = "yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
             @RequestParam(required = false, name = "page", defaultValue = "1") @CheckPage Integer page,
-            @RequestParam(required = false, name = "size", defaultValue = "20") @CheckSize Integer size) {
+            @RequestParam(required = false, name = "size", defaultValue = "10") @CheckSize Integer size) {
         Integer validatedPage = checkPageValidator.validateAndTransformPage(page);
         Page<Schedule> scheduleList = scheduleQueryService.getScheduleByMonth(user, yearMonth, validatedPage, size);
         return ApiResponse.onSuccess(ScheduleConverter.toSchedulePageDataListResponse(scheduleList));
@@ -90,13 +90,13 @@ public class ScheduleController {
     @Parameters({
             @Parameter(name = "date", description = "날짜, yyyy-MM-dd 형식입니다. query string 입니다."),
             @Parameter(name = "cursor", description = "커서, 마지막으로 받은 일정의 ID입니다. query string 입니다."),
-            @Parameter(name = "size", description = "가져올 일정의 개수입니다. query string 입니다."),
+            @Parameter(name = "size", description = "가져올 일정의 개수입니다. 1이상의 값으로 주세요. query string 입니다."),
     })
     public ApiResponse<ScheduleCursorDataListResponse> getScheduleByDay(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @RequestParam(name = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @RequestParam(name = "cursor") Long cursor,
-            @RequestParam(name = "size") @CheckSize Integer size) {
+            @RequestParam(required = false, name = "size", defaultValue = "10") @CheckSize Integer size) {
         Page<Schedule> scheduleList = scheduleQueryService.getScheduleByDay(user, date, cursor, size);
         return ApiResponse.onSuccess(ScheduleConverter.toScheduleCursorDataListResponse(scheduleList, size));
     }

@@ -16,7 +16,7 @@ public class CheckSizeValidator implements ConstraintValidator<CheckSize, Intege
 
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        if (value == null || value < 0){
+        if (value == null || value < 1){
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(ErrorStatus.INVALID_SIZE_NUMBER.toString())
                     .addConstraintViolation();
