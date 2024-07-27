@@ -7,6 +7,7 @@ import backend.like_house.domain.user_management.entity.Contact;
 import backend.like_house.domain.user_management.entity.Custom;
 import backend.like_house.domain.user_management.repository.ContactRepository;
 import backend.like_house.domain.user_management.repository.CustomRepository;
+import backend.like_house.domain.user_management.repository.RemoveUserRepository;
 import backend.like_house.domain.user_management.service.UserManagementCommandService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
 
     private final ContactRepository contactRepository;
     private final CustomRepository customRepository;
+    private final RemoveUserRepository removeUserRepository;
 
     @Override
     public Custom modifyFamilyCustom(User user, Long userId, ModifyFamilyDataRequest request) {
@@ -34,5 +36,11 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
             custom = customRepository.save(UserManagementConverter.toCustom(saveContact, request));
         }
         return custom;
+    }
+
+    @Override
+    public void removeUser(User manager, User removeUser) {
+        removeUser.setFamilySpace(null);
+        removeUserRepository.save(UserManagementConverter.toRemoveUser(removeUser, manager.getFamilySpace()));
     }
 }

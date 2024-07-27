@@ -68,6 +68,7 @@ public class UserManagementController {
             @PathVariable(name = "userId") Long userId,
             @RequestBody @Valid ModifyFamilyDataRequest request) {
         // TODO userId validation
+        // TODO 수정하려는 유저가 manager의 가족공간에 속해있는지도 확인?
         Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
         return ApiResponse.onSuccess(UserManagementConverter.toModifyFamilyDataResponse(userId, custom));
     }
@@ -87,8 +88,12 @@ public class UserManagementController {
     public ApiResponse<String> removeFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
-        // TODO 특정 유저를 가족 공간에서 내보내기 + 이전 데이터 유지
-        // TODO user - family space FK 끊기 + remove user에 저장
+        // TODO userId validation
+        // TODO userId로 user찾기
+        // TODO 이미 해제된 user인지 판단 후 에러반환
+        // TODO 해제하려는 유저가 manager의 가족공간에 속해있는지도 확인?
+        User removeUser = null; // 삭제해야함
+        userManagementCommandService.removeUser(user, removeUser);
         return ApiResponse.onSuccess("Family removal completed successfully.");
     }
 
@@ -99,7 +104,8 @@ public class UserManagementController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4007", description = "이미 해제가 풀어진 유저입니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4007", description = "이미 해제가 풀어진 유저입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4006", description = "이미 다른 가족 공간에 속해 있습니다.")
     })
     @Parameters({
             @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
@@ -107,6 +113,10 @@ public class UserManagementController {
     public ApiResponse<String> releaseRemoveFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
+        // TODO userId validation
+        // TODO userId로 user찾기
+        // TODO 이미 해제가 풀어진 user인지 판단 후 에러반환
+        // TODO 해제하려는 유저가 다른 가족공간에 속해있는지도 확인 (에러반환)
         // TODO user - family space FK 연결 + remove user 에서 삭제
         return ApiResponse.onSuccess("Family removal release completed successfully.");
     }
@@ -127,6 +137,10 @@ public class UserManagementController {
     public ApiResponse<String> blockFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
+        // TODO userId validation
+        // TODO userId로 user찾기
+        // TODO 이미 차단된 user인지 판단 후 에러반환
+        // TODO 해제하려는 유저가 manager의 가족공간에 속해있는지도 확인?
         // TODO 특정 유저를 가족 공간에서 내보내기 + 유저와 연결된 것 모두 삭제
         // TODO block user 테이블에 추가
         return ApiResponse.onSuccess("Family block completed successfully");
@@ -139,7 +153,8 @@ public class UserManagementController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4008", description = "이미 차단이 풀어진 유저입니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4008", description = "이미 차단이 풀어진 유저입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4006", description = "이미 다른 가족 공간에 속해 있습니다.")
     })
     @Parameters({
             @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
@@ -147,6 +162,10 @@ public class UserManagementController {
     public ApiResponse<String> releaseBlockFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
+        // TODO userId validation
+        // TODO userId로 user찾기
+        // TODO 이미 차단이 풀어진 user인지 판단 후 에러반환
+        // TODO 해제하려는 유저가 다른 가족공간에 속해있는지도 확인 (에러반환)
         // TODO user - family space FK 연결 + block user 에서 삭제
         return ApiResponse.onSuccess("Family block release completed successfully");
     }

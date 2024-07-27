@@ -7,4 +7,6 @@ import backend.like_house.domain.user_management.entity.Custom;
 public interface UserManagementCommandService {
 
     Custom modifyFamilyCustom(User user, Long userId, ModifyFamilyDataRequest request);
+
+    void removeUser(User manager, User removeUser);
 }
