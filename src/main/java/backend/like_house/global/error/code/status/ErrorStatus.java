@@ -67,6 +67,12 @@ public enum ErrorStatus implements BaseErrorCode {
     // 가족 앨범 관련 에러
     FAMILY_ALBUM_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_ALBUM4001", "존재하지 않는 가족 앨범 입니다."),
 
+    // 페이징 관련 에러
+    INVALID_PAGE_NUMBER(HttpStatus.BAD_REQUEST, "PAGE4001", "올바르지 않은 페이징 번호입니다."),
+
+    // 사이즈 관련 에러
+    INVALID_SIZE_NUMBER(HttpStatus.BAD_REQUEST, "SIZE4001", "올바르지 않은 사이즈입니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");
 
