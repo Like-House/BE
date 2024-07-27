@@ -69,7 +69,7 @@ public class UserManagementController {
             @RequestBody @Valid ModifyFamilyDataRequest request) {
         // TODO userId validation
         Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(UserManagementConverter.toModifyFamilyDataResponse(userId, custom));
     }
 
     @PostMapping("/remove/{userId}")

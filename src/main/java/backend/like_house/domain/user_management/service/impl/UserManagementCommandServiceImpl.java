@@ -1,6 +1,7 @@
 package backend.like_house.domain.user_management.service.impl;
 
 import backend.like_house.domain.user.entity.User;
+import backend.like_house.domain.user_management.converter.UserManagementConverter;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementRequest.ModifyFamilyDataRequest;
 import backend.like_house.domain.user_management.entity.Contact;
 import backend.like_house.domain.user_management.entity.Custom;
@@ -24,12 +25,14 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
     public Custom modifyFamilyCustom(User user, Long userId, ModifyFamilyDataRequest request) {
         Optional<Contact> contact = contactRepository.findByUserAndFamilySpaceAndProfileId(
                 user, user.getFamilySpace(), userId);
+        Custom custom;
         if (contact.isPresent()) {
-            Custom custom = customRepository.findByContact(contact.get()).get();
+            custom = customRepository.findByContact(contact.get()).get();
             custom.setUpdateCustom(request);
         } else {
-            // contact 없음 -> contact + custom save
+            Contact saveContact = contactRepository.save(UserManagementConverter.toContact(user, userId));
+            custom = customRepository.save(UserManagementConverter.toCustom(saveContact, request));
         }
-        return null;
+        return custom;
     }
 }
