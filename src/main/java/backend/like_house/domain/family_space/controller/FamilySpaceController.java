@@ -7,7 +7,7 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.family_space.service.FamilySpaceCommandService;
 import backend.like_house.domain.family_space.service.FamilySpaceQueryService;
 import backend.like_house.domain.user.entity.User;
-import backend.like_house.domain.user_management.service.BlockUserQueryService;
+import backend.like_house.domain.user_management.service.UserManagementQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
@@ -43,7 +43,7 @@ public class FamilySpaceController {
 
     private final FamilySpaceQueryService familySpaceQueryService;
     private final FamilySpaceCommandService familySpaceCommandService;
-    private final BlockUserQueryService blockUserQueryService;
+    private final UserManagementQueryService userManagementQueryService;
 
     @PostMapping("/check")
     @Operation(summary = "가족 공간 초대 코드 유효성 확인 API", description = """
@@ -99,7 +99,7 @@ public class FamilySpaceController {
             @PathVariable(name = "familySpaceId") @ExistFamilySpace Long familySpaceId
     ) {
         FamilySpace familySpace = familySpaceQueryService.findFamilySpace(familySpaceId).get();
-        if (blockUserQueryService.existsByUserAndFamilySpace(user, familySpace)) {
+        if (userManagementQueryService.existsBlockByUserAndFamilySpace(user, familySpace)) {
             // TODO 어노테이션으로 리팩토링
             throw new GeneralException(ErrorStatus.ALREADY_BLOCKED_USER);
         }
