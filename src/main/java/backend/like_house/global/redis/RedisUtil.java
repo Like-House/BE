@@ -65,6 +65,8 @@ public class RedisUtil {
         }
         Long expiration = redisTemplate.getExpire(code, TimeUnit.SECONDS);
         if (expiration == null || expiration <= 0) {
+            redisTemplate.delete(String.valueOf(familySpaceId));
+            redisTemplate.delete(code);
             code = generateUniqueFamilySpaceCode();
             saveFamilySpaceCode(familySpaceId, code);
         }
