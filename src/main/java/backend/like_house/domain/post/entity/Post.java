@@ -35,4 +35,8 @@ public class Post extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
