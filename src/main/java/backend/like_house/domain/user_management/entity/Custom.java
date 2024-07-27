@@ -31,7 +31,4 @@ public class Custom extends BaseEntity {
 
     @Column(nullable = false)
     private String memo;
-
-    @Column(nullable = false)
-    private String role;
 }
