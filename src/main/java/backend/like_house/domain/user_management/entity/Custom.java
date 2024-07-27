@@ -1,5 +1,6 @@
 package backend.like_house.domain.user_management.entity;
 
+import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementRequest.ModifyFamilyDataRequest;
 import backend.like_house.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,4 +32,9 @@ public class Custom extends BaseEntity {
 
     @Column(nullable = false)
     private String memo;
+
+    public void setUpdateCustom(ModifyFamilyDataRequest request) {
+        this.nickname = request.getNickname() != null ? request.getNickname() : this.nickname;
+        this.memo = request.getMemo() != null ? request.getMemo() : this.memo;
+    }
 }

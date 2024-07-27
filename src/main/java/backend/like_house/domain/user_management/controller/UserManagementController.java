@@ -68,9 +68,6 @@ public class UserManagementController {
             @PathVariable(name = "userId") Long userId,
             @RequestBody @Valid ModifyFamilyDataRequest request) {
         // TODO userId validation
-
-        // TODO contact 테이블에 없다면 contact, custom 테이블에 새로 save
-        // TODO contact 테이블에 있다면 custom 테이블에 update
         Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
         return ApiResponse.onSuccess(null);
     }
