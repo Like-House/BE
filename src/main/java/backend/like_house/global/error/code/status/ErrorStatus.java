@@ -54,6 +54,7 @@ public enum ErrorStatus implements BaseErrorCode {
     NOT_JOIN_CHATROOM(HttpStatus.BAD_REQUEST, "CHATROOM4005", "채팅방에 가입되있지 않습니다."),
     FAILED_ENTER_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5001", "채팅 방 들어가기에 실패하였습니다"),
     FAILED_EXIT_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5002", "채팅 방 나가기에 실패하였습니다"),
+    INVALID_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5003", "정상적인 채팅방이 아닙니다. 새로운 채팅방을 다시 생성해주세요"),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");

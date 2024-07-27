@@ -7,4 +7,9 @@ import backend.like_house.domain.user.entity.User;
 
 public interface ChatRoomCommandService {
     ChatRoom createChatRoom(CreateChatRoomRequest createChatRoomRequest, User user);
+
+    ChatRoom updateChatRoom(ChatRoomDTO.UpdateChatRoomRequest updateChatRoomRequest);
+
+    void exitChatRoom(ChatRoomDTO.ExitChatRoomRequest exitChatRoomRequest, User user);
+
 }

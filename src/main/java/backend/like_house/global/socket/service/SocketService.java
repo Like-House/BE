@@ -4,6 +4,8 @@ package backend.like_house.global.socket.service;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
 import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
 import backend.like_house.domain.chatting.service.ChatCommandService;
+import backend.like_house.domain.chatting.service.ChatRoomCommandService;
+import backend.like_house.domain.chatting.service.UserChatRoomCommandService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
@@ -17,12 +19,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -34,6 +33,7 @@ public class SocketService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
     private final UserChatRoomRepository userChatRoomRepository;
+    private final UserChatRoomCommandService userChatRoomCommandService;
 
 
     // scheduler 로 chatting room 연결이 끊길 시 연결 시키는 거 고려
@@ -55,6 +55,7 @@ public class SocketService {
         try {
             TextHandler.chatSessionRoom.get(0L).remove(session);
             socketUtil.createOrJoinSessionChatRoom(chattingDTO.getChatRoomId(), session);
+            userChatRoomCommandService.updateLastTime(session.getAttributes().get("email").toString(), chattingDTO.getChatRoomId());
         } catch (Exception e) {
             socketUtil.exitAllSessionChatRoom(session);
             socketUtil.createSessionChatRoom(0L, session);
@@ -65,6 +66,7 @@ public class SocketService {
         log.info("ChatSessionRoom 현황 : " + TextHandler.chatSessionRoom);
     }
 
+    @Transactional
     public void handleTalk(WebSocketSession session, ChattingDTO.MessageDTO chattingDTO) {
         if (!TextHandler.chatSessionRoom.containsKey(chattingDTO.getChatRoomId()) ||
                 !TextHandler.chatSessionRoom.get(chattingDTO.getChatRoomId()).contains(session)) {
