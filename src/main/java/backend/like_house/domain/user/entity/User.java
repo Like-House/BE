@@ -69,6 +69,11 @@ public class User extends BaseEntity {
         this.isRoomManager = isRoomManager;
     }
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SocialName socialName;
+    private SocialType socialType;
+
+    private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인 : null)
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 }

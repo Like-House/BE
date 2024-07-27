@@ -9,7 +9,7 @@ import backend.like_house.domain.auth.dto.KakaoDTO.KakaoProfile;
 
 import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.domain.auth.service.KakaoCommandService;
-import backend.like_house.domain.user.entity.SocialName;
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
@@ -39,7 +39,7 @@ public class KakaoCommandServiceImpl implements KakaoCommandService {
     @Value("${oauth2.kakao.client-id}")
     private String client;
 
-    @Value("${KAKAO_CLIENT_SECRET}")
+    @Value("${oauth2.kakao.client-secret}")
     private String secret;
 
     @Value("${oauth2.kakao.redirect-uri}")
@@ -126,7 +126,7 @@ public class KakaoCommandServiceImpl implements KakaoCommandService {
         KakaoDTO.OAuthToken oAuthToken = getOAuthToken(accessCode);
         KakaoDTO.KakaoProfile kakaoProfile = getKakaoProfile(oAuthToken);
 
-        Optional<User> requestUser = authRepository.findByEmailAndSocialName(kakaoProfile.getKakao_account().getEmail(), SocialName.KAKAO);
+        Optional<User> requestUser = authRepository.findByEmailAndSocialType(kakaoProfile.getKakao_account().getEmail(), SocialType.KAKAO);
         User user = null;
         if (requestUser.isPresent()) {
             // 로그인
@@ -140,11 +140,11 @@ public class KakaoCommandServiceImpl implements KakaoCommandService {
             authRepository.save(user);
         }
 
-        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), SocialName.KAKAO);
-        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), SocialName.KAKAO);
+        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), SocialType.KAKAO);
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), SocialType.KAKAO);
 
         // Redis에 RefreshToken 저장
-        redisUtil.saveRefreshToken(user.getEmail(), user.getSocialName(), refreshToken);
+        redisUtil.saveRefreshToken(user.getEmail(), user.getSocialType(), refreshToken);
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }

@@ -1,6 +1,6 @@
 package backend.like_house.global.security.principal;
 
-import backend.like_house.domain.user.entity.SocialName;
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
@@ -27,15 +27,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         String email = parts[0];
         String socialNameStr = parts[1];
-        SocialName socialName;
+        SocialType socialType;
 
         try {
-            socialName = SocialName.valueOf(socialNameStr);
+            socialType = SocialType.valueOf(socialNameStr);
         } catch (IllegalArgumentException e) {
             throw new AuthException(ErrorStatus._BAD_REQUEST);
         }
 
-        User user = authRepository.findByEmailAndSocialName(email, socialName)
+        User user = authRepository.findByEmailAndSocialType(email, socialType)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         return new CustomUserDetails(user);

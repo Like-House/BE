@@ -1,6 +1,6 @@
 package backend.like_house.global.security.filter;
 
-import backend.like_house.domain.user.entity.SocialName;
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
 import backend.like_house.global.security.util.JWTUtil;
@@ -37,11 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (accessToken != null) {
             try {
                 String email = jwtUtil.extractEmail(accessToken);
-                SocialName socialName = jwtUtil.extractSocialName(accessToken);
+                SocialType socialType = jwtUtil.extractSocialName(accessToken);
 
-                if (email != null && socialName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (email != null && socialType != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     // JWT 검증 성공 시 인증 객체 생성
-                    Authentication authentication = jwtUtil.getAuthentication(email, socialName);
+                    Authentication authentication = jwtUtil.getAuthentication(email, socialType);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (ExpiredJwtException ex) {
@@ -55,8 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         String refreshedAccessToken = jwtUtil.renewAccessToken(refreshToken);
                         if (refreshedAccessToken != null) {
                             String email = jwtUtil.extractEmail(refreshedAccessToken);
-                            SocialName socialName = jwtUtil.extractSocialName(refreshedAccessToken);
-                            Authentication authentication = jwtUtil.getAuthentication(email, socialName);
+                            SocialType socialType = jwtUtil.extractSocialName(refreshedAccessToken);
+                            Authentication authentication = jwtUtil.getAuthentication(email, socialType);
                             SecurityContextHolder.getContext().setAuthentication(authentication);
                             response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + refreshedAccessToken);
                         }

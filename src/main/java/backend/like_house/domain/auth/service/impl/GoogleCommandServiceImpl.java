@@ -6,7 +6,7 @@ import backend.like_house.domain.auth.dto.AuthDTO;
 import backend.like_house.domain.auth.dto.GoogleDTO.*;
 import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.domain.auth.service.GoogleCommandService;
-import backend.like_house.domain.user.entity.SocialName;
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
@@ -125,7 +125,7 @@ public class GoogleCommandServiceImpl implements GoogleCommandService {
         OAuthToken oAuthToken = getOAuthToken(accessCode);
         GoogleProfile googleProfile = getGoogleProfile(oAuthToken);
 
-        Optional<User> requestUser = authRepository.findByEmailAndSocialName(googleProfile.getEmail(), SocialName.GOOGLE);
+        Optional<User> requestUser = authRepository.findByEmailAndSocialType(googleProfile.getEmail(), SocialType.GOOGLE);
 
         User user = null;
         if (requestUser.isPresent()) {
@@ -135,11 +135,11 @@ public class GoogleCommandServiceImpl implements GoogleCommandService {
             user = OAuthConverter.toGoogleUser(googleProfile);
             authRepository.save(user);
         }
-        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), SocialName.GOOGLE);
-        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), SocialName.GOOGLE);
+        String accessToken = jwtUtil.generateAccessToken(user.getEmail(), SocialType.GOOGLE);
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), SocialType.GOOGLE);
 
         // Redis에 RefreshToken 저장
-        redisUtil.saveRefreshToken(user.getEmail(), user.getSocialName(), refreshToken);
+        redisUtil.saveRefreshToken(user.getEmail(), user.getSocialType(), refreshToken);
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
 

@@ -5,6 +5,7 @@ import backend.like_house.global.error.exception.GeneralException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import backend.like_house.domain.user.entity.SocialName;
+import backend.like_house.domain.user.entity.SocialType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -22,8 +23,8 @@ public class RedisUtil {
     private final SecureRandom random = new SecureRandom();
     private final StringRedisTemplate redisTemplate;
 
-    public void saveRefreshToken(String email, SocialName socialName, String refreshToken) {
-        String key = generateKey(email, socialName.toString());
+    public void saveRefreshToken(String email, SocialType socialType, String refreshToken) {
+        String key = generateKey(email, socialType.toString());
         redisTemplate.opsForValue().set(key, refreshToken, 14, TimeUnit.DAYS); // 14일간 유지
     }
 
