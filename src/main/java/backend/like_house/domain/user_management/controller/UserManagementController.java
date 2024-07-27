@@ -4,6 +4,8 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.converter.UserManagementConverter;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementRequest.ModifyFamilyDataRequest;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementResponse.*;
+import backend.like_house.domain.user_management.entity.Custom;
+import backend.like_house.domain.user_management.service.UserManagementCommandService;
 import backend.like_house.domain.user_management.service.UserManagementQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserManagementController {
 
     private final UserManagementQueryService userManagementQueryService;
+    private final UserManagementCommandService userManagementCommandService;
 
     @GetMapping("")
     @Operation(summary = "가족 목록 확인 API", description = "가족 공간에 속한 가족 목록, 해제 목록, 차단 목록을 확인하는 API입니다.")
@@ -50,16 +53,25 @@ public class UserManagementController {
                 UserManagementConverter.toFamilyListResponse(familyUser, familyRemoveUser, familyBlockUser));
     }
 
-    @PatchMapping("")
+    @PatchMapping("/{userId}")
     @Operation(summary = "가족 정보 수정 API", description = "가족 별명, 메모를 수정하는 API입니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다.")
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "수정할 유저 아이디, path variable 입니다.")
     })
     public ApiResponse<ModifyFamilyDataResponse> modifyFamilyData(
-            @Parameter(hidden = true) @LoginUser User user,
+            @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
+            @PathVariable(name = "userId") Long userId,
             @RequestBody @Valid ModifyFamilyDataRequest request) {
+        // TODO userId validation
+
         // TODO contact 테이블에 없다면 contact, custom 테이블에 새로 save
         // TODO contact 테이블에 있다면 custom 테이블에 update
+        Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
         return ApiResponse.onSuccess(null);
     }
 

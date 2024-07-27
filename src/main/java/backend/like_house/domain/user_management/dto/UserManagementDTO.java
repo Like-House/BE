@@ -16,9 +16,6 @@ public class UserManagementDTO {
 
         @Getter
         public static class ModifyFamilyDataRequest {
-            @NotNull
-            @Schema(description = "수정할 유저 아이디", example = "1")
-            private Long userId;
             @Schema(description = "수정할 별명", example = "엄마")
             private String nickname;
             @Schema(description = "수정할 메모", example = "엄마가 가장 좋아하는 꽃은 장미꽃이다.")
