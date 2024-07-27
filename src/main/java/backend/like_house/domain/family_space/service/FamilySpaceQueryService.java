@@ -12,6 +12,8 @@ public interface FamilySpaceQueryService {
 
     String findFamilySpaceCodeById(Long id);
 
+    String generateFamilySpaceCodeById(Long id);
+
     Optional<FamilySpace> findFamilySpace(Long id);
 
     String regenerateFamilySpaceCode(Long id);
