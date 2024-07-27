@@ -53,6 +53,7 @@ public enum ErrorStatus implements BaseErrorCode {
     COMMENT_CREATE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4001", "댓글 작성 실패."),
     COMMENT_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4002", "댓글 수정 실패."),
     COMMENT_DELETE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4003", "댓글 삭제 실패."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT4004", "존재하지 않는 댓글입니다."),
 
     // 파일 변환 에러
     FILE_CONVERSION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S3_5001", "파일 변환 중 오류가 발생했습니다."),
