@@ -50,7 +50,7 @@ public class ScheduleController {
 
     @GetMapping("/month")
     @Operation(summary = "달별 일정 조회 API", description = "특정 달의 일정들을 조회하는 API입니다. "
-            + "\n페이징을 포함합니다. query string 으로 yearMonth와 page 번호를 주세요.")
+            + "페이징을 포함합니다. query string 으로 yearMonth와 page 번호를 주세요.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),

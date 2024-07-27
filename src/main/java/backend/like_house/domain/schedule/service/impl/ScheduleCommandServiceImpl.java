@@ -11,27 +11,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class ScheduleCommandServiceImpl implements ScheduleCommandService {
 
     private final ScheduleRepository scheduleRepository;
 
     @Override
-    @Transactional
     public Schedule generateNewSchedule(SaveScheduleRequest request, User user) {
         Schedule schedule = ScheduleConverter.toSchedule(request, user);
         return scheduleRepository.save(schedule);
     }
 
     @Override
-    @Transactional
     public void deleteSchedule(Long id) {
         scheduleRepository.deleteById(id);
     }
 
     @Override
-    @Transactional
     public Schedule updateSchedule(Long id, ModifyScheduleRequest request) {
         Schedule schedule = scheduleRepository.findById(id).get();
         schedule.setUpdateSchedule(request);
