@@ -5,6 +5,7 @@ import backend.like_house.domain.user_management.converter.UserManagementConvert
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementRequest.ModifyFamilyDataRequest;
 import backend.like_house.domain.user_management.entity.Contact;
 import backend.like_house.domain.user_management.entity.Custom;
+import backend.like_house.domain.user_management.repository.BlockUserRepository;
 import backend.like_house.domain.user_management.repository.ContactRepository;
 import backend.like_house.domain.user_management.repository.CustomRepository;
 import backend.like_house.domain.user_management.repository.RemoveUserRepository;
@@ -22,6 +23,7 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
     private final ContactRepository contactRepository;
     private final CustomRepository customRepository;
     private final RemoveUserRepository removeUserRepository;
+    private final BlockUserRepository blockUserRepository;
 
     @Override
     public Custom modifyFamilyCustom(User user, Long userId, ModifyFamilyDataRequest request) {
@@ -42,5 +44,26 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
     public void removeUser(User manager, User removeUser) {
         removeUser.setFamilySpace(null);
         removeUserRepository.save(UserManagementConverter.toRemoveUser(removeUser, manager.getFamilySpace()));
+    }
+
+    @Override
+    public void releaseRemoveUser(User manager, User removeUser) {
+        removeUser.setFamilySpace(manager.getFamilySpace());
+        removeUserRepository.delete(
+                removeUserRepository.findByUserAndFamilySpace(removeUser, manager.getFamilySpace()).get());
+    }
+
+    @Override
+    public void blockUser(User manager, User blockUser) {
+        blockUser.setFamilySpace(null);
+        // TODO 유저와 연결된 것 모두 삭제
+        blockUserRepository.save(UserManagementConverter.toBlockUser(blockUser, manager.getFamilySpace()));
+    }
+
+    @Override
+    public void releaseBlockUser(User manager, User blockUser) {
+        blockUser.setFamilySpace(manager.getFamilySpace());
+        blockUserRepository.delete(
+                blockUserRepository.findByUserAndFamilySpace(blockUser, manager.getFamilySpace()).get());
     }
 }

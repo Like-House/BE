@@ -1,6 +1,7 @@
 package backend.like_house.domain.user_management.controller;
 
 import backend.like_house.domain.user.entity.User;
+import backend.like_house.domain.user.service.UserQueryService;
 import backend.like_house.domain.user_management.converter.UserManagementConverter;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementRequest.ModifyFamilyDataRequest;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementResponse.*;
@@ -8,6 +9,8 @@ import backend.like_house.domain.user_management.entity.Custom;
 import backend.like_house.domain.user_management.service.UserManagementCommandService;
 import backend.like_house.domain.user_management.service.UserManagementQueryService;
 import backend.like_house.global.common.ApiResponse;
+import backend.like_house.global.error.code.status.ErrorStatus;
+import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
 import backend.like_house.global.validation.annotation.IsRoomManager;
@@ -37,6 +40,7 @@ public class UserManagementController {
 
     private final UserManagementQueryService userManagementQueryService;
     private final UserManagementCommandService userManagementCommandService;
+    private final UserQueryService userQueryService;
 
     @GetMapping("")
     @Operation(summary = "가족 목록 확인 API", description = "가족 공간에 속한 가족 목록, 해제 목록, 차단 목록을 확인하는 API입니다.")
@@ -67,8 +71,13 @@ public class UserManagementController {
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @PathVariable(name = "userId") Long userId,
             @RequestBody @Valid ModifyFamilyDataRequest request) {
-        // TODO userId validation
-        // TODO 수정하려는 유저가 manager의 가족공간에 속해있는지도 확인?
+        User modifyUser = userQueryService.findUser(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        if (!modifyUser.getFamilySpace().equals(user.getFamilySpace())) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
+        }
         Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
         return ApiResponse.onSuccess(UserManagementConverter.toModifyFamilyDataResponse(userId, custom));
     }
@@ -88,11 +97,17 @@ public class UserManagementController {
     public ApiResponse<String> removeFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
-        // TODO userId validation
-        // TODO userId로 user찾기
-        // TODO 이미 해제된 user인지 판단 후 에러반환
-        // TODO 해제하려는 유저가 manager의 가족공간에 속해있는지도 확인?
-        User removeUser = null; // 삭제해야함
+        User removeUser = userQueryService.findUser(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        if (userManagementQueryService.existsRemoveByUserAndFamilySpace(removeUser, user.getFamilySpace())) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.ALREADY_REMOVED_USER);
+        }
+        if (!removeUser.getFamilySpace().equals(user.getFamilySpace())) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
+        }
         userManagementCommandService.removeUser(user, removeUser);
         return ApiResponse.onSuccess("Family removal completed successfully.");
     }
@@ -113,11 +128,18 @@ public class UserManagementController {
     public ApiResponse<String> releaseRemoveFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
-        // TODO userId validation
-        // TODO userId로 user찾기
-        // TODO 이미 해제가 풀어진 user인지 판단 후 에러반환
-        // TODO 해제하려는 유저가 다른 가족공간에 속해있는지도 확인 (에러반환)
-        // TODO user - family space FK 연결 + remove user 에서 삭제
+        User removeUser = userQueryService.findUser(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        if (!userManagementQueryService.existsRemoveByUserAndFamilySpace(removeUser, user.getFamilySpace())) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.ALREADY_RELEASE_REMOVE_USER);
+        }
+        if (removeUser.getFamilySpace() != null) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.ALREADY_BELONG_USER_FAMILY_SPACE);
+        }
+        userManagementCommandService.releaseRemoveUser(user, removeUser);
         return ApiResponse.onSuccess("Family removal release completed successfully.");
     }
 
@@ -137,12 +159,18 @@ public class UserManagementController {
     public ApiResponse<String> blockFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
-        // TODO userId validation
-        // TODO userId로 user찾기
-        // TODO 이미 차단된 user인지 판단 후 에러반환
-        // TODO 해제하려는 유저가 manager의 가족공간에 속해있는지도 확인?
-        // TODO 특정 유저를 가족 공간에서 내보내기 + 유저와 연결된 것 모두 삭제
-        // TODO block user 테이블에 추가
+        User blockUser = userQueryService.findUser(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        if (userManagementQueryService.existsBlockByUserAndFamilySpace(blockUser, user.getFamilySpace())) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.ALREADY_BLOCKED_USER);
+        }
+        if (!blockUser.getFamilySpace().equals(user.getFamilySpace())) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
+        }
+        userManagementCommandService.blockUser(user, blockUser);
         return ApiResponse.onSuccess("Family block completed successfully");
     }
 
@@ -162,11 +190,18 @@ public class UserManagementController {
     public ApiResponse<String> releaseBlockFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
-        // TODO userId validation
-        // TODO userId로 user찾기
-        // TODO 이미 차단이 풀어진 user인지 판단 후 에러반환
-        // TODO 해제하려는 유저가 다른 가족공간에 속해있는지도 확인 (에러반환)
-        // TODO user - family space FK 연결 + block user 에서 삭제
+        User blockUser = userQueryService.findUser(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        if (!userManagementQueryService.existsBlockByUserAndFamilySpace(blockUser, user.getFamilySpace())) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.ALREADY_RELEASE_BLOCK_USER);
+        }
+        if (blockUser.getFamilySpace() != null) {
+            // TODO 리팩토링
+            throw new GeneralException(ErrorStatus.ALREADY_BELONG_OTHER_FAMILY_SPACE);
+        }
+        userManagementCommandService.releaseBlockUser(user, blockUser);
         return ApiResponse.onSuccess("Family block release completed successfully");
     }
 }

@@ -4,6 +4,7 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementRequest.*;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementResponse.*;
+import backend.like_house.domain.user_management.entity.BlockUser;
 import backend.like_house.domain.user_management.entity.Contact;
 import backend.like_house.domain.user_management.entity.Custom;
 import backend.like_house.domain.user_management.entity.RemoveUser;
@@ -47,6 +48,13 @@ public class UserManagementConverter {
 
     public static RemoveUser toRemoveUser(User user, FamilySpace familySpace) {
         return RemoveUser.builder()
+                .user(user)
+                .familySpace(familySpace)
+                .build();
+    }
+
+    public static BlockUser toBlockUser(User user, FamilySpace familySpace) {
+        return BlockUser.builder()
                 .user(user)
                 .familySpace(familySpace)
                 .build();
