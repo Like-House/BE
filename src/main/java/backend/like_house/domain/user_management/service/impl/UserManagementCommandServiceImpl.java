@@ -49,8 +49,7 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
     @Override
     public void releaseRemoveUser(User manager, User removeUser) {
         removeUser.setFamilySpace(manager.getFamilySpace());
-        removeUserRepository.delete(
-                removeUserRepository.findByUserAndFamilySpace(removeUser, manager.getFamilySpace()).get());
+        removeUserRepository.deleteByUserAndFamilySpace(removeUser, manager.getFamilySpace());
     }
 
     @Override
@@ -63,7 +62,6 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
     @Override
     public void releaseBlockUser(User manager, User blockUser) {
         blockUser.setFamilySpace(manager.getFamilySpace());
-        blockUserRepository.delete(
-                blockUserRepository.findByUserAndFamilySpace(blockUser, manager.getFamilySpace()).get());
+        blockUserRepository.deleteByUserAndFamilySpace(blockUser, manager.getFamilySpace());
     }
 }
