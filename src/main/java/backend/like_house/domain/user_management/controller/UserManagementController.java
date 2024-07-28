@@ -123,7 +123,7 @@ public class UserManagementController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4006", description = "이미 다른 가족 공간에 속해 있습니다.")
     })
     @Parameters({
-            @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
+            @Parameter(name = "userId", description = "해제 풀 유저 아이디, path variable 입니다.")
     })
     public ApiResponse<String> releaseRemoveFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
@@ -154,7 +154,7 @@ public class UserManagementController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4006", description = "이미 차단된 유저입니다.")
     })
     @Parameters({
-            @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
+            @Parameter(name = "userId", description = "차단할 유저 아이디, path variable 입니다.")
     })
     public ApiResponse<String> blockFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
@@ -185,7 +185,7 @@ public class UserManagementController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4006", description = "이미 다른 가족 공간에 속해 있습니다.")
     })
     @Parameters({
-            @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
+            @Parameter(name = "userId", description = "차단 풀 유저 아이디, path variable 입니다.")
     })
     public ApiResponse<String> releaseBlockFamily(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
