@@ -4,7 +4,6 @@ package backend.like_house.global.socket.service;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
 import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
 import backend.like_house.domain.chatting.service.ChatCommandService;
-import backend.like_house.domain.chatting.service.ChatRoomCommandService;
 import backend.like_house.domain.chatting.service.UserChatRoomCommandService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;

@@ -3,7 +3,6 @@ package backend.like_house.global.socket.handler;
 
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.ChatException;
-import backend.like_house.global.socket.dto.ChattingDTO;
 import backend.like_house.global.socket.dto.ChattingDTO.MessageDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
@@ -12,7 +11,6 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import static backend.like_house.global.socket.handler.TextHandler.chatSessionRoom;
