@@ -1,7 +1,8 @@
-package backend.like_house.domain.chatting.service;
+package backend.like_house.domain.chatting.service.impl;
 
 import backend.like_house.domain.chatting.entity.UserChatRoom;
 import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
+import backend.like_house.domain.chatting.service.UserChatRoomCommandService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;

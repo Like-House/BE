@@ -1,4 +1,4 @@
-package backend.like_house.domain.chatting.service;
+package backend.like_house.domain.chatting.service.impl;
 
 import backend.like_house.domain.chatting.converter.ChatRoomConverter;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO;
@@ -7,6 +7,7 @@ import backend.like_house.domain.chatting.entity.Chat;
 import backend.like_house.domain.chatting.entity.ChatRoom;
 import backend.like_house.domain.chatting.repository.ChatRepository;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
+import backend.like_house.domain.chatting.service.ChatRoomQueryService;
 import backend.like_house.domain.family_space.repository.FamilySpaceRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;

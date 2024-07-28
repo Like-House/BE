@@ -1,4 +1,4 @@
-package backend.like_house.domain.chatting.service;
+package backend.like_house.domain.chatting.service.impl;
 
 import backend.like_house.domain.chatting.converter.ChatRoomConverter;
 import backend.like_house.domain.chatting.converter.UserChatRoomConverter;
@@ -10,6 +10,7 @@ import backend.like_house.domain.chatting.entity.UserChatRoom;
 import backend.like_house.domain.chatting.repository.ChatRepository;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
 import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
+import backend.like_house.domain.chatting.service.ChatRoomCommandService;
 import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.family_space.repository.FamilySpaceRepository;
 import backend.like_house.domain.user.entity.User;
