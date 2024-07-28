@@ -6,7 +6,6 @@ import backend.like_house.domain.chatting.service.ChatQueryService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
-import backend.like_house.global.validation.annotation.CheckPage;
 import backend.like_house.global.validation.annotation.CheckSize;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,7 +32,7 @@ public class ChatController {
             description = "들어갈 때 ENTER 직전 사용 하시면 됩니다. (마지막으로 ENTER한 시간 기준으로 남은 채팅 모두 불러오기)")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "CHAT4001", description = "더 이상 채팅이 존재하지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "CHATROOM4002", description = "해당 채팅방이 존재하지 않습니다.."),
     })
     @GetMapping("/{chatRoomId}/chats/first")
     public ApiResponse<ChatListResponse> getFirstChats(
@@ -45,10 +44,11 @@ public class ChatController {
     }
 
     @Operation(summary = "채팅 무한 스크롤 불러 오기 API",
-            description = "첫 ENTER 이후로 사용하셔야 합니다. nextCursor와 take에 값을 넣고 조회를 해주 시면 됩니다.")
+            description = "첫 ENTER 이후로 사용하셔야 합니다. nextCursor와 take에 값을 넣고 조회를 해주 시면 됩니다. hasNext가 false고 nextCursor가 null이라면 마지막 페이지입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "CHAT4001", description = "더 이상 채팅이 존재하지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "CHATROOM4002", description = "해당 채팅방이 존재하지 않습니다.."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SIZE4001", description = "올바르지 않은 사이즈입니다.")
     })
     @GetMapping("/{chatRoomId}/chats")
     public ApiResponse<ChatListResponse> getChats(

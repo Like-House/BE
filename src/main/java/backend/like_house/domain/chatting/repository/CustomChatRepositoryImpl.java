@@ -60,7 +60,6 @@ public class CustomChatRepositoryImpl implements CustomChatRepository {
         QChat chat = QChat.chat;
         QUserChatRoom userChatRoom = QUserChatRoom.userChatRoom;
 
-        System.out.println(userId+", "+ chatRoomId);
         // 1. 마지막 읽은 시간을 가져옵니다.
         LocalDateTime lastReadTime = queryFactory
                 .select(userChatRoom.lastReadTime)

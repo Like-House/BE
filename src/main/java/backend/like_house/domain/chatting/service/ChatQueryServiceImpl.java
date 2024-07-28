@@ -24,6 +24,7 @@ public class ChatQueryServiceImpl implements ChatQueryService {
 
     @Override
     public ChatDTO.ChatListResponse getFirstChats(User user, Long chatRoomId) {
+        // user는 LoginUser를 통해 이미 확인함.
         if (!chatRoomRepository.existsChatRoomById(chatRoomId)) {
             throw new ChatRoomException(ErrorStatus.CHATROOM_NOT_FOUND);
         }
@@ -40,6 +41,7 @@ public class ChatQueryServiceImpl implements ChatQueryService {
 
     @Override
     public ChatDTO.ChatListResponse getChats(User user, Long chatRoomId, Long cursor, Integer take) {
+        // user는 LoginUser를 통해 이미 확인함.
         if (!chatRoomRepository.existsChatRoomById(chatRoomId)) {
             throw new ChatRoomException(ErrorStatus.CHATROOM_NOT_FOUND);
         }
