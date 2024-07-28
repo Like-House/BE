@@ -51,4 +51,16 @@ public class PostCommandServiceImpl implements PostCommandService {
         // 1. postId를 기반으로 게시글 조회
         // 2. 조회한 게시글 삭제
     }
+
+    @Transactional
+    @Override
+    public void togglePostAlarm(User user, Long postId, Boolean enable) {
+        // 게시글 알림 상태 변경
+    }
+
+    @Transactional
+    @Override
+    public void toggleCommentAlarm(User user, Long commentId, Boolean enable) {
+        // 댓글 알림 상태 변경
+    }
 }
