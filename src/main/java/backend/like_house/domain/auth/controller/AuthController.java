@@ -64,7 +64,7 @@ public class AuthController {
         return ApiResponse.onSuccess(null);
     }
 
-    @GetMapping("oauth/kakao/login")
+    @GetMapping("/oauth/kakao/login")
     @Operation(summary = "카카오 로그인 API", description = "카카오 로그인 API 입니다.")
     @Parameters({
             @Parameter(name = "code", description = "카카오에서 받은 인가 코드입니다.")
@@ -76,8 +76,11 @@ public class AuthController {
         return ApiResponse.onSuccess(kakaoCommandService.kakaoLogin(accessCode));
     }
 
-    @GetMapping("oauth/naver/login")
+    @GetMapping("/oauth/naver/login")
     @Operation(summary = "네이버 로그인 API", description = "네이버 로그인 API 입니다.")
+    @Parameters({
+            @Parameter(name = "code", description = "네이버에서 받은 인가 코드입니다.")
+    })
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
@@ -85,8 +88,11 @@ public class AuthController {
         return ApiResponse.onSuccess(naverCommandService.naverLogin(accessCode));
     }
 
-    @GetMapping("oauth/google/login")
+    @GetMapping("/oauth/google/login")
     @Operation(summary = "구글 로그인 API", description = "구글 로그인 API 입니다.")
+    @Parameters({
+            @Parameter(name = "code", description = "구글에서 받은 인가 코드입니다.")
+    })
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
