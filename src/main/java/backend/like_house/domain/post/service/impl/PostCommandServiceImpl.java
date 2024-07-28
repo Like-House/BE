@@ -54,13 +54,13 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public void togglePostAlarm(User user, Boolean enable) {
+    public void togglePostAlarm(User user, Long postId, Boolean enable) {
         // 게시글 알림 상태 변경
     }
 
     @Transactional
     @Override
-    public void toggleCommentAlarm(User user, Boolean enable) {
+    public void toggleCommentAlarm(User user, Long commentId, Boolean enable) {
         // 댓글 알림 상태 변경
     }
 }

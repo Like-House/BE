@@ -134,37 +134,41 @@ public class PostController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PutMapping("/posts/post-alarm")
-    @Operation(summary = "게시물 알림 끄기/켜기 API", description = "사용자가 게시물 알림을 끄거나 켜는 API입니다.")
+    @PutMapping("/posts/{postId}/post-alarm")
+    @Operation(summary = "게시물 알림 끄기/켜기 API", description = "사용자가 특정 게시물 알림을 끄거나 켜는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
     })
     @Parameters({
+            @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다."),
             @Parameter(name = "enable", description = "게시물 알림 활성화 여부, query parameter 입니다.")
     })
-    public ApiResponse<Void> toggleChatAlarm(
+    public ApiResponse<Void> togglePostAlarm(
+            @PathVariable Long postId,
             @Parameter(hidden = true) @LoginUser User user,
             @RequestParam Boolean enable
     ) {
-        postCommandService.togglePostAlarm(user, enable);
+        postCommandService.togglePostAlarm(user, postId, enable);
         return ApiResponse.onSuccess(null);
     }
 
-    @PutMapping("/posts/comment-alarm")
-    @Operation(summary = "댓글 알림 끄기/켜기 API", description = "사용자가 댓글 알림을 끄거나 켜는 API입니다.")
+    @PutMapping("/{commentId}/comment-alarm")
+    @Operation(summary = "댓글 알림 끄기/켜기 API", description = "사용자가 특정 댓글 알림을 끄거나 켜는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
     })
     @Parameters({
+            @Parameter(name = "commentId", description = "댓글의 ID, path variable 입니다."),
             @Parameter(name = "enable", description = "댓글 알림 활성화 여부, query parameter 입니다.")
     })
     public ApiResponse<Void> toggleCommentAlarm(
+            @PathVariable Long commentId,
             @Parameter(hidden = true) @LoginUser User user,
             @RequestParam Boolean enable
     ) {
-        postCommandService.toggleCommentAlarm(user, enable);
+        postCommandService.toggleCommentAlarm(user, commentId, enable);
         return ApiResponse.onSuccess(null);
     }
 }
