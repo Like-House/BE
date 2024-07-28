@@ -7,6 +7,5 @@ import org.springframework.data.domain.Slice;
 
 public interface ChatRoomQueryService {
 
-
     ChatRoomDTO.ChatRoomResponseList getChatRoomsByUserIdAndFamilySpaceId(Long userId, Long familySpaceId, Long cursor, Integer take);
 }
