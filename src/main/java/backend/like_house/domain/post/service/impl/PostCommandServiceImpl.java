@@ -51,4 +51,16 @@ public class PostCommandServiceImpl implements PostCommandService {
         // 1. postId를 기반으로 게시글 조회
         // 2. 조회한 게시글 삭제
     }
+
+    @Transactional
+    @Override
+    public void likePost(User user, Long postId) {
+        // 좋아요 누르기
+    }
+
+    @Transactional
+    @Override
+    public void unlikePost(User user, Long postId) {
+        // 좋아요 취소하기
+    }
 }
