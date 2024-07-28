@@ -11,8 +11,9 @@ public interface PostCommandService {
     CreatePostResponse createPost(CreatePostRequest createPostRequest, List<MultipartFile> files, User user);
     CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, List<MultipartFile> files, User user);
     void deletePost(Long postId, User user);
-
+    void likePost(User user, Long postId);
+    void unlikePost(User user, Long postId);
     void togglePostAlarm(User user, Long postId, Boolean enable);
-
     void toggleCommentAlarm(User user, Long commentId, Boolean enable);
 }
+

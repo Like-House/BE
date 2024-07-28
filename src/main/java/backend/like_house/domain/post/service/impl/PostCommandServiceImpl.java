@@ -54,6 +54,18 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
+    public void likePost(User user, Long postId) {
+        // 좋아요 누르기
+    }
+  
+    @Transactional
+    @Override
+    public void unlikePost(User user, Long postId) {
+        // 좋아요 취소하기
+    }
+
+    @Transactional
+    @Override
     public void togglePostAlarm(User user, Long postId, Boolean enable) {
         // 게시글 알림 상태 변경
     }
