@@ -62,4 +62,12 @@ public class User extends BaseEntity {
     private Boolean isRoomManager;
 
     private String socialName;
+
+    public void setFamilySpace(FamilySpace familySpace) {
+        this.familySpace = familySpace;
+    }
+
+    public void setIsRoomManager(Boolean isRoomManager) {
+        this.isRoomManager = isRoomManager;
+    }
 }
