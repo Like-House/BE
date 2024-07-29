@@ -4,10 +4,9 @@ import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import backend.like_house.domain.user.entity.SocialName;
 import backend.like_house.domain.user.entity.SocialType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -21,7 +20,6 @@ public class RedisUtil {
     private static final int CODE_LENGTH_MAX = 12;
     private static final String CODE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private final SecureRandom random = new SecureRandom();
-    private final StringRedisTemplate redisTemplate;
 
     public void saveRefreshToken(String email, SocialType socialType, String refreshToken) {
         String key = generateKey(email, socialType.toString());
@@ -112,8 +110,8 @@ public class RedisUtil {
         return sb.toString();
     }
 
-    // email과 socialName으로 키 생성
-    private String generateKey(String email, String socialName) {
-        return email + ":" + socialName;
+    // email과 socialType으로 키 생성
+    private String generateKey(String email, String socialType) {
+        return email + ":" + socialType;
     }
 }

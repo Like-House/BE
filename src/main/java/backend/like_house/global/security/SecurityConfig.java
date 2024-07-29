@@ -1,5 +1,8 @@
 package backend.like_house.global.security;
 
+import backend.like_house.global.oauth2.handler.OAuth2LoginFailureHandler;
+import backend.like_house.global.oauth2.handler.OAuth2LoginSuccessHandler;
+import backend.like_house.global.oauth2.service.CustomOAuth2UserService;
 import backend.like_house.global.security.exception.JwtAccessDeniedHandler;
 import backend.like_house.global.security.exception.JwtAuthenticationEntryPoint;
 import backend.like_house.global.security.filter.JwtAuthenticationFilter;
@@ -33,6 +36,9 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final LoginUserResolver loginUserResolver;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,6 +63,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .exceptionHandling(configurer -> configurer
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler))
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
         return http.build();
