@@ -1,15 +1,10 @@
-package backend.like_house.domain.user_management.service;
+package backend.like_house.domain.user_management.repository.querydsl;
 
-import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementResponse.FamilyData;
 import java.util.List;
 
-public interface UserManagementQueryService {
-
-    boolean existsBlockByUserAndFamilySpace(User user, FamilySpace familySpace);
-
-    boolean existsRemoveByUserAndFamilySpace(User user, FamilySpace familySpace);
+public interface UserManagementQueryRepository {
 
     List<FamilyData> findFamilyUser(User user);
 

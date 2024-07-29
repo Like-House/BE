@@ -77,7 +77,7 @@ public class FamilySpaceController {
     public ApiResponse<NewFamilySpaceResponse> generateNewFamilySpace(
             @Parameter(hidden = true) @LoginUser @HasNotFamilySpaceUser User user) {
         FamilySpace familySpace = familySpaceCommandService.generateNewFamilySpace(user);
-        String familySpaceCode = familySpaceQueryService.findFamilySpaceCodeById(familySpace.getId());
+        String familySpaceCode = familySpaceQueryService.generateFamilySpaceCodeById(familySpace.getId());
         LocalDateTime expireAt = familySpaceQueryService.findExpirationDateByCode(familySpaceCode);
         return ApiResponse.onSuccess(
                 FamilySpaceConverter.toNewFamilySpaceResponse(familySpace, familySpaceCode, expireAt));

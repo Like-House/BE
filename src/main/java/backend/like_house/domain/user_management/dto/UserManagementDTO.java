@@ -16,9 +16,6 @@ public class UserManagementDTO {
 
         @Getter
         public static class ModifyFamilyDataRequest {
-            @NotNull
-            @Schema(description = "수정할 유저 아이디", example = "1")
-            private Long userId;
             @Schema(description = "수정할 별명", example = "엄마")
             private String nickname;
             @Schema(description = "수정할 메모", example = "엄마가 가장 좋아하는 꽃은 장미꽃이다.")
@@ -33,15 +30,20 @@ public class UserManagementDTO {
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
         public static class FamilyListResponse {
+            @Schema(description = "가족 목록")
             private List<FamilyData> familyDataList;
+            @Schema(description = "해제 목록")
+            private List<FamilyData> removeFamilyDataList;
+            @Schema(description = "차단 목록")
+            private List<FamilyData> blockFamilyDataList;
             @Schema(description = "가족 명수", example = "20")
             private Integer size;
         }
 
         @Builder
         @Getter
-        @NoArgsConstructor(access = AccessLevel.PROTECTED)
-        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        @NoArgsConstructor(access = AccessLevel.PUBLIC)
+        @AllArgsConstructor(access = AccessLevel.PUBLIC)
         public static class FamilyData {
             @Schema(description = "가족 유저 아이디", example = "1")
             private Long userId;

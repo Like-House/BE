@@ -57,6 +57,22 @@ public class RedisUtil {
         return code;
     }
 
+    public String generateFamilySpaceCodeById(Long familySpaceId) {
+        String code = redisTemplate.opsForValue().get(String.valueOf(familySpaceId));
+        if (code == null) {
+            code = generateUniqueFamilySpaceCode();
+            saveFamilySpaceCode(familySpaceId, code);
+        }
+        Long expiration = redisTemplate.getExpire(code, TimeUnit.SECONDS);
+        if (expiration == null || expiration <= 0) {
+            redisTemplate.delete(String.valueOf(familySpaceId));
+            redisTemplate.delete(code);
+            code = generateUniqueFamilySpaceCode();
+            saveFamilySpaceCode(familySpaceId, code);
+        }
+        return code;
+    }
+
     public String resetFamilySpaceCodeById(Long familySpaceId) {
         String id = String.valueOf(familySpaceId);
         String existingCode = redisTemplate.opsForValue().get(id);
