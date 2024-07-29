@@ -19,6 +19,7 @@ import java.util.List;
 public class CustomChatRepositoryImpl implements CustomChatRepository {
 
     private final JPAQueryFactory queryFactory;
+    private static final int FIRST_TAKE = 8;
 
     @Override
     public Slice<Chat> findChatByChatRoomIdOrderByDesc(
@@ -68,28 +69,32 @@ public class CustomChatRepositoryImpl implements CustomChatRepository {
                         .and(userChatRoom.chatRoom.id.eq(chatRoomId)))
                 .fetchOne();
 
-        // lastReadTime 이전 있는 지 확인
-        Chat next = queryFactory
+        // lastReadTime 이전 꺼 하나
+        List<Chat> nextChats = queryFactory
                 .selectFrom(chat)
                 .where(chat.chatRoom.id.eq(chatRoomId)
                         .and(chat.createdAt.lt(lastReadTime)))
-                .fetchFirst();
+                .orderBy(chat.id.desc())
+                .limit(FIRST_TAKE + 1)
+                .fetch();
 
         // lastReadTime 이후 모두 조회
-        List<Chat> chats = queryFactory
+        List<Chat> previousChats = queryFactory
                 .selectFrom(chat)
                 .where(chat.chatRoom.id.eq(chatRoomId)
                         .and(chat.createdAt.goe(lastReadTime)))
                 .orderBy(chat.id.desc())
                 .fetch();
 
-        Boolean hasNext = true;
-        if (next == null) {
-            hasNext = false;
+        previousChats.addAll(nextChats);
+
+        boolean hasNext = nextChats.size() > FIRST_TAKE;
+        if (hasNext) {
+            previousChats.remove(FIRST_TAKE);
         }
 
-        PageRequest pageRequest = PageRequest.of(0, chats.size());
+        PageRequest pageRequest = PageRequest.of(0, FIRST_TAKE);
 
-        return new SliceImpl<>(chats, pageRequest, hasNext);
+        return new SliceImpl<>(previousChats, pageRequest, hasNext);
     }
 }

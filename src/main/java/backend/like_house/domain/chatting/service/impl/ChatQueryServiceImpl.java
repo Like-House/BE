@@ -5,10 +5,12 @@ import backend.like_house.domain.chatting.dto.ChatDTO;
 import backend.like_house.domain.chatting.entity.Chat;
 import backend.like_house.domain.chatting.repository.ChatRepository;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
+import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
 import backend.like_house.domain.chatting.service.ChatQueryService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.ChatRoomException;
+import backend.like_house.global.error.handler.UserChatRoomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -21,14 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatQueryServiceImpl implements ChatQueryService {
 
     private final ChatRepository chatRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final UserChatRoomRepository userChatRoomRepository;
 
     @Override
     public ChatDTO.ChatListResponse getFirstChats(User user, Long chatRoomId) {
-        // user는 LoginUser를 통해 이미 확인함.
-        if (!chatRoomRepository.existsChatRoomById(chatRoomId)) {
-            throw new ChatRoomException(ErrorStatus.CHATROOM_NOT_FOUND);
+
+        if (!userChatRoomRepository.existsByChatRoomIdAndUserId(chatRoomId, user.getId())) {
+            throw new ChatRoomException(ErrorStatus.NOT_JOIN_CHATROOM);
         }
+
+        // user와 chatRoom은 어노테이션으로 확인
 
         Slice<Chat> chatSlice = chatRepository.findChatsByLastReadTime(user.getId(), chatRoomId);
 
@@ -42,11 +46,12 @@ public class ChatQueryServiceImpl implements ChatQueryService {
 
     @Override
     public ChatDTO.ChatListResponse getChats(User user, Long chatRoomId, Long cursor, Integer take) {
-        // user는 LoginUser를 통해 이미 확인함.
-        if (!chatRoomRepository.existsChatRoomById(chatRoomId)) {
-            throw new ChatRoomException(ErrorStatus.CHATROOM_NOT_FOUND);
+
+        if (!userChatRoomRepository.existsByChatRoomIdAndUserId(chatRoomId, user.getId())) {
+            throw new ChatRoomException(ErrorStatus.NOT_JOIN_CHATROOM);
         }
 
+        // user와 chatRoom은 어노테이션으로 확인
         Slice<Chat> chatSlice = chatRepository.findChatByChatRoomIdOrderByDesc(cursor, take, chatRoomId);
 
         Long nextCursor = null;

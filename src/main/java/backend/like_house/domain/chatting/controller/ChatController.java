@@ -7,6 +7,7 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.CheckSize;
+import backend.like_house.global.validation.annotation.ExistChatRoom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,7 +30,7 @@ public class ChatController {
     private final ChatQueryService chatQueryService;
 
     @Operation(summary = "채팅 첫 조회값 불러오기 API",
-            description = "들어갈 때 ENTER 직전 사용 하시면 됩니다. (마지막으로 ENTER한 시간 기준으로 남은 채팅 모두 불러오기)")
+            description = "들어갈 때 ENTER 직전 사용 하시면 됩니다. (마지막으로 ENTER한 시간 기준으로 이전 8개, 남은 채팅 모두 불러오기)")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "CHATROOM4002", description = "해당 채팅방이 존재하지 않습니다.."),
@@ -37,7 +38,7 @@ public class ChatController {
     @GetMapping("/{chatRoomId}/chats/first")
     public ApiResponse<ChatListResponse> getFirstChats(
             @Parameter(hidden = true) @LoginUser User user,
-            @PathVariable Long chatRoomId
+            @PathVariable @ExistChatRoom Long chatRoomId
     ) {
         ChatDTO.ChatListResponse chats = chatQueryService.getFirstChats(user, chatRoomId);
         return ApiResponse.onSuccess(chats);
@@ -53,7 +54,7 @@ public class ChatController {
     @GetMapping("/{chatRoomId}/chats")
     public ApiResponse<ChatListResponse> getChats(
             @Parameter(hidden = true) @LoginUser User user,
-            @PathVariable Long chatRoomId,
+            @PathVariable @ExistChatRoom Long chatRoomId,
             @RequestParam(name = "cursor") Long cursor,
             @RequestParam(name = "take") @CheckSize Integer take
     ) {
