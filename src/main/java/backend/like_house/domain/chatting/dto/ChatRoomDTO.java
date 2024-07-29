@@ -1,6 +1,7 @@
 package backend.like_house.domain.chatting.dto;
 
 import backend.like_house.global.common.enums.ChatRoomType;
+import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ public class ChatRoomDTO {
 
     @Getter
     public static class CreateChatRoomRequest {
+        @ExistFamilySpace
         private Long familySpaceId;
         private String title;
         private String imageUrl;

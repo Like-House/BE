@@ -1,7 +1,6 @@
 package backend.like_house.domain.chatting.service.impl;
 
 import backend.like_house.domain.chatting.converter.ChatRoomConverter;
-import backend.like_house.domain.chatting.dto.ChatRoomDTO;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.ChatRoomResponseList;
 import backend.like_house.domain.chatting.entity.Chat;
 import backend.like_house.domain.chatting.entity.ChatRoom;
@@ -26,14 +25,11 @@ public class ChatRoomQueryServiceImpl implements ChatRoomQueryService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
-    private final FamilySpaceRepository familySpaceRepository;
 
     @Override
     public ChatRoomResponseList getChatRoomsByUserIdAndFamilySpaceId(Long userId, Long familySpaceId, Long cursor, Integer take) {
-        if (!familySpaceRepository.existsById(familySpaceId)) {
-            throw new GeneralException(ErrorStatus.FAMILY_SPACE_NOT_FOUND);
-        }
-
+        // 가족 공간은 유무는 어노테이션으로 처리
+        
         if (cursor == -1) {
             cursor = Long.MAX_VALUE;
         }
@@ -44,6 +40,11 @@ public class ChatRoomQueryServiceImpl implements ChatRoomQueryService {
             nextCursor = findNextCursorByChatRoom(chatRoomSlice.toList().get(chatRoomSlice.toList().size() - 1));
         }
         return ChatRoomConverter.toChatRoomResponseList(chatRoomSlice, nextCursor);
+    }
+
+    @Override
+    public Optional<ChatRoom> findChatRoomById(Long chatRoomId) {
+        return chatRoomRepository.findById(chatRoomId);
     }
 
     private Long findNextCursorByChatRoom(ChatRoom chatRoom) {

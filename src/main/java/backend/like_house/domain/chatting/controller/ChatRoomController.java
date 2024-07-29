@@ -14,10 +14,12 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.CheckSize;
+import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +49,7 @@ public class ChatRoomController {
     @GetMapping("")
     public ApiResponse<ChatRoomResponseList> getChatRooms(
             @Parameter(hidden = true) @LoginUser User user,
-            @RequestParam(name = "familySpaceId") Long familySpaceId,
+            @RequestParam(name = "familySpaceId") @ExistFamilySpace Long familySpaceId,
             @Parameter(description = "처음 요청은 -1로 해주세요.") @RequestParam(name = "cursor") Long cursor,
             @RequestParam(name = "take") @CheckSize Integer take
     ) {
@@ -62,7 +64,7 @@ public class ChatRoomController {
     })
     @PostMapping("")
     public ApiResponse<CreateChatRoomResponse> createChatRoom(
-            @Parameter(hidden = true) @LoginUser User user, @RequestBody CreateChatRoomRequest createChatRoomRequest
+            @Parameter(hidden = true) @LoginUser User user, @RequestBody @Valid CreateChatRoomRequest createChatRoomRequest
     ) {
         ChatRoom chatRoom = chatRoomCommandService.createChatRoom(createChatRoomRequest, user);
         return ApiResponse.onSuccess(ChatRoomConverter.toCreateChatRoomResponse(chatRoom));
