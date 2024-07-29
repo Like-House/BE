@@ -117,4 +117,28 @@ public class PostCommandServiceImpl implements PostCommandService {
 
         postRepository.delete(post);
     }
+
+    @Transactional
+    @Override
+    public void likePost(User user, Long postId) {
+        // 좋아요 누르기
+    }
+  
+    @Transactional
+    @Override
+    public void unlikePost(User user, Long postId) {
+        // 좋아요 취소하기
+    }
+
+    @Transactional
+    @Override
+    public void togglePostAlarm(User user, Long postId, Boolean enable) {
+        // 게시글 알림 상태 변경
+    }
+
+    @Transactional
+    @Override
+    public void toggleCommentAlarm(User user, Long commentId, Boolean enable) {
+        // 댓글 알림 상태 변경
+    }
 }

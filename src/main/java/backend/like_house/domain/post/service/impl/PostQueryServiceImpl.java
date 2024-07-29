@@ -1,10 +1,9 @@
 package backend.like_house.domain.post.service.impl;
 
-import backend.like_house.domain.auth.repository.AuthRepository;
-import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
-import backend.like_house.domain.post.dto.CommentDTO.CommentResponse.*;
 import backend.like_house.domain.post.converter.CommentConverter;
 import backend.like_house.domain.post.converter.PostConverter;
+import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
+import backend.like_house.domain.post.dto.CommentDTO.CommentResponse.*;
 import backend.like_house.domain.post.entity.Comment;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.entity.PostImage;
@@ -18,6 +17,8 @@ import backend.like_house.domain.user_management.repository.CustomRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.PostException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,8 @@ public class PostQueryServiceImpl implements PostQueryService {
 
     @Override
     public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Long cursor, int take) {
-        List<Post> posts = postRepository.findPostsByFamilySpaceId(familySpaceId, cursor, take);
+        Pageable pageable = PageRequest.of(0, take);
+        List<Post> posts = postRepository.findPostsByFamilySpaceId(familySpaceId, cursor, pageable);
 
         return posts.stream().map(post -> {
             String authorNickname = getAuthorNickname(user, post.getUser());

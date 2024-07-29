@@ -18,9 +18,6 @@ public class ScheduleDTO {
 
         @Getter
         public static class ModifyScheduleRequest {
-            @NotNull
-            @Schema(description = "수정할 일정 아이디", example = "1")
-            private Long scheduleId;
             @Schema(description = "수정할 일정 날짜")
             private LocalDate date;
             @Schema(description = "수정할 일정 유형", example = "생일")
@@ -54,8 +51,30 @@ public class ScheduleDTO {
         @Getter
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
-        public static class ScheduleDataListResponse {
+        public static class SchedulePageDataListResponse {
             private List<ScheduleDataResponse> scheduleDataResponseList;
+            @Schema(description = "리스트의 크기")
+            private Integer listSize;
+            @Schema(description = "전체 페이지 수")
+            private Integer totalPage;
+            @Schema(description = "전체 요소 수")
+            private Long totalElements;
+            @Schema(description = "첫 번째 페이지 여부")
+            private Boolean isFirst;
+            @Schema(description = "마지막 페이지 여부")
+            private Boolean isLast;
+        }
+
+        @Builder
+        @Getter
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class ScheduleCursorDataListResponse {
+            private List<ScheduleDataResponse> scheduleDataResponseList;
+            @Schema(description = "전체 요소 수")
+            private Long totalElements;
+            @Schema(description = "다음 스크롤에서 사용할 커서의 값. 다음 스크롤이 존재하지 않을 경우 -1L")
+            private Long nextCursor;
         }
 
         @Builder

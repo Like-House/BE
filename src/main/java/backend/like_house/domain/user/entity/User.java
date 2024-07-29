@@ -3,7 +3,9 @@ package backend.like_house.domain.user.entity;
 import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.global.common.BaseEntity;
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
+
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -32,14 +34,20 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private LocalDate birthDate;
 
     @Column(nullable = false)
     private String profileImage;
+
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
+    private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인 : null)
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = false)
     @ColumnDefault("true")
@@ -61,8 +69,6 @@ public class User extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isRoomManager;
 
-    private String socialName;
-
     public void setFamilySpace(FamilySpace familySpace) {
         this.familySpace = familySpace;
     }
@@ -70,4 +76,5 @@ public class User extends BaseEntity {
     public void setIsRoomManager(Boolean isRoomManager) {
         this.isRoomManager = isRoomManager;
     }
+
 }

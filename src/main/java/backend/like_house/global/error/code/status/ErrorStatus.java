@@ -22,6 +22,7 @@ public enum ErrorStatus implements BaseErrorCode {
     NOT_INCLUDE_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4003", "유저가 해당 가족 공간에 속해 있지 않습니다."),
     ALREADY_BELONG_USER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4004", "이미 가족 공간에 소속되어 있습니다."),
     FAMILY_SPACE_CODE_EXPIRATION_INVALID(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4005", "초대 코드가 유효하지 않습니다."),
+    ALREADY_BELONG_OTHER_FAMILY_SPACE(HttpStatus.BAD_REQUEST, "FAMILY_SPACE4006", "이미 다른 가족 공간에 속해 있습니다."),
 
     // 유저 관련 에러
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "사용자를 찾을 수 없습니다."),
@@ -67,6 +68,12 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 가족 앨범 관련 에러
     FAMILY_ALBUM_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_ALBUM4001", "존재하지 않는 가족 앨범 입니다."),
+
+    // 페이징 관련 에러
+    INVALID_PAGE_NUMBER(HttpStatus.BAD_REQUEST, "PAGE4001", "올바르지 않은 페이징 번호입니다."),
+
+    // 사이즈 관련 에러
+    INVALID_SIZE_NUMBER(HttpStatus.BAD_REQUEST, "SIZE4001", "올바르지 않은 사이즈입니다."),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");

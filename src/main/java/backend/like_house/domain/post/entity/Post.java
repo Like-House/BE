@@ -5,6 +5,7 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
@@ -35,6 +36,10 @@ public class Post extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private Boolean postAlarm;
 
     public void setContent(String content) {
         this.content = content;

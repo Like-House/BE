@@ -1,6 +1,7 @@
 package backend.like_house.domain.schedule.entity;
 
 import backend.like_house.domain.family_space.entity.FamilySpace;
+import backend.like_house.domain.schedule.dto.ScheduleDTO.ScheduleRequest.ModifyScheduleRequest;
 import backend.like_house.global.common.BaseEntity;
 import backend.like_house.global.common.enums.ScheduleType;
 import jakarta.persistence.*;
@@ -41,4 +42,11 @@ public class Schedule extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    public void setUpdateSchedule(ModifyScheduleRequest request) {
+        this.date = request.getDate() != null ? request.getDate() : this.date;
+        this.dtype = request.getDtype() != null ? ScheduleType.valueOfKoreanName(request.getDtype()) : this.dtype;
+        this.title = request.getTitle() != null ? request.getTitle() : this.title;
+        this.content = request.getContent() != null ? request.getContent() : this.content;
+    }
 }

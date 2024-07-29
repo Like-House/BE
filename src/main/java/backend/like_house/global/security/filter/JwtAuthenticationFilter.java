@@ -1,5 +1,6 @@
 package backend.like_house.global.security.filter;
 
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.AuthException;
 import backend.like_house.global.security.util.JWTUtil;
@@ -10,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -34,9 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (accessToken != null) {
             try {
                 String email = jwtUtil.extractEmail(accessToken);
-                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                SocialType socialType = jwtUtil.extractSocialName(accessToken);
+
+                if (email != null && socialType != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     // JWT 검증 성공 시 인증 객체 생성
-                    Authentication authentication = jwtUtil.getAuthentication(email);
+                    Authentication authentication = jwtUtil.getAuthentication(email, socialType);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (ExpiredJwtException ex) {
@@ -49,7 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     if (jwtUtil.isRefreshTokenValid(refreshToken)) {
                         String refreshedAccessToken = jwtUtil.renewAccessToken(refreshToken);
                         if (refreshedAccessToken != null) {
-                            Authentication authentication = jwtUtil.getAuthentication(jwtUtil.extractEmail(refreshedAccessToken));
+                            String email = jwtUtil.extractEmail(refreshedAccessToken);
+                            SocialType socialType = jwtUtil.extractSocialName(refreshedAccessToken);
+                            Authentication authentication = jwtUtil.getAuthentication(email, socialType);
                             SecurityContextHolder.getContext().setAuthentication(authentication);
                             response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + refreshedAccessToken);
                         }

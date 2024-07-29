@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
@@ -48,6 +49,10 @@ public class Comment extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private Boolean commentAlarm;
 
     public void setContent(String content) {
         this.content = content;

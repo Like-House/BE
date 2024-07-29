@@ -133,4 +133,79 @@ public class PostController {
         List<GetMyPostListResponse> response = postQueryService.getMyPosts(user);
         return ApiResponse.onSuccess(response);
     }
+
+    @PostMapping("/posts/{postId}/like")
+    @Operation(summary = "게시글 좋아요 누르기 API", description = "사용자가 특정 게시글에 좋아요를 누르는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST4005", description = "이미 좋아요를 누른 게시글입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    })
+    @Parameters({
+            @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다.")
+    })
+    public ApiResponse<Void> likePost(
+            @PathVariable Long postId,
+            @Parameter(hidden = true) @LoginUser User user
+    ) {
+        postCommandService.likePost(user, postId);
+        return ApiResponse.onSuccess(null);
+    }
+
+    @DeleteMapping("/posts/{postId}/like")
+    @Operation(summary = "게시글 좋아요 취소하기 API", description = "사용자가 특정 게시글에 좋아요를 취소하는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST4006", description = "좋아요를 누르지 않은 게시글입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    })
+    @Parameters({
+            @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다.")
+    })
+    public ApiResponse<Void> unlikePost(
+            @PathVariable Long postId,
+            @Parameter(hidden = true) @LoginUser User user
+    ) {
+        postCommandService.unlikePost(user, postId);
+        return ApiResponse.onSuccess(null);
+    }
+
+    @PutMapping("/posts/{postId}/post-alarm")
+    @Operation(summary = "게시물 알림 끄기/켜기 API", description = "사용자가 특정 게시물 알림을 끄거나 켜는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    })
+    @Parameters({
+            @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다."),
+            @Parameter(name = "enable", description = "게시물 알림 활성화 여부, query parameter 입니다.")
+    })
+    public ApiResponse<Void> togglePostAlarm(
+            @PathVariable Long postId,
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestParam Boolean enable
+    ) {
+        postCommandService.togglePostAlarm(user, postId, enable);
+        return ApiResponse.onSuccess(null);
+    }
+
+    @PutMapping("/{commentId}/comment-alarm")
+    @Operation(summary = "댓글 알림 끄기/켜기 API", description = "사용자가 특정 댓글 알림을 끄거나 켜는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    })
+    @Parameters({
+            @Parameter(name = "commentId", description = "댓글의 ID, path variable 입니다."),
+            @Parameter(name = "enable", description = "댓글 알림 활성화 여부, query parameter 입니다.")
+    })
+    public ApiResponse<Void> toggleCommentAlarm(
+            @PathVariable Long commentId,
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestParam Boolean enable
+    ) {
+        postCommandService.toggleCommentAlarm(user, commentId, enable);
+        return ApiResponse.onSuccess(null);
+    }
 }
+

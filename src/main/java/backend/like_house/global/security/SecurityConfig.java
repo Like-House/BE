@@ -1,5 +1,8 @@
 package backend.like_house.global.security;
 
+import backend.like_house.global.oauth2.handler.OAuth2LoginFailureHandler;
+import backend.like_house.global.oauth2.handler.OAuth2LoginSuccessHandler;
+import backend.like_house.global.oauth2.service.CustomOAuth2UserService;
 import backend.like_house.global.security.exception.JwtAccessDeniedHandler;
 import backend.like_house.global.security.exception.JwtAuthenticationEntryPoint;
 import backend.like_house.global.security.filter.JwtAuthenticationFilter;
@@ -18,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -32,6 +36,9 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final LoginUserResolver loginUserResolver;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,6 +63,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .exceptionHandling(configurer -> configurer
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler))
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
         return http.build();
@@ -69,5 +81,19 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(loginUserResolver);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns(
+                        "http://localhost:8080",
+                        "http://localhost:3000",
+                        "http://localhost:5173")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .exposedHeaders("Authorization")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }
