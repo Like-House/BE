@@ -50,6 +50,9 @@ public enum ErrorStatus implements BaseErrorCode {
     POST_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "POST4003", "게시글 수정 실패."),
     POST_DELETE_FAILED(HttpStatus.BAD_REQUEST, "POST4004", "게시글 삭제 실패."),
 
+    ALREADY_LIKED(HttpStatus.BAD_REQUEST, "POSTLIKE4001", "이미 좋아요가 눌린 게시글입니다."),
+    NOT_LIKED(HttpStatus.BAD_REQUEST, "POSTLIKE4002", "좋아요가 눌리지 않은 게시글입니다."),
+
     // 댓글 관련 에러
     COMMENT_CREATE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4001", "댓글 작성 실패."),
     COMMENT_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "COMMENT4002", "댓글 수정 실패."),

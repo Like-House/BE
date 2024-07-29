@@ -6,8 +6,10 @@ import backend.like_house.domain.post.dto.PostDTO.PostRequest.*;
 import backend.like_house.domain.post.converter.PostConverter;
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.entity.PostImage;
+import backend.like_house.domain.post.entity.PostLike;
 import backend.like_house.domain.post.entity.UserPostTag;
 import backend.like_house.domain.post.repository.PostImageRepository;
+import backend.like_house.domain.post.repository.PostLikeRepository;
 import backend.like_house.domain.post.repository.PostRepository;
 import backend.like_house.domain.post.repository.UserPostTagRepository;
 import backend.like_house.domain.post.service.PostCommandService;
@@ -33,6 +35,7 @@ public class PostCommandServiceImpl implements PostCommandService {
     private final FamilySpaceRepository familySpaceRepository;
     private final PostImageRepository postImageRepository;
     private final UserPostTagRepository userPostTagRepository;
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     @Override
@@ -121,13 +124,32 @@ public class PostCommandServiceImpl implements PostCommandService {
     @Transactional
     @Override
     public void likePost(User user, Long postId) {
-        // 좋아요 누르기
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(ErrorStatus.POST_NOT_FOUND));
+
+        boolean alreadyLiked = postLikeRepository.existsByUserAndPost(user, post);
+        if (alreadyLiked) {
+            throw new PostException(ErrorStatus.ALREADY_LIKED);
+        }
+
+        PostLike postLike = PostLike.builder()
+                .user(user)
+                .post(post)
+                .build();
+
+        postLikeRepository.save(postLike);
     }
   
     @Transactional
     @Override
     public void unlikePost(User user, Long postId) {
-        // 좋아요 취소하기
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(ErrorStatus.POST_NOT_FOUND));
+
+        PostLike postLike = postLikeRepository.findByUserAndPost(user, post)
+                .orElseThrow(() -> new PostException(ErrorStatus.NOT_LIKED));
+
+        postLikeRepository.delete(postLike);
     }
 
     @Transactional
