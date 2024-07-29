@@ -13,6 +13,6 @@ import org.springframework.data.redis.core.RedisHash;
 public class Redis {
 
     @Id
-    private String email;
+    private String key;
     private String refreshToken;
 }

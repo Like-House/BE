@@ -30,7 +30,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail(); // 사용자의 고유 식별자 -> 이메일
+        return user.getId().toString(); // 사용자의 고유 식별자
     }
 
     @Override

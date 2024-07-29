@@ -4,6 +4,7 @@ import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import backend.like_house.domain.user.entity.SocialType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,9 @@ public class RedisUtil {
     private static final String CODE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private final SecureRandom random = new SecureRandom();
 
-    public void saveRefreshToken(String email, String refreshToken) {
-        redisTemplate.opsForValue().set(email, refreshToken, 14, TimeUnit.DAYS); // 14일간 유지
+    public void saveRefreshToken(String email, SocialType socialType, String refreshToken) {
+        String key = generateKey(email, socialType.toString());
+        redisTemplate.opsForValue().set(key, refreshToken, 14, TimeUnit.DAYS); // 14일간 유지
     }
 
     public void saveFamilySpaceCode(Long familySpaceId, String code) {
@@ -54,6 +56,22 @@ public class RedisUtil {
             saveFamilySpaceCode(familySpaceId, code);
         }
 
+        return code;
+    }
+
+    public String generateFamilySpaceCodeById(Long familySpaceId) {
+        String code = redisTemplate.opsForValue().get(String.valueOf(familySpaceId));
+        if (code == null) {
+            code = generateUniqueFamilySpaceCode();
+            saveFamilySpaceCode(familySpaceId, code);
+        }
+        Long expiration = redisTemplate.getExpire(code, TimeUnit.SECONDS);
+        if (expiration == null || expiration <= 0) {
+            redisTemplate.delete(String.valueOf(familySpaceId));
+            redisTemplate.delete(code);
+            code = generateUniqueFamilySpaceCode();
+            saveFamilySpaceCode(familySpaceId, code);
+        }
         return code;
     }
 
@@ -90,5 +108,10 @@ public class RedisUtil {
         }
 
         return sb.toString();
+    }
+
+    // email과 socialType으로 키 생성
+    private String generateKey(String email, String socialType) {
+        return email + ":" + socialType;
     }
 }

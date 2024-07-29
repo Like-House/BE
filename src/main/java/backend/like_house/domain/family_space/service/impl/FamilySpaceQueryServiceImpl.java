@@ -35,6 +35,11 @@ public class FamilySpaceQueryServiceImpl implements FamilySpaceQueryService {
     }
 
     @Override
+    public String generateFamilySpaceCodeById(Long id) {
+        return redisUtil.generateFamilySpaceCodeById(id);
+    }
+
+    @Override
     public Optional<FamilySpace> findFamilySpace(Long id) {
         return familySpaceRepository.findById(id);
     }
