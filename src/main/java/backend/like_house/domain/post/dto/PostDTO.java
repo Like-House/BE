@@ -16,8 +16,6 @@ public class PostDTO {
         @Getter
         public static class CreatePostRequest {
             @NotNull
-            private Long userId;
-            @NotNull
             private Long familySpaceId;
             private String content;
             private List<PostResponse.FamilyTagResponse> taggedUserIds;
