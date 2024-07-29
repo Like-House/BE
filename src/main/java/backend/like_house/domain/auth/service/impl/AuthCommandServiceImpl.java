@@ -8,13 +8,19 @@ import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.domain.auth.service.AuthCommandService;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
+import backend.like_house.global.error.handler.AuthException;
 import backend.like_house.global.redis.RedisUtil;
 import backend.like_house.global.security.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.TimeUnit;
+
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -24,6 +30,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     private final PasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
     private final RedisUtil redisUtil;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public AuthDTO.SignUpResponse signUp(AuthDTO.SignUpRequest signUpRequest) {
@@ -62,4 +69,29 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }
+
+    @Override
+    public void signOut(AuthDTO.SignOutRequest request) {
+
+        // 로그아웃 하고 싶은 토큰이 유효한지 확인
+        if (jwtUtil.isTokenExpired(request.getAccessToken())) {
+            throw new AuthException(ErrorStatus.INVALID_TOKEN);
+        }
+
+        // Redis에 해당 Refresh Token 이 있는지 여부를 확인 후에 있을 경우 삭제
+        String email = jwtUtil.extractEmail(request.getAccessToken());
+        SocialType socialType = jwtUtil.extractSocialName(request.getAccessToken());
+
+        log.info(email + " : " + socialType);
+
+        if (redisTemplate.opsForValue().get(email + ":" + socialType) != null) {
+            redisTemplate.delete(email + ":" + socialType);
+        }
+
+        // 남은 Access Token 유효시간 만큼 redis에 저장
+        Long expiration = jwtUtil.getExpiration(request.getAccessToken());
+        redisTemplate.opsForValue().set(request.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+
+    }
+
 }

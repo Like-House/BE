@@ -1,5 +1,6 @@
 package backend.like_house.domain.auth.dto;
 
+import backend.like_house.domain.user.entity.SocialType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -65,6 +66,17 @@ public class AuthDTO {
         @Schema(description = "회원가입한 유저 이메일", example = "이메일")
         private String email;
     }
+
+    @Getter
+    public static class SignOutRequest {
+
+        @Schema(description = "로그아웃할 유저의 accessToken")
+        private String accessToken;
+
+        @Schema(description = "로그아웃할 유저의 refreshToken")
+        private String refreshToken;
+    }
+
 
     @Getter
     public static class DeleteAccountRequest {

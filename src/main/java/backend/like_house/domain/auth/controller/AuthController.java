@@ -40,8 +40,8 @@ public class AuthController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<?> signOut() {
-        // 로그아웃 로직 authauthCommandService.signOut
+    public ApiResponse signOut(@RequestBody AuthDTO.SignOutRequest signOutRequest) {
+        authCommandService.signOut(signOutRequest);
         return ApiResponse.onSuccess(null);
     }
 
