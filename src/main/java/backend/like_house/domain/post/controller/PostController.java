@@ -169,7 +169,6 @@ public class PostController {
         postCommandService.unlikePost(user, postId);
         return ApiResponse.onSuccess(null);
     }
-}
 
     @PutMapping("/posts/{postId}/post-alarm")
     @Operation(summary = "게시물 알림 끄기/켜기 API", description = "사용자가 특정 게시물 알림을 끄거나 켜는 API입니다.")
