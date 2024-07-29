@@ -9,11 +9,14 @@ import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.entity.PostImage;
 import backend.like_house.domain.post.repository.*;
 import backend.like_house.domain.post.service.PostQueryService;
+import backend.like_house.domain.schedule.repository.ScheduleRepository;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.entity.Contact;
 import backend.like_house.domain.user_management.entity.Custom;
+import backend.like_house.domain.user_management.entity.RemoveUser;
 import backend.like_house.domain.user_management.repository.ContactRepository;
 import backend.like_house.domain.user_management.repository.CustomRepository;
+import backend.like_house.domain.user_management.repository.RemoveUserRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.PostException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,11 +42,17 @@ public class PostQueryServiceImpl implements PostQueryService {
     private final CustomRepository customRepository;
     private final ContactRepository contactRepository;
     private final UserPostTagRepository userPostTagRepository;
+    private final RemoveUserRepository removeUserRepository;
+    private final ScheduleRepository scheduleRepository;
 
     @Override
     public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Long cursor, int take) {
         Pageable pageable = PageRequest.of(0, take);
-        List<Post> posts = postRepository.findPostsByFamilySpaceId(familySpaceId, cursor, pageable);
+        List<RemoveUser> removedUsers = removeUserRepository.findByFamilySpaceId(familySpaceId);
+        List<Long> removedUserIds = removedUsers.stream().map(removeUser -> removeUser.getUser().getId()).collect(Collectors.toList());
+
+        List<Post> posts = postRepository.findPostsByFamilySpaceIdAndUserIdNotIn(familySpaceId, removedUserIds, cursor, pageable);
+        List<LocalDate> scheduledDates = scheduleRepository.findDatesWithSchedules(familySpaceId, LocalDate.now().getMonthValue());
 
         return posts.stream().map(post -> {
             String authorNickname = getAuthorNickname(user, post.getUser());
@@ -51,7 +61,8 @@ public class PostQueryServiceImpl implements PostQueryService {
             int commentCount = commentRepository.countByPostId(post.getId());
             List<String> imageUrls = postImageRepository.findByPostId(post.getId())
                     .stream().map(PostImage::getFilename).collect(Collectors.toList());
-            return PostConverter.toGetPostListResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls);
+            boolean owner = post.getUser().getId().equals(user.getId());
+            return PostConverter.toGetPostListResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls, owner, scheduledDates);
         }).collect(Collectors.toList());
     }
 

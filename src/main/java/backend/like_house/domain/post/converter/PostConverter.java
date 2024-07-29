@@ -5,11 +5,12 @@ import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
 import backend.like_house.domain.post.dto.PostDTO.PostRequest.*;
 import backend.like_house.domain.post.entity.Post;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class PostConverter {
 
-    public static GetPostListResponse toGetPostListResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls) {
+    public static GetPostListResponse toGetPostListResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls, boolean owner, List<LocalDate> scheduledDates) {
         return GetPostListResponse.builder()
                 .postId(post.getId())
                 .content(post.getContent())
@@ -20,6 +21,8 @@ public class PostConverter {
                 .imageUrls(imageUrls)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
+                .owner(owner)
+                .scheduledDates(scheduledDates)
                 .build();
     }
 
