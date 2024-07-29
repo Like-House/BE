@@ -4,10 +4,7 @@ import backend.like_house.domain.family_space.repository.FamilySpaceRepository;
 import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
 import backend.like_house.domain.post.dto.PostDTO.PostRequest.*;
 import backend.like_house.domain.post.converter.PostConverter;
-import backend.like_house.domain.post.entity.Post;
-import backend.like_house.domain.post.entity.PostImage;
-import backend.like_house.domain.post.entity.PostLike;
-import backend.like_house.domain.post.entity.UserPostTag;
+import backend.like_house.domain.post.entity.*;
 import backend.like_house.domain.post.repository.PostImageRepository;
 import backend.like_house.domain.post.repository.PostLikeRepository;
 import backend.like_house.domain.post.repository.PostRepository;
@@ -155,12 +152,14 @@ public class PostCommandServiceImpl implements PostCommandService {
     @Transactional
     @Override
     public void togglePostAlarm(User user, Long postId, Boolean enable) {
-        // 게시글 알림 상태 변경
-    }
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(ErrorStatus.POST_NOT_FOUND));
 
-    @Transactional
-    @Override
-    public void toggleCommentAlarm(User user, Long commentId, Boolean enable) {
-        // 댓글 알림 상태 변경
+        if (!post.getUser().getId().equals(user.getId())) {
+            throw new PostException(ErrorStatus.INVALID_ACCESS);
+        }
+
+        post.setPostAlarm(enable);
+        postRepository.save(post);
     }
 }

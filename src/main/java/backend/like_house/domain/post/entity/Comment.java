@@ -57,4 +57,8 @@ public class Comment extends BaseEntity {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public void setCommentAlarm(Boolean commentAlarm) {
+        this.commentAlarm = commentAlarm;
+    }
 }

@@ -75,4 +75,18 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
         commentRepository.delete(comment);
     }
+
+    @Transactional
+    @Override
+    public void toggleCommentAlarm(User user, Long commentId, Boolean enable) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentException(ErrorStatus.COMMENT_NOT_FOUND));
+
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw new CommentException(ErrorStatus.INVALID_ACCESS);
+        }
+
+        comment.setCommentAlarm(enable);
+        commentRepository.save(comment);
+    }
 }
