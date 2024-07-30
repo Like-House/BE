@@ -8,6 +8,7 @@ public interface AuthCommandService {
 
     AuthDTO.SignInResponse signIn(AuthDTO.SignInRequest request);
 
-    void signOut(AuthDTO.SignOutRequest request);
+    void signOut(AuthDTO.TokenRequest request);
+
 
 }

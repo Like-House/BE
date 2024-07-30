@@ -38,11 +38,13 @@ public class AuthController {
     @PostMapping("/signout")
     @Operation(summary = "로그아웃 API", description = "로그아웃 API 입니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH4001", description = "유효하지 않은 토큰입니다.")
+
     })
-    public ApiResponse signOut(@RequestBody AuthDTO.SignOutRequest signOutRequest) {
-        authCommandService.signOut(signOutRequest);
-        return ApiResponse.onSuccess(null);
+    public ApiResponse<String> signOut(@RequestBody AuthDTO.TokenRequest tokenRequest) {
+        authCommandService.signOut(tokenRequest);
+        return ApiResponse.onSuccess("로그아웃 성공");
     }
 
     @DeleteMapping

@@ -71,7 +71,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     }
 
     @Override
-    public void signOut(AuthDTO.SignOutRequest request) {
+    public void signOut(AuthDTO.TokenRequest request) {
 
         // 로그아웃 하고 싶은 토큰이 유효한지 확인
         if (jwtUtil.isTokenExpired(request.getAccessToken())) {
@@ -81,8 +81,6 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         // Redis에 해당 Refresh Token 이 있는지 여부를 확인 후에 있을 경우 삭제
         String email = jwtUtil.extractEmail(request.getAccessToken());
         SocialType socialType = jwtUtil.extractSocialName(request.getAccessToken());
-
-        log.info(email + " : " + socialType);
 
         if (redisTemplate.opsForValue().get(email + ":" + socialType) != null) {
             redisTemplate.delete(email + ":" + socialType);

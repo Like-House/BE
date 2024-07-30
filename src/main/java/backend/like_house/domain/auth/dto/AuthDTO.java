@@ -68,7 +68,7 @@ public class AuthDTO {
     }
 
     @Getter
-    public static class SignOutRequest {
+    public static class TokenRequest {
 
         @Schema(description = "로그아웃할 유저의 accessToken")
         private String accessToken;
