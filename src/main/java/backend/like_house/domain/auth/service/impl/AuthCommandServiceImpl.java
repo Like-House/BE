@@ -9,11 +9,13 @@ import backend.like_house.domain.auth.service.AuthCommandService;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.redis.RedisUtil;
+import backend.like_house.global.s3.S3Manager;
 import backend.like_house.global.security.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -24,9 +26,10 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     private final PasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
     private final RedisUtil redisUtil;
+    private final S3Manager s3Manager;
 
     @Override
-    public AuthDTO.SignUpResponse signUp(AuthDTO.SignUpRequest signUpRequest) {
+    public AuthDTO.SignUpResponse signUp(AuthDTO.SignUpRequest signUpRequest, MultipartFile profileImg) {
         // 일반 회원가입 - 이메일 중복 검사
         authRepository.findByEmailAndSocialType(signUpRequest.getEmail(), SocialType.LOCAL)
                 .ifPresent(user -> {
@@ -37,7 +40,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         String encryptedPassword = passwordEncoder.encode(signUpRequest.getPassword());
 
         // 사용자 생성
-        User user = AuthConverter.toUser(signUpRequest, encryptedPassword);
+        User user = AuthConverter.toUser(signUpRequest, encryptedPassword, s3Manager.uploadFile(profileImg));
         authRepository.save(user);
 
         return AuthConverter.toSignUpResponseDTO(user);

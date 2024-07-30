@@ -4,10 +4,13 @@ import backend.like_house.domain.auth.dto.AuthDTO;
 import backend.like_house.domain.auth.service.AuthCommandService;
 import backend.like_house.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "회원가입/로그인", description = "회원가입 및 로그인 관련 API입니다.")
 @RequestMapping("/api/v0/auth")
@@ -17,13 +20,14 @@ public class AuthController {
 
     private final AuthCommandService authCommandService;
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "회원가입 API", description = "일반 회원가입 API 입니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4002", description = "이미 존재하는 유저입니다.")
     })
-    public ApiResponse<AuthDTO.SignUpResponse> signUp(@RequestBody AuthDTO.SignUpRequest signUpDTO) {
-        return ApiResponse.onSuccess(authCommandService.signUp(signUpDTO));
+    public ApiResponse<AuthDTO.SignUpResponse> signUp(@RequestPart AuthDTO.SignUpRequest signUpDTO, @RequestPart MultipartFile profileImg) {
+        return ApiResponse.onSuccess(authCommandService.signUp(signUpDTO, profileImg));
     }
 
     @PostMapping("/signin")

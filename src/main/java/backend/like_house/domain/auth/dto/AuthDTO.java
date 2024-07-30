@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -34,24 +35,21 @@ public class AuthDTO {
     @Getter
     public static class SignUpRequest {
         @NotBlank
-        @Schema(description = "회원가입할 유저 이름", example = "이름")
+        @Schema(description = "회원가입할 유저 이름", example = "name")
         private String name;
 
         @NotBlank
-        @Schema(description = "회원가입할 유저 이메일", example = "이메일")
+        @Schema(description = "회원가입할 유저 이메일", example = "name@example.com")
         private String email;
 
         @NotBlank
-        @Schema(description = "회원가입할 유저 비밀번호", example = "비밀번호")
+        @Schema(description = "회원가입할 유저 비밀번호", example = "password123")
         private String password;
 
         @NotNull
         @Schema(description = "회원가입할 유저 생년월일", example = "2024-07-20")
         private LocalDate birthDate;
 
-        @NotBlank
-        @Schema(description = "회원가입할 유저 프로필 이미지", example = "프로필")
-        private String profileImage;
     }
 
     @Builder
@@ -64,6 +62,9 @@ public class AuthDTO {
 
         @Schema(description = "회원가입한 유저 이메일", example = "이메일")
         private String email;
+
+        @Schema(description = "회원가입한 유저 프로필 사진", example = "image")
+        private String profileImage;
     }
 
     @Getter

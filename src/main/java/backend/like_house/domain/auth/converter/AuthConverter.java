@@ -11,6 +11,7 @@ public class AuthConverter {
         return AuthDTO.SignUpResponse.builder()
                 .name(user.getName())
                 .email(user.getEmail())
+                .profileImage(user.getProfileImage())
                 .build();
     }
 
@@ -21,13 +22,13 @@ public class AuthConverter {
                 .build();
     }
 
-    public static User toUser(AuthDTO.SignUpRequest signUpRequest, String password) {
+    public static User toUser(AuthDTO.SignUpRequest signUpRequest, String password, String profileImg) {
         return User.builder()
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
                 .password(password)
                 .birthDate(signUpRequest.getBirthDate())
-                .profileImage(signUpRequest.getProfileImage())
+                .profileImage(profileImg)
                 .role(Role.ROLE_USER)
                 .socialType(SocialType.LOCAL)
                 .build();
