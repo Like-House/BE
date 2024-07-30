@@ -76,7 +76,7 @@ public class CommentController {
         return ApiResponse.onSuccess("댓글 삭제 성공");
     }
 
-    @PutMapping("/{commentId}/comment-alarm")
+    @PatchMapping("/{commentId}/comment-alarm")
     @Operation(summary = "댓글 알림 끄기/켜기 API", description = "사용자가 특정 댓글 알림을 끄거나 켜는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),

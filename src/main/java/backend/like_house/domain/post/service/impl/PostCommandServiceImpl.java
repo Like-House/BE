@@ -134,6 +134,5 @@ public class PostCommandServiceImpl implements PostCommandService {
         }
 
         post.setPostAlarm(enable);
-        postRepository.save(post);
     }
 }

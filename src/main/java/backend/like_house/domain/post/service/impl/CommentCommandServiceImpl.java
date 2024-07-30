@@ -51,7 +51,6 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         }
 
         comment.setContent(request.getContent());
-        comment = commentRepository.save(comment);
 
         return CommentConverter.toCreateCommentResponse(comment);
     }
