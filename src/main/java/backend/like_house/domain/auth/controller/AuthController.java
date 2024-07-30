@@ -29,7 +29,10 @@ public class AuthController {
     @PostMapping("/signin")
     @Operation(summary = "로그인 API", description = "일반 로그인 API 입니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "시용자를 찾을 수 없습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH4002", description = "비밀번호가 일치하지 않습니다.")
+
     })
     public ApiResponse<AuthDTO.SignInResponse> signIn(@RequestBody AuthDTO.SignInRequest signInDTO) {
         return ApiResponse.onSuccess(authCommandService.signIn(signInDTO));
@@ -51,11 +54,11 @@ public class AuthController {
     @Operation(summary = "회원탈퇴 API", description = "회원탈퇴 API 입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH4001", description = "유효하지 않은 토큰입니다.")
     })
     public ApiResponse<String> deleteAccount(@RequestBody AuthDTO.TokenRequest deleteAccountRequest) {
         authCommandService.deleteUser(deleteAccountRequest);
-        return ApiResponse.onSuccess("회원 탈퇴 성공");
+        return ApiResponse.onSuccess("회원 탈퇴 성");
     }
 
 }
