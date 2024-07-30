@@ -42,29 +42,16 @@ public class PostCommandServiceImpl implements PostCommandService {
         FamilySpace familySpace = familySpaceRepository.findById(createPostRequest.getFamilySpaceId())
                 .orElseThrow(() -> new FamilySpaceException(ErrorStatus.FAMILY_SPACE_NOT_FOUND));
 
-        Post post = Post.builder()
-                .familySpace(familySpace)
-                .user(user)
-                .content(createPostRequest.getContent())
-                .build();
+        Post post = PostConverter.toPost(createPostRequest, familySpace, user);
 
         post = postRepository.save(post);
 
-        Post finalPost = post;
-        List<PostImage> postImages = imageUrls.stream()
-                .map(url -> PostImage.builder().post(finalPost).filename(url).build())
-                .collect(Collectors.toList());
-
+        List<PostImage> postImages = PostConverter.toPostImages(imageUrls, post);
         postImageRepository.saveAll(postImages);
 
-        List<UserPostTag> userPostTags = createPostRequest.getTaggedUserIds().stream()
-                .map(taggedUser -> UserPostTag.builder()
-                        .user(User.builder().id(taggedUser.getUserId()).build())
-                        .post(finalPost)
-                        .build())
-                .collect(Collectors.toList());
-
+        List<UserPostTag> userPostTags = PostConverter.toUserPostTags(createPostRequest.getTaggedUserIds(), post);
         userPostTagRepository.saveAll(userPostTags);
+
 
         return PostConverter.toCreatePostResponse(post);
     }
@@ -87,19 +74,10 @@ public class PostCommandServiceImpl implements PostCommandService {
         postImageRepository.deleteByPost(post);
         userPostTagRepository.deleteByPost(post);
 
-        List<PostImage> postImages = imageUrls.stream()
-                .map(url -> PostImage.builder().post(post).filename(url).build())
-                .collect(Collectors.toList());
-
+        List<PostImage> postImages = PostConverter.toPostImages(imageUrls, post);
         postImageRepository.saveAll(postImages);
 
-        List<UserPostTag> userPostTags = updatePostRequest.getTaggedUserIds().stream()
-                .map(taggedUser -> UserPostTag.builder()
-                        .user(User.builder().id(taggedUser.getUserId()).build())
-                        .post(post)
-                        .build())
-                .collect(Collectors.toList());
-
+        List<UserPostTag> userPostTags = PostConverter.toUserPostTags(updatePostRequest.getTaggedUserIds(), post);
         userPostTagRepository.saveAll(userPostTags);
 
         return PostConverter.toCreatePostResponse(post);
@@ -129,11 +107,7 @@ public class PostCommandServiceImpl implements PostCommandService {
             throw new PostException(ErrorStatus.ALREADY_LIKED);
         }
 
-        PostLike postLike = PostLike.builder()
-                .user(user)
-                .post(post)
-                .build();
-
+        PostLike postLike = PostConverter.toPostLike(user, post);
         postLikeRepository.save(postLike);
     }
   

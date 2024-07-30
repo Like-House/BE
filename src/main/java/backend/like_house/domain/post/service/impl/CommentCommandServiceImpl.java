@@ -34,13 +34,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
                     .orElseThrow(() -> new CommentException(ErrorStatus.COMMENT_NOT_FOUND));
         }
 
-        Comment comment = Comment.builder()
-                .post(post)
-                .user(user)
-                .parent(parent)
-                .content(request.getContent())
-                .build();
-
+        Comment comment = CommentConverter.toComment(request, post, user, parent);
         comment = commentRepository.save(comment);
 
         return CommentConverter.toCreateCommentResponse(comment);
@@ -57,7 +51,6 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         }
 
         comment.setContent(request.getContent());
-
         comment = commentRepository.save(comment);
 
         return CommentConverter.toCreateCommentResponse(comment);
