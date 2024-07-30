@@ -10,5 +10,6 @@ public interface AuthCommandService {
 
     void signOut(AuthDTO.TokenRequest request);
 
+    void deleteUser(AuthDTO.TokenRequest request);
 
 }

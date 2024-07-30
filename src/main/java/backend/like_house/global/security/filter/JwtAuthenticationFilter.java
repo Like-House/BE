@@ -24,7 +24,6 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -39,11 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (accessToken != null && !jwtUtil.isTokenExpired(accessToken)) {
 
-            // Redis에 해당 accessToken logout 여부를 확인
-            String isLogout = (String)redisTemplate.opsForValue().get(accessToken);
+            // Redis에 해당 accessToken blacklist 여부를 확인
+            String blacklist = (String)redisTemplate.opsForValue().get(accessToken);
 
-            // 로그아웃이 되어 있지 않다면 정상 진행
-            if(ObjectUtils.isEmpty(isLogout)) {
+            // 로그아웃 or 탈퇴가 되어 있지 않다면 정상 진행
+            if(ObjectUtils.isEmpty(blacklist)) {
                 try {
                     String email = jwtUtil.extractEmail(accessToken);
                     SocialType socialType = jwtUtil.extractSocialName(accessToken);

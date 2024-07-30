@@ -88,8 +88,18 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
         // 남은 Access Token 유효시간 만큼 redis에 저장
         Long expiration = jwtUtil.getExpiration(request.getAccessToken());
-        redisTemplate.opsForValue().set(request.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(request.getAccessToken(), "blacklist", expiration, TimeUnit.MILLISECONDS);
 
+    }
+
+    @Override
+    public void deleteUser(AuthDTO.TokenRequest request) {
+        signOut(request);
+
+        String email = jwtUtil.extractEmail(request.getAccessToken());
+        SocialType socialType = jwtUtil.extractSocialName(request.getAccessToken());
+        
+        authRepository.deleteByEmailAndSocialType(email, socialType);
     }
 
 }

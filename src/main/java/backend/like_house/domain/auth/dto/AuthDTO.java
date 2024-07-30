@@ -73,8 +73,6 @@ public class AuthDTO {
         @Schema(description = "로그아웃할 유저의 accessToken")
         private String accessToken;
 
-        @Schema(description = "로그아웃할 유저의 refreshToken")
-        private String refreshToken;
     }
 
 

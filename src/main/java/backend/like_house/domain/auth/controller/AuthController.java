@@ -53,9 +53,9 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다.")
     })
-    public ApiResponse<?> deleteAccount(@RequestBody AuthDTO.DeleteAccountRequest deleteAccountRequest) {
-        // 탈퇴 로직
-        return ApiResponse.onSuccess(null);
+    public ApiResponse<String> deleteAccount(@RequestBody AuthDTO.TokenRequest deleteAccountRequest) {
+        authCommandService.deleteUser(deleteAccountRequest);
+        return ApiResponse.onSuccess("회원 탈퇴 성공");
     }
 
 }
