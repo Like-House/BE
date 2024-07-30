@@ -46,12 +46,11 @@ public class PostQueryServiceImpl implements PostQueryService {
     private final ScheduleRepository scheduleRepository;
 
     @Override
-    public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Long cursor, int take) {
-        Pageable pageable = PageRequest.of(0, take);
+    public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Integer page, Integer size) {
         List<RemoveUser> removedUsers = removeUserRepository.findByFamilySpaceId(familySpaceId);
         List<Long> removedUserIds = removedUsers.stream().map(removeUser -> removeUser.getUser().getId()).collect(Collectors.toList());
 
-        List<Post> posts = postRepository.findPostsByFamilySpaceIdAndUserIdNotIn(familySpaceId, removedUserIds, cursor, pageable);
+        List<Post> posts = postRepository.findPostsByFamilySpaceIdAndUserIdNotIn(familySpaceId, removedUserIds, PageRequest.of(page, size));
         List<LocalDate> scheduledDates = scheduleRepository.findDatesWithSchedules(familySpaceId, LocalDate.now().getMonthValue());
 
         return posts.stream().map(post -> {

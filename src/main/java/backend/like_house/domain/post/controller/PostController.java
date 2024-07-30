@@ -7,6 +7,9 @@ import backend.like_house.domain.post.service.PostQueryService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
+import backend.like_house.global.validation.annotation.CheckPage;
+import backend.like_house.global.validation.annotation.CheckSize;
+import backend.like_house.global.validation.validator.CheckPageValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -27,6 +30,7 @@ public class PostController {
 
     private final PostQueryService postQueryService;
     private final PostCommandService postCommandService;
+    private final CheckPageValidator checkPageValidator;
 
     @GetMapping("/family-space/{familySpaceId}/posts")
     @Operation(summary = "홈 (게시글 조회) API", description = "특정 가족 공간의 게시글을 조회하는 API입니다.")
@@ -37,16 +41,17 @@ public class PostController {
     })
     @Parameters({
             @Parameter(name = "familySpaceId", description = "가족 공간의 ID, path variable 입니다."),
-            @Parameter(name = "cursor", description = "커서 ID, query parameter 입니다."),
-            @Parameter(name = "take", description = "가져올 게시글 수, query parameter 입니다.")
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다. query string 입니다."),
+            @Parameter(name = "size", description = "가져올 게시글의 개수입니다. 1이상의 값으로 주세요. query string 입니다.")
     })
     public ApiResponse<List<GetPostListResponse>> getPostsByFamilySpace(
             @PathVariable Long familySpaceId,
             @Parameter(hidden = true) @LoginUser User user,
-            @RequestParam(required = false) Long cursor,
-            @RequestParam int take
+            @RequestParam(required = false, name = "page", defaultValue = "1") @CheckPage Integer page,
+            @RequestParam(required = false, name = "size", defaultValue = "10") @CheckSize Integer size
     ) {
-        List<GetPostListResponse> response = postQueryService.getPostsByFamilySpace(familySpaceId, user, cursor, take);
+        Integer validatedPage = checkPageValidator.validateAndTransformPage(page);
+        List<GetPostListResponse> response = postQueryService.getPostsByFamilySpace(familySpaceId, user, validatedPage, size);
         return ApiResponse.onSuccess(response);
     }
 
