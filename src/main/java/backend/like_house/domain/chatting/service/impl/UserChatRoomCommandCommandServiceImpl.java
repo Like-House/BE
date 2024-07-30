@@ -3,6 +3,7 @@ package backend.like_house.domain.chatting.service.impl;
 import backend.like_house.domain.chatting.entity.UserChatRoom;
 import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
 import backend.like_house.domain.chatting.service.UserChatRoomCommandService;
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
@@ -20,11 +21,9 @@ public class UserChatRoomCommandCommandServiceImpl implements UserChatRoomComman
     private final UserChatRoomRepository userChatRoomRepository;
 
     @Override
-    public void updateLastTime(String email, Long chatRoomId) {
-        User user = userRepository.findByEmail(email).orElseThrow(()-> new UserException(ErrorStatus.USER_NOT_FOUND));
-        UserChatRoom userChatRoom = userChatRoomRepository.findByChatRoomIdAndUserId(chatRoomId, user.getId()).orElseThrow(()->{
-            throw new ChatRoomException(ErrorStatus.FIRST_JOIN_CHATROOM);
-        });
+    public void updateLastTime(String email, SocialType socialType, Long chatRoomId) {
+        User user = userRepository.findByEmailAndSocialType(email, socialType).orElseThrow(()-> new UserException(ErrorStatus.USER_NOT_FOUND));
+        UserChatRoom userChatRoom = userChatRoomRepository.findByChatRoomIdAndUserId(chatRoomId, user.getId()).orElseThrow(()-> new ChatRoomException(ErrorStatus.FIRST_JOIN_CHATROOM));
         userChatRoom.updateLastReadTime();
     }
 }

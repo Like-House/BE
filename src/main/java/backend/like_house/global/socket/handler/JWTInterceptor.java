@@ -1,5 +1,6 @@
 package backend.like_house.global.socket.handler;
 
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.global.security.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,13 @@ public class JWTInterceptor implements HandshakeInterceptor {
         if (request.getHeaders().getFirst("Authorization") != null) {
             String token = request.getHeaders().getFirst("Authorization").substring(7);
             String email = jwtUtil.extractEmail(token);
-            if (socketUtil.allAlReadyExistsInAnyChatRoom(email)) {
+            SocialType socialName = jwtUtil.extractSocialName(token);
+            if (socketUtil.allAlReadyExistsInAnyChatRoom(email, socialName)) {
                 response.setStatusCode(HttpStatus.METHOD_NOT_ALLOWED);
                 return false;
             }
             attributes.put("email", email);
+            attributes.put("social", socialName);
             return true;
         }
         return false;

@@ -1,9 +1,11 @@
 package backend.like_house.global.socket.handler;
 
 
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.ChatException;
 import backend.like_house.global.socket.dto.ChattingDTO.MessageDTO;
+import com.querydsl.core.Tuple;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -57,9 +59,18 @@ public class SocketUtil {
         }
     }
 
-    public void sendToUserWithOutInSessionRoom(List<String> ourEmails, MessageDTO messageDTO) {
+    public void sendToUserWithOutInSessionRoom(List<Tuple> ourUserInfo, MessageDTO messageDTO) {
         for (WebSocketSession s : chatSessionRoom.get(0L)) {
-            if (ourEmails.contains(s.getAttributes().get("email").toString())) {
+            String email = s.getAttributes().get("email").toString();
+            SocialType social = SocialType.valueOf(s.getAttributes().get("social").toString());
+
+            // 이메일과 소셜 타입을 포함하는지 확인
+            boolean userExists = ourUserInfo.stream().anyMatch(tuple ->
+                    email.equals(tuple.get(0, String.class)) &&
+                            social.equals(tuple.get(1, SocialType.class))
+            );
+
+            if (userExists) {
                 try {
                     s.sendMessage(new TextMessage(messageDTO.getContent()));
                 } catch (IOException e) {
@@ -95,11 +106,12 @@ public class SocketUtil {
         return isTrue;
     }
 
-    public Boolean allAlReadyExistsInAnyChatRoom(String email) {
+    public Boolean allAlReadyExistsInAnyChatRoom(String email, SocialType socialType) {
         for (CopyOnWriteArraySet<WebSocketSession> sessions : chatSessionRoom.values()) {
             for (WebSocketSession session : sessions) {
-                String sessionEmail = (String) session.getAttributes().get("email");
-                if (email.equals(sessionEmail)) {
+                String sessionEmail = session.getAttributes().get("email").toString();
+                SocialType sessionSocialType = SocialType.valueOf(session.getAttributes().get("social").toString());
+                if (email.equals(sessionEmail) && socialType.equals(sessionSocialType)) {
                     return true;
                 }
             }

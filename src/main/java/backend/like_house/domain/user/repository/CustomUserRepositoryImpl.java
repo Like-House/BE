@@ -1,6 +1,6 @@
 package backend.like_house.domain.user.repository;
 
-import backend.like_house.domain.user.entity.QUser;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,11 +17,11 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<String> getEmailByChatRoomId(
+    public List<Tuple> getEmailAndSocialTypeByChatRoomId(
             Long chatRoomId
     ) {
         return queryFactory
-                .select(user.email)
+                .select(user.email, user.socialType)
                 .from(userChatRoom)
                 .join(userChatRoom.user, user)
                 .join(userChatRoom.chatRoom, chatRoom)
