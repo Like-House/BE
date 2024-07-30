@@ -72,6 +72,7 @@ public enum ErrorStatus implements BaseErrorCode {
     FAILED_ENTER_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5001", "채팅 방 들어가기에 실패하였습니다"),
     FAILED_EXIT_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5002", "채팅 방 나가기에 실패하였습니다"),
     INVALID_CHATROOM(HttpStatus.INTERNAL_SERVER_ERROR, "CHATROOM5003", "정상적인 채팅방이 아닙니다. 새로운 채팅방을 다시 생성해주세요"),
+    OVERLAP_JOIN_USER(HttpStatus.BAD_REQUEST, "CHATROOM4006", "들어오는 user와 participant의 user의 id가 같으면 안됩니다."),
 
     // 가족 앨범 관련 에러
     FAMILY_ALBUM_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY_ALBUM4001", "존재하지 않는 가족 앨범 입니다."),

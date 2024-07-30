@@ -37,6 +37,11 @@ public class ChatRoomCommandServiceImpl implements ChatRoomCommandService {
     @Override
     public ChatRoom createChatRoom(CreateChatRoomRequest createChatRoomRequest, User user) {
 
+        if (createChatRoomRequest.getRoomParticipantIds().contains(user.getId())) {
+            throw new ChatRoomException(ErrorStatus.OVERLAP_JOIN_USER);
+        }
+
+        // 어노테이션으로 이미 확인
         FamilySpace familySpace = familySpaceRepository.findById(createChatRoomRequest.getFamilySpaceId()).get();
 
         // 채팅방 생성
