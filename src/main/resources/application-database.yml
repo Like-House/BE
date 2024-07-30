@@ -7,6 +7,9 @@ spring:
     username: ${LOCAL_DB_USERNAME}
     password: ${LOCAL_DB_PASSWORD}
     url: ${LOCAL_DB_URL}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
 ---
 # Dev Profile
 spring:
@@ -17,4 +20,7 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     url: ${DB_URL}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
 ---

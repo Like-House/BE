@@ -35,4 +35,8 @@ public class UserChatRoom extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime lastReadTime;
+
+    public void updateLastReadTime() {
+        this.lastReadTime = LocalDateTime.now();
+    }
 }

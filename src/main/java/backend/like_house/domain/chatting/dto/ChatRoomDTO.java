@@ -1,6 +1,7 @@
 package backend.like_house.domain.chatting.dto;
 
 import backend.like_house.global.common.enums.ChatRoomType;
+import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,8 @@ public class ChatRoomDTO {
 
     @Getter
     public static class CreateChatRoomRequest {
+        @ExistFamilySpace
+        private Long familySpaceId;
         private String title;
         private String imageUrl;
         private ChatRoomType chatRoomType;
@@ -44,12 +47,20 @@ public class ChatRoomDTO {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ChatRoomResponseList {
+        private List<ChatRoomResponse> chatRoomResponses;
+        private Boolean hasNext;
+        private Long nextCursor;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatRoomResponse {
-        private Long chatId;
-        private String content;
+        private Long chatRoomId;
+        private String title;
         private String imageUrl;
-        private LocalDateTime createAt;
-        private LocalDateTime updateAt;
     }
 
     @Getter

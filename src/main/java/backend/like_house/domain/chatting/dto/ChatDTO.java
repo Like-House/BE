@@ -17,6 +17,8 @@ public class ChatDTO {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatListResponse {
         private List<ChatResponse> chatResponseList;
+        private Long nextCursor;
+        private Boolean hasNext;
     }
 
     @Getter
@@ -26,9 +28,17 @@ public class ChatDTO {
     public static class ChatResponse {
         private Long chatId;
         private String content;
-        private Long senderId;
-        private Integer unreadUserCount;
         private LocalDateTime createAt;
-        private LocalDateTime updateAt;
+        private SenderDTO senderDTO;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class SenderDTO {
+        private Long senderId;
+        private String senderName;
+    }
+
 }

@@ -1,6 +1,7 @@
 package backend.like_house.domain.chatting.entity;
 
 import backend.like_house.domain.family_space.entity.FamilySpace;
+import backend.like_house.domain.chatting.dto.ChatRoomDTO.UpdateChatRoomRequest;
 import backend.like_house.global.common.BaseEntity;
 import backend.like_house.global.common.enums.ChatRoomType;
 import jakarta.persistence.*;
@@ -34,4 +35,12 @@ public class ChatRoom extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ChatRoomType dtype;
+
+    @Column(nullable = false)
+    private String imageUrl;
+
+    public void updateChatRoom(UpdateChatRoomRequest updateChatRoomRequest) {
+        this.title = updateChatRoomRequest.getTitle();
+        this.imageUrl = updateChatRoomRequest.getImageUrl();
+    }
 }
