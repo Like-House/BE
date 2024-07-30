@@ -47,7 +47,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
                 .orElseThrow(() -> new CommentException(ErrorStatus.COMMENT_NOT_FOUND));
 
         if (!comment.getUser().getId().equals(user.getId())) {
-            throw new CommentException(ErrorStatus.INVALID_ACCESS);
+            throw new CommentException(ErrorStatus.COMMENT_INVALID_ACCESS);
         }
 
         comment.setContent(request.getContent());
@@ -63,7 +63,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
                 .orElseThrow(() -> new CommentException(ErrorStatus.COMMENT_NOT_FOUND));
 
         if (!comment.getUser().getId().equals(user.getId())) {
-            throw new CommentException(ErrorStatus.INVALID_ACCESS);
+            throw new CommentException(ErrorStatus.COMMENT_INVALID_ACCESS);
         }
 
         commentRepository.delete(comment);
@@ -76,10 +76,9 @@ public class CommentCommandServiceImpl implements CommentCommandService {
                 .orElseThrow(() -> new CommentException(ErrorStatus.COMMENT_NOT_FOUND));
 
         if (!comment.getUser().getId().equals(user.getId())) {
-            throw new CommentException(ErrorStatus.INVALID_ACCESS);
+            throw new CommentException(ErrorStatus.COMMENT_INVALID_ACCESS);
         }
 
         comment.setCommentAlarm(enable);
-        commentRepository.save(comment);
     }
 }
