@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -18,4 +20,16 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                                       Pageable pageable);
 
     List<Post> findByUserId(Long userId);
+
+    List<Post> findByFamilySpaceId(Long familySpaceId);
+
+    @Query("SELECT p FROM Post p WHERE p.familySpace.id = :familySpaceId AND DATE(p.createdAt) = :date")
+    List<Post> findByFamilySpaceIdAndCreatedAt(@Param("familySpaceId") Long familySpaceId, @Param("date") LocalDate date);
+
+    @Query("SELECT p FROM Post p WHERE p.familySpace.id = :familySpaceId AND DATE(p.createdAt) = :date AND p.id IN :postIds")
+    List<Post> findByFamilySpaceIdAndCreatedAtAndPostIds(@Param("familySpaceId") Long familySpaceId, @Param("date") LocalDate date, @Param("postIds") List<Long> postIds);
+
+    @Query("SELECT p FROM Post p WHERE p.familySpace.id = :familySpaceId AND p.id IN :postIds")
+    List<Post> findByFamilySpaceIdAndPostIds(@Param("familySpaceId") Long familySpaceId, @Param("postIds") List<Long> postIds);
 }
+
