@@ -14,7 +14,17 @@ public class AwsDTO {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class PresignedUrlResponse {
+    public static class PresignedUrlUploadResponse {
+        private String url;
+        private String keyName;
+    }
+
+    @Schema(description = "AWS S3 URL 응답 정보")
+    @Builder
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PresignedUrlDownLoadResponse {
         private String url;
     }
 }
