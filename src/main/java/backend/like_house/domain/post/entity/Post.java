@@ -40,4 +40,12 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     @ColumnDefault("true")
     private Boolean postAlarm;
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setPostAlarm(Boolean postAlarm) {
+        this.postAlarm = postAlarm;
+    }
 }

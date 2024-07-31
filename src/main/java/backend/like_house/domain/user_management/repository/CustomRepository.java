@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CustomRepository extends JpaRepository<Custom, Long> {
 
     Optional<Custom> findByContact(Contact contact);
+    Optional<Custom> findByContactId(Long contactId);
 }

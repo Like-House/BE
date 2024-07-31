@@ -7,6 +7,9 @@ import backend.like_house.domain.post.service.PostQueryService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
+import backend.like_house.global.validation.annotation.CheckPage;
+import backend.like_house.global.validation.annotation.CheckSize;
+import backend.like_house.global.validation.validator.CheckPageValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -27,26 +30,30 @@ public class PostController {
 
     private final PostQueryService postQueryService;
     private final PostCommandService postCommandService;
+    private final CheckPageValidator checkPageValidator;
 
     @GetMapping("/family-space/{familySpaceId}/posts")
     @Operation(summary = "홈 (게시글 조회) API", description = "특정 가족 공간의 게시글을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST4001", description = "존재하지 않는 게시글 입니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PAGE4001", description = "올바르지 않은 페이징 번호입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SIZE4001", description = "올바르지 않은 사이즈입니다.")
     })
     @Parameters({
             @Parameter(name = "familySpaceId", description = "가족 공간의 ID, path variable 입니다."),
-            @Parameter(name = "cursor", description = "커서 ID, query parameter 입니다."),
-            @Parameter(name = "take", description = "가져올 게시글 수, query parameter 입니다.")
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다. query string 입니다."),
+            @Parameter(name = "size", description = "가져올 게시글의 개수입니다. 1이상의 값으로 주세요. query string 입니다.")
     })
     public ApiResponse<List<GetPostListResponse>> getPostsByFamilySpace(
             @PathVariable Long familySpaceId,
             @Parameter(hidden = true) @LoginUser User user,
-            @RequestParam(required = false) Long cursor,
-            @RequestParam int take
+            @RequestParam(required = false, name = "page", defaultValue = "1") @CheckPage Integer page,
+            @RequestParam(required = false, name = "size", defaultValue = "10") @CheckSize Integer size
     ) {
-        List<GetPostListResponse> response = postQueryService.getPostsByFamilySpace(familySpaceId, user, cursor, take);
+        Integer validatedPage = checkPageValidator.validateAndTransformPage(page);
+        List<GetPostListResponse> response = postQueryService.getPostsByFamilySpace(familySpaceId, user, validatedPage, size);
         return ApiResponse.onSuccess(response);
     }
 
@@ -114,12 +121,12 @@ public class PostController {
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다."),
     })
-    public ApiResponse<Void> deletePost(
+    public ApiResponse<String> deletePost(
             @PathVariable Long postId,
             @Parameter(hidden = true) @LoginUser User user
     ) {
         postCommandService.deletePost(postId, user);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("게시글 삭제 성공");
     }
 
     @GetMapping("/posts/my-posts")
@@ -144,12 +151,12 @@ public class PostController {
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다.")
     })
-    public ApiResponse<Void> likePost(
+    public ApiResponse<String> likePost(
             @PathVariable Long postId,
             @Parameter(hidden = true) @LoginUser User user
     ) {
         postCommandService.likePost(user, postId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("게시글 좋아요 누르기 성공");
     }
 
     @DeleteMapping("/posts/{postId}/like")
@@ -162,12 +169,12 @@ public class PostController {
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다.")
     })
-    public ApiResponse<Void> unlikePost(
+    public ApiResponse<String> unlikePost(
             @PathVariable Long postId,
             @Parameter(hidden = true) @LoginUser User user
     ) {
         postCommandService.unlikePost(user, postId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("게시글 좋아요 취소하기 성공");
     }
 
     @PutMapping("/posts/{postId}/post-alarm")
@@ -180,32 +187,13 @@ public class PostController {
             @Parameter(name = "postId", description = "게시글의 ID, path variable 입니다."),
             @Parameter(name = "enable", description = "게시물 알림 활성화 여부, query parameter 입니다.")
     })
-    public ApiResponse<Void> togglePostAlarm(
+    public ApiResponse<String> togglePostAlarm(
             @PathVariable Long postId,
             @Parameter(hidden = true) @LoginUser User user,
             @RequestParam Boolean enable
     ) {
         postCommandService.togglePostAlarm(user, postId, enable);
-        return ApiResponse.onSuccess(null);
-    }
-
-    @PutMapping("/{commentId}/comment-alarm")
-    @Operation(summary = "댓글 알림 끄기/켜기 API", description = "사용자가 특정 댓글 알림을 끄거나 켜는 API입니다.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
-    })
-    @Parameters({
-            @Parameter(name = "commentId", description = "댓글의 ID, path variable 입니다."),
-            @Parameter(name = "enable", description = "댓글 알림 활성화 여부, query parameter 입니다.")
-    })
-    public ApiResponse<Void> toggleCommentAlarm(
-            @PathVariable Long commentId,
-            @Parameter(hidden = true) @LoginUser User user,
-            @RequestParam Boolean enable
-    ) {
-        postCommandService.toggleCommentAlarm(user, commentId, enable);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("게시물 알림 끄기/켜기 성공");
     }
 }
 

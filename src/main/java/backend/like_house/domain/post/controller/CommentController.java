@@ -39,7 +39,7 @@ public class CommentController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PutMapping("/{commentId}")
+    @PatchMapping("/{commentId}")
     @Operation(summary = "댓글 수정 API", description = "특정 댓글을 수정하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -68,11 +68,30 @@ public class CommentController {
     @Parameters({
             @Parameter(name = "commentId", description = "댓글의 ID, path variable 입니다."),
     })
-    public ApiResponse<Void> deleteComment(
+    public ApiResponse<String> deleteComment(
             @PathVariable Long commentId,
             @Parameter(hidden = true) @LoginUser User user
     ) {
         commentCommandService.deleteComment(user, commentId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("댓글 삭제 성공");
+    }
+
+    @PatchMapping("/{commentId}/comment-alarm")
+    @Operation(summary = "댓글 알림 끄기/켜기 API", description = "사용자가 특정 댓글 알림을 끄거나 켜는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    })
+    @Parameters({
+            @Parameter(name = "commentId", description = "댓글의 ID, path variable 입니다."),
+            @Parameter(name = "enable", description = "댓글 알림 활성화 여부, query parameter 입니다.")
+    })
+    public ApiResponse<String> toggleCommentAlarm(
+            @PathVariable Long commentId,
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestParam Boolean enable
+    ) {
+        commentCommandService.toggleCommentAlarm(user, commentId, enable);
+        return ApiResponse.onSuccess("댓글 알림 끄기/켜기 성공");
     }
 }

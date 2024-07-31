@@ -5,7 +5,7 @@ import backend.like_house.domain.user.entity.User;
 import java.util.List;
 
 public interface PostQueryService {
-    List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Long cursor, int take);
+    List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Integer page, Integer size);
     GetPostDetailResponse getPostDetail(Long postId, User user);
     List<GetMyPostListResponse> getMyPosts(User user);
 }

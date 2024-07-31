@@ -1,18 +1,33 @@
 package backend.like_house.domain.post.service.impl;
 
-import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
-import backend.like_house.domain.post.dto.CommentDTO.CommentResponse.*;
 import backend.like_house.domain.post.converter.CommentConverter;
 import backend.like_house.domain.post.converter.PostConverter;
+import backend.like_house.domain.post.dto.PostDTO.PostResponse.*;
+import backend.like_house.domain.post.dto.CommentDTO.CommentResponse.*;
 import backend.like_house.domain.post.entity.Comment;
 import backend.like_house.domain.post.entity.Post;
+import backend.like_house.domain.post.entity.PostImage;
+import backend.like_house.domain.post.repository.*;
 import backend.like_house.domain.post.service.PostQueryService;
+import backend.like_house.domain.schedule.repository.ScheduleRepository;
 import backend.like_house.domain.user.entity.User;
+import backend.like_house.domain.user_management.entity.Contact;
+import backend.like_house.domain.user_management.entity.Custom;
+import backend.like_house.domain.user_management.entity.RemoveUser;
+import backend.like_house.domain.user_management.repository.ContactRepository;
+import backend.like_house.domain.user_management.repository.CustomRepository;
+import backend.like_house.domain.user_management.repository.RemoveUserRepository;
+import backend.like_house.global.error.code.status.ErrorStatus;
+import backend.like_house.global.error.handler.PostException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,62 +35,86 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class PostQueryServiceImpl implements PostQueryService {
 
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final PostImageRepository postImageRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final CustomRepository customRepository;
+    private final ContactRepository contactRepository;
+    private final UserPostTagRepository userPostTagRepository;
+    private final RemoveUserRepository removeUserRepository;
+    private final ScheduleRepository scheduleRepository;
+
     @Override
-    public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Long cursor, int take) {
-        List<Post> posts = null;
+    public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Integer page, Integer size) {
+        List<RemoveUser> removedUsers = removeUserRepository.findByFamilySpaceId(familySpaceId);
+        List<Long> removedUserIds = removedUsers.stream().map(removeUser -> removeUser.getUser().getId()).collect(Collectors.toList());
 
-        List<GetPostListResponse> postListResponses = posts.stream().map(post -> {
-            String authorNickname = null;
-            String profileImage = null;
-            int likeCount = 0;
-            int commentCount = 0;
-            List<String> imageUrls = null;
-            return PostConverter.toGetPostListResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls);
+        List<Post> posts = postRepository.findPostsByFamilySpaceIdAndUserIdNotIn(familySpaceId, removedUserIds, PageRequest.of(page, size));
+        List<LocalDate> scheduledDates = scheduleRepository.findDatesWithSchedules(familySpaceId, LocalDate.now().getMonthValue());
+
+        return posts.stream().map(post -> {
+            String authorNickname = getAuthorNickname(user, post.getUser());
+            String profileImage = post.getUser().getProfileImage();
+            int likeCount = postLikeRepository.countByPostId(post.getId());
+            int commentCount = commentRepository.countByPostId(post.getId());
+            List<String> imageUrls = postImageRepository.findByPostId(post.getId())
+                    .stream().map(PostImage::getFilename).collect(Collectors.toList());
+            boolean owner = post.getUser().getId().equals(user.getId());
+            return PostConverter.toGetPostListResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls, owner, scheduledDates);
         }).collect(Collectors.toList());
-
-        // TODO: 가족 공간 ID로 게시글을 가져오는 로직
-        // (글 쓴 사람) post에 있는 userId == profileId이고 (사용자) userId == contact의 user_id인 nickname
-        return postListResponses;
     }
 
     @Override
     public GetPostDetailResponse getPostDetail(Long postId, User user) {
-        Post post = null;
-        String authorNickname = null;
-        String profileImage = null;
-        int likeCount = 0;
-        int commentCount = 0;
-        List<String> imageUrls = null;
-        List<FamilyTagResponse> taggedUsers = null;
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(ErrorStatus.POST_NOT_FOUND));
 
-        List<Comment> comments = null;
+        String authorNickname = getAuthorNickname(user, post.getUser());
+        String profileImage = post.getUser().getProfileImage();
+        int likeCount = postLikeRepository.countByPostId(post.getId());
+        int commentCount = commentRepository.countByPostId(post.getId());
+        List<String> imageUrls = postImageRepository.findByPostId(post.getId())
+                .stream().map(PostImage::getFilename).collect(Collectors.toList());
+        List<FamilyTagResponse> taggedUsers = userPostTagRepository.findByPostId(post.getId())
+                .stream().map(tag -> new FamilyTagResponse(tag.getUser().getId(), tag.getUser().getName()))
+                .collect(Collectors.toList());
+
+        List<Comment> comments = commentRepository.findByPostId(postId);
         List<GetCommentResponse> commentResponses = comments.stream()
                 .map(comment -> {
-                    // User user = userRepository.findById(comment.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
-                    // String userNickname = user.getNickname();
-                    String userNickname = null;
+                    String userNickname = getAuthorNickname(user, comment.getUser());
                     return CommentConverter.toGetCommentResponse(comment, userNickname);
                 })
                 .collect(Collectors.toList());
 
-        // TODO: postId를 사용하여 특정 게시글의 상세 정보를 조회하는 로직
-        // 1. postId를 기반으로 게시글 조회
-        // 2. 조회한 게시글의 상세 정보 반환
-        // 3. + 댓글 정보
         return PostConverter.toGetPostDetailResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls, taggedUsers, commentResponses);
     }
 
     @Override
     public List<GetMyPostListResponse> getMyPosts(User user) {
-        List<Post> posts = null;
+        List<Post> posts = postRepository.findByUserId(user.getId());
 
-        // TODO: userId를 기반으로 사용자가 작성한 게시글을 조회하는 로직
         return posts.stream()
                 .map(post -> {
-                    List<FamilyTagResponse> taggedUsers = null; // 1. 태그된 사용자 리스트 조회
-                    List<String> imageUrls = null; // 2. 이미지 URL 리스트 조회
+                    List<FamilyTagResponse> taggedUsers = userPostTagRepository.findByPostId(post.getId())
+                            .stream().map(tag -> new FamilyTagResponse(tag.getUser().getId(), tag.getUser().getName()))
+                            .collect(Collectors.toList());
+                    List<String> imageUrls = postImageRepository.findByPostId(post.getId())
+                            .stream().map(PostImage::getFilename).collect(Collectors.toList());
                     return PostConverter.toGetMyPostListResponse(post, taggedUsers, imageUrls);
                 })
                 .collect(Collectors.toList());
+    }
+
+    private String getAuthorNickname(User user, User postUser) {
+        Optional<Contact> contact = contactRepository.findByUserIdAndProfileId(user.getId(), postUser.getId());
+        if (contact.isPresent()) {
+            Optional<Custom> custom = customRepository.findByContactId(contact.get().getId());
+            if (custom.isPresent()) {
+                return custom.get().getNickname();
+            }
+        }
+        return postUser.getName();
     }
 }

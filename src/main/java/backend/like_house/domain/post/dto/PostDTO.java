@@ -1,6 +1,8 @@
 package backend.like_house.domain.post.dto;
 
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,8 +17,6 @@ public class PostDTO {
 
         @Getter
         public static class CreatePostRequest {
-            @NotNull
-            private Long userId;
             @NotNull
             private Long familySpaceId;
             private String content;
@@ -48,6 +48,8 @@ public class PostDTO {
             private List<String> imageUrls;
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
+            private boolean owner;
+            private List<LocalDate> scheduledDates;
         }
 
         @Builder

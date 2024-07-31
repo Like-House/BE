@@ -53,4 +53,12 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     @ColumnDefault("true")
     private Boolean commentAlarm;
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setCommentAlarm(Boolean commentAlarm) {
+        this.commentAlarm = commentAlarm;
+    }
 }

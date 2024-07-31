@@ -3,13 +3,9 @@ package backend.like_house.global.s3;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.FileConversionException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,8 +28,7 @@ public class S3Manager {
     public String uploadFile(MultipartFile multipartFile) {
         File file = convertMultipartFileToFile(multipartFile);
         String fileName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
-        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file));
         file.delete();
         return amazonS3.getUrl(bucketName, fileName).toString();
     }

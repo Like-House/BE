@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     Optional<Contact> findByUserAndFamilySpaceAndProfileId(User user, FamilySpace familySpace, Long profileId);
+    Optional<Contact> findByUserIdAndProfileId(Long userId, Long profileId);
 }
