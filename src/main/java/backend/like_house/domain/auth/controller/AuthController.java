@@ -58,7 +58,7 @@ public class AuthController {
     })
     public ApiResponse<String> deleteAccount(@RequestBody AuthDTO.TokenRequest deleteAccountRequest) {
         authCommandService.deleteUser(deleteAccountRequest);
-        return ApiResponse.onSuccess("회원 탈퇴 성");
+        return ApiResponse.onSuccess("회원 탈퇴 성공");
     }
 
 }
