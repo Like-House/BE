@@ -29,7 +29,7 @@ public class UserController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<UserDTO.getProfileResponse> getProfile(@Parameter(hidden = true) @LoginUser User user) {
+    public ApiResponse<UserDTO.GetProfileResponse> getProfile(@Parameter(hidden = true) @LoginUser User user) {
         return ApiResponse.onSuccess(userQueryService.getUserProfile(user));
     }
 
@@ -38,8 +38,9 @@ public class UserController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<?> updateProfile(@RequestBody UserDTO.updateProfileRequest updateProfileRequest) {
-        return ApiResponse.onSuccess(null);
+    public ApiResponse<UserDTO.GetProfileResponse> updateProfile(@Parameter(hidden = true) @LoginUser User user, @RequestBody UserDTO.UpdateProfileRequest updateProfileRequest) {
+        User requestUser = userCommandService.updateUserProfile(user, updateProfileRequest);
+        return ApiResponse.onSuccess(userQueryService.getUserProfile(requestUser));
     }
 
     @PatchMapping("/password")

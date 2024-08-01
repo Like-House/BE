@@ -1,7 +1,10 @@
 package backend.like_house.domain.user.entity;
 
 import backend.like_house.domain.family_space.entity.FamilySpace;
+import backend.like_house.domain.schedule.dto.ScheduleDTO;
+import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.global.common.BaseEntity;
+import backend.like_house.global.common.enums.ScheduleType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -75,6 +78,12 @@ public class User extends BaseEntity {
 
     public void setIsRoomManager(Boolean isRoomManager) {
         this.isRoomManager = isRoomManager;
+    }
+
+    public void setUpdateUserProfile(UserDTO.UpdateProfileRequest request) {
+        this.name = request.getName() != null ? request.getName() : this.name;
+        this.profileImage = request.getProfileImage() != null ? request.getProfileImage() : this.getProfileImage();
+        this.birthDate = request.getBirthDate() != null ? request.getBirthDate() : this.getBirthDate();
     }
 
     public void commentAlarmSetting() {

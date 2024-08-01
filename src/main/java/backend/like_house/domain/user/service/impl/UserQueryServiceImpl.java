@@ -23,7 +23,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public UserDTO.getProfileResponse getUserProfile(User user) {
+    public UserDTO.GetProfileResponse getUserProfile(User user) {
         return UserConverter.toGetProfileResponseDTO(user);
     }
 }

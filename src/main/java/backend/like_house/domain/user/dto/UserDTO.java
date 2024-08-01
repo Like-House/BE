@@ -12,14 +12,14 @@ public class UserDTO {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class getProfileResponse {
+    public static class GetProfileResponse {
         private String name;
         private String profileImage;
         private LocalDate birthDate;
     }
 
     @Getter
-    public static class updateProfileRequest {
+    public static class UpdateProfileRequest {
 
         @Schema(description = "수정할 프로필 이미지 url")
         private String profileImage;

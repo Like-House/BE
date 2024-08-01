@@ -1,4 +1,6 @@
 package backend.like_house.domain.user.converter;
+
+import backend.like_house.domain.user.dto.UserDTO.*;
 import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.domain.user.entity.User;
 
@@ -15,8 +17,8 @@ public class UserConverter {
                     .build();
     }
 
-    public static UserDTO.getProfileResponse toGetProfileResponseDTO (User user) {
-        return UserDTO.getProfileResponse.builder()
+    public static GetProfileResponse toGetProfileResponseDTO (User user) {
+        return GetProfileResponse.builder()
                 .name(user.getName())
                 .profileImage(user.getProfileImage())
                 .birthDate(user.getBirthDate())
