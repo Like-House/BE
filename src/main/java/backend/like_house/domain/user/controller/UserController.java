@@ -5,6 +5,7 @@ import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.domain.user.dto.UserDTO.SettingAlarmResponse;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.service.UserCommandService;
+import backend.like_house.domain.user.service.UserQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,10 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "사용자 정보 수정", description = "사용자 정보 수정 관련 API입니다.")
 @RequestMapping("/api/v0/users")
@@ -24,6 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserCommandService userCommandService;
+    private final UserQueryService userQueryService;
+
+    @GetMapping("/profile")
+    @Operation(summary = "사용자 정보 조회 API", description = "프로필 이미지, 이름, 생년월일 정보를 불러옵니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<UserDTO.getProfileResponse> getProfile(@Parameter(hidden = true) @LoginUser User user) {
+        return ApiResponse.onSuccess(userQueryService.getUserProfile(user));
+    }
 
     @PatchMapping("/profile")
     @Operation(summary = "사용자 정보 수정 API", description = "프로필 이미지, 이름, 생년월일을 수정합니다.")
