@@ -32,7 +32,7 @@ public class UserDTO {
     }
 
     @Getter
-    public static class changePasswordRequest {
+    public static class UpdatePasswordRequest {
         @NotBlank
         @Schema(description = "기존 비밀번호")
         private String currentPassword;

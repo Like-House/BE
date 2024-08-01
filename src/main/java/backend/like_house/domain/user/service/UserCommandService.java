@@ -6,6 +6,8 @@ import backend.like_house.domain.user.entity.User;
 public interface UserCommandService {
     User updateUserProfile(User user, UpdateProfileRequest request);
     
+    User updateUserPasswrod(User user, UpdatePasswordRequest request);
+    
     void commentAlarmSetting(User user);
 
     void commentReplyAlarmSetting(User user);

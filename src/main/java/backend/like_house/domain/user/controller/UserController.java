@@ -46,10 +46,12 @@ public class UserController {
     @PatchMapping("/password")
     @Operation(summary = "사용자 비밀번호 수정 API", description = "사용자의 비밀번호를 수정합니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4009", description = "기존 비밀번호와 동일합니다"),
     })
-    public ApiResponse<?> changePassword(@RequestBody UserDTO.changePasswordRequest changePasswordRequest) {
-        return ApiResponse.onSuccess(null);
+    public ApiResponse<String> changePassword(@Parameter(hidden = true) @LoginUser User user, @RequestBody UserDTO.UpdatePasswordRequest changePasswordRequest) {
+        userCommandService.updateUserPasswrod(user, changePasswordRequest);
+        return ApiResponse.onSuccess("비밀번호 변경 성공");
     }
 
     @PatchMapping("/alarms/comments")

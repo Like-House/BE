@@ -86,6 +86,10 @@ public class User extends BaseEntity {
         this.birthDate = request.getBirthDate() != null ? request.getBirthDate() : this.getBirthDate();
     }
 
+    public void setUpdateUserPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
     public void commentAlarmSetting() {
         this.commentAlarm = !this.commentAlarm;
     }
