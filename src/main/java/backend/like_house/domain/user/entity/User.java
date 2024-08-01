@@ -77,4 +77,7 @@ public class User extends BaseEntity {
         this.isRoomManager = isRoomManager;
     }
 
+    public void commentAlarmSetting() {
+        this.commentAlarm = !this.commentAlarm;
+    }
 }

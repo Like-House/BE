@@ -2,7 +2,10 @@ package backend.like_house.domain.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -31,5 +34,17 @@ public class UserDTO {
         @Schema(description = "수정할 비밀번호")
         private String newPassword;
 
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SettingAlarmResponse {
+        private Long userId;
+        private Boolean commentAlarmStatus;
+        private Boolean commentReplyAlarmStatus;
+        private Boolean eventAlarmStatus;
+        private Boolean chatAlarmStatus;
     }
 }
