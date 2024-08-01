@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PatchMapping("/alarms/comments")
-    @Operation(summary = "댓글 알림 설정 API", description = "사용자의 댓글 알림이 on이라면 off로 off라며 on으로 수정 합니다.")
+    @Operation(summary = "댓글 알림 설정 API", description = "사용자의 댓글 알림이 on이라면 off로 off라면 on으로 수정 합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PatchMapping("/alarms/comment-reply")
-    @Operation(summary = "대댓글 알림 설정 API", description = "사용자의 대댓글 알림이 on이라면 off로 off라며 on으로 수정 합니다.")
+    @Operation(summary = "대댓글 알림 설정 API", description = "사용자의 대댓글 알림이 on이라면 off로 off라면 on으로 수정 합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PatchMapping("/alarms/events")
-    @Operation(summary = "이벤트 알림 설정 API", description = "사용자의 이벤트 알림이 on이라면 off로 off라며 on으로 수정 합니다.")
+    @Operation(summary = "이벤트 알림 설정 API", description = "사용자의 이벤트 알림이 on이라면 off로 off라면 on으로 수정 합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @PatchMapping("/alarms/chats")
-    @Operation(summary = "채팅 알림 설정 API", description = "사용자의 채팅 알림이 on이라면 off로 off라며 on으로 수정 합니다.")
+    @Operation(summary = "채팅 알림 설정 API", description = "사용자의 채팅 알림이 on이라면 off로 off라면 on으로 수정 합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
