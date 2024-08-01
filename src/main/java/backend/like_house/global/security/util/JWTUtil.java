@@ -19,7 +19,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -154,5 +153,15 @@ public class JWTUtil {
     // RefreshToken 헤더 설정
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
         response.setHeader(refreshHeader, refreshToken);
+    }
+
+    //JWT 토큰의 만료시간
+    public Long getExpiration(String accessToken){
+
+        Date expiration = Jwts.parserBuilder().setSigningKey(secretKey)
+                .build().parseClaimsJws(accessToken).getBody().getExpiration();
+
+        long now = new Date().getTime();
+        return expiration.getTime() - now;
     }
 }
