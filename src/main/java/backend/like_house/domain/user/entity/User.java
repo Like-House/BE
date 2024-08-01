@@ -88,4 +88,8 @@ public class User extends BaseEntity {
     public void eventAlarmSetting() {
         this.eventAlarm = !this.eventAlarm;
     }
+
+    public void chatAlarmSetting() {
+        this.chatAlarm = !this.chatAlarm;
+    }
 }

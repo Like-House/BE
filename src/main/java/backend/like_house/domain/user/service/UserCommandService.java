@@ -8,4 +8,6 @@ public interface UserCommandService {
     void commentReplyAlarmSetting(User user);
 
     void eventAlarmSetting(User user);
+
+    void chatAlarmSetting(User user);
 }

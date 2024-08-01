@@ -25,4 +25,9 @@ public class UserCommandServiceImpl implements UserCommandService {
     public void eventAlarmSetting(User user) {
         user.eventAlarmSetting();
     }
+
+    @Override
+    public void chatAlarmSetting(User user) {
+        user.chatAlarmSetting();
+    }
 }

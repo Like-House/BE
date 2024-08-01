@@ -73,5 +73,16 @@ public class UserController {
         return ApiResponse.onSuccess(UserConverter.toSettingAlarmResponse(user));
     }
 
+    @PatchMapping("/alarms/chats")
+    @Operation(summary = "채팅 알림 설정 API", description = "사용자의 채팅 알림이 on이라면 off로 off라며 on으로 수정 합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<SettingAlarmResponse> chatAlarmSetting(@Parameter(hidden = true) @LoginUser User user) {
+        userCommandService.chatAlarmSetting(user);
+        return ApiResponse.onSuccess(UserConverter.toSettingAlarmResponse(user));
+    }
+
+
 
 }
