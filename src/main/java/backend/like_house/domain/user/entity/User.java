@@ -84,4 +84,8 @@ public class User extends BaseEntity {
     public void commentReplyAlarmSetting() {
         this.commentReplyAlarm = !this.commentReplyAlarm;
     }
+
+    public void eventAlarmSetting() {
+        this.eventAlarm = !this.eventAlarm;
+    }
 }

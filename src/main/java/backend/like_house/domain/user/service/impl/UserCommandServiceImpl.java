@@ -20,4 +20,9 @@ public class UserCommandServiceImpl implements UserCommandService {
     public void commentReplyAlarmSetting(User user) {
         user.commentReplyAlarmSetting();
     }
+
+    @Override
+    public void eventAlarmSetting(User user) {
+        user.eventAlarmSetting();
+    }
 }
