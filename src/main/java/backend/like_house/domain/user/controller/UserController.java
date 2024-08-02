@@ -50,7 +50,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4009", description = "기존 비밀번호와 동일합니다"),
     })
     public ApiResponse<String> changePassword(@Parameter(hidden = true) @LoginUser User user, @RequestBody UserDTO.UpdatePasswordRequest changePasswordRequest) {
-        userCommandService.updateUserPasswrod(user, changePasswordRequest);
+        userCommandService.updateUserPassword(user, changePasswordRequest);
         return ApiResponse.onSuccess("비밀번호 변경 성공");
     }
 
