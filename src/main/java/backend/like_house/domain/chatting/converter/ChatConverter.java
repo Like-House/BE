@@ -39,8 +39,8 @@ public class ChatConverter {
         User user = chat.getUser();
 
         ChatDTO.SenderDTO senderDTO = ChatDTO.SenderDTO.builder()
-                .senderId(user.getId())
-                .senderName(user.getName())
+                .senderId(user == null ? null : user.getId())
+                .senderName(user == null ? "알 수 없음" : user.getName())
                 .build();
 
         return ChatDTO.ChatResponse.builder()
