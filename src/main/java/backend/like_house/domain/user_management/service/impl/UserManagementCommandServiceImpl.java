@@ -1,6 +1,9 @@
 package backend.like_house.domain.user_management.service.impl;
 
+import backend.like_house.domain.chatting.repository.ChatRepository;
+import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
 import backend.like_house.domain.family_space.entity.FamilySpace;
+import backend.like_house.domain.notification.repository.NotificationRepository;
 import backend.like_house.domain.post.repository.CommentRepository;
 import backend.like_house.domain.post.repository.PostLikeRepository;
 import backend.like_house.domain.post.repository.PostRepository;
@@ -25,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserManagementCommandServiceImpl implements UserManagementCommandService {
 
-    private final UserManagementCommandService self;
     private final ContactRepository contactRepository;
     private final CustomRepository customRepository;
     private final RemoveUserRepository removeUserRepository;
@@ -34,6 +36,9 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
     private final PostLikeRepository postLikeRepository;
     private final UserPostTagRepository userPostTagRepository;
     private final CommentRepository commentRepository;
+    private final UserChatRoomRepository userChatRoomRepository;
+    private final ChatRepository chatRepository;
+    private final NotificationRepository notificationRepository;
 
     @Transactional
     @Override
@@ -71,44 +76,69 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
         FamilySpace familySpace = manager.getFamilySpace();
         blockUser.setFamilySpace(null);
 
-        self.deleteCustomContactByUser(blockUser, familySpace);
-        self.deletePostLikesByUser(blockUser);
-        self.deleteCommentsByUser(blockUser);
-        self.deletePostsByUser(blockUser);
-        self.deletePostTagByUser(blockUser);
-        self.deletePostsWithoutTags();
-
-        // TODO 채팅, 알림
+        deleteCustomContactByUser(blockUser, familySpace);
+        deletePostLikesByUser(blockUser);
+        deleteCommentsByUser(blockUser);
+        deletePostsByUser(blockUser);
+        deletePostTagByUser(blockUser);
+        deletePostsWithoutTags();
+        deleteUserChatRoomByUser(blockUser);
+        setChatUserNullByUser(blockUser);
+        deleteNotification(blockUser, familySpace);
 
         blockUserRepository.save(UserManagementConverter.toBlockUser(blockUser, familySpace));
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public void deleteNotification(User blockUser, FamilySpace familySpace) {
+        notificationRepository.deleteByUserAndFamilySpace(blockUser, familySpace);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public void deleteUserChatRoomByUser(User blockUser) {
+        userChatRoomRepository.deleteByUser(blockUser);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public void setChatUserNullByUser(User blockUser) {
+        chatRepository.setChatUserNullByUser(blockUser);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
     public void deleteCustomContactByUser(User blockUser, FamilySpace familySpace) {
         contactRepository.deleteByFamilySpaceAndProfileId(familySpace, blockUser.getId());
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
     public void deletePostLikesByUser(User blockUser) {
         postLikeRepository.deleteByUser(blockUser);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
     public void deletePostsWithoutTags() {
         postRepository.deletePostsWithoutTags();
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
     public void deletePostTagByUser(User blockUser) {
         userPostTagRepository.deleteAllByUser(blockUser);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
     public void deleteCommentsByUser(User blockUser) {
         commentRepository.deleteByUser(blockUser);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
     public void deletePostsByUser(User blockUser) {
         postRepository.deleteByUser(blockUser);
     }

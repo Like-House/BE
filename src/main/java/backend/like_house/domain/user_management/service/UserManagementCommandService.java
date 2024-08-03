@@ -15,7 +15,11 @@ public interface UserManagementCommandService {
 
     void blockUser(User manager, User blockUser);
 
-    void releaseBlockUser(User manager, User blockUser);
+    void deleteNotification(User blockUser, FamilySpace familySpace);
+
+    void deleteUserChatRoomByUser(User blockUser);
+
+    void setChatUserNullByUser(User blockUser);
 
     void deleteCustomContactByUser(User blockUser, FamilySpace familySpace);
 
@@ -28,4 +32,6 @@ public interface UserManagementCommandService {
     void deleteCommentsByUser(User blockUser);
 
     void deletePostsByUser(User blockUser);
+
+    void releaseBlockUser(User manager, User blockUser);
 }
