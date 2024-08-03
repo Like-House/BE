@@ -1,6 +1,7 @@
 package backend.like_house.global.socket.handler;
 
 
+import backend.like_house.domain.chatting.dto.ChatDTO;
 import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.ChatException;
@@ -47,11 +48,11 @@ public class SocketUtil {
     }
 
 
-    public void sendToUserWithOutMe(WebSocketSession ownSession, MessageDTO messageDTO) {
+    public void sendToUserWithOutMe(WebSocketSession ownSession, MessageDTO messageDTO, ChatDTO.ChatResponse chatResponse) {
         for (WebSocketSession s : chatSessionRoom.get(messageDTO.getChatRoomId())) {
             if (!s.equals(ownSession)) {
                 try {
-                    s.sendMessage(new TextMessage(messageDTO.getContent()));
+                    s.sendMessage(new TextMessage(toChatMessageConverter(chatResponse)));
                 } catch (IOException e) {
                     throw new ChatException(ErrorStatus.CHAT_NOT_SEND);
                 }
@@ -59,7 +60,7 @@ public class SocketUtil {
         }
     }
 
-    public void sendToUserWithOutInSessionRoom(List<Tuple> ourUserInfo, MessageDTO messageDTO) {
+    public void sendToUserWithOutInSessionRoom(List<Tuple> ourUserInfo, ChatDTO.ChatResponse chatResponse) {
         for (WebSocketSession s : chatSessionRoom.get(0L)) {
             String email = s.getAttributes().get("email").toString();
             SocialType social = SocialType.valueOf(s.getAttributes().get("social").toString());
@@ -72,7 +73,7 @@ public class SocketUtil {
 
             if (userExists) {
                 try {
-                    s.sendMessage(new TextMessage(messageDTO.getContent()));
+                    s.sendMessage(new TextMessage(toChatMessageConverter(chatResponse)));
                 } catch (IOException e) {
                     throw new ChatException(ErrorStatus.CHAT_NOT_SEND);
                 }
@@ -117,5 +118,11 @@ public class SocketUtil {
             }
         }
         return false;
+    }
+
+    private String toChatMessageConverter(ChatDTO.ChatResponse chatResponse) {
+        return String.format("{\"content\": \"%s\", \"senderDTO\": {\"senderId\": %d, \"senderName\": \"%s\"}}",
+                chatResponse.getContent(), chatResponse.getSenderDTO().getSenderId(), chatResponse.getSenderDTO().getSenderName());
+
     }
 }

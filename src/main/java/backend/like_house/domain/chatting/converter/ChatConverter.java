@@ -35,7 +35,7 @@ public class ChatConverter {
                 .build();
     }
 
-    private static ChatDTO.ChatResponse toChatResponse(Chat chat) {
+    public static ChatDTO.ChatResponse toChatResponse(Chat chat) {
         User user = chat.getUser();
 
         ChatDTO.SenderDTO senderDTO = ChatDTO.SenderDTO.builder()
