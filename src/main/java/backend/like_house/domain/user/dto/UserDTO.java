@@ -2,17 +2,24 @@ package backend.like_house.domain.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 public class UserDTO {
 
+    @Builder
     @Getter
-    public static class updateProfileRequest {
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class GetProfileResponse {
+        private String name;
+        private String profileImage;
+        private LocalDate birthDate;
+    }
+
+    @Getter
+    public static class UpdateProfileRequest {
 
         @Schema(description = "수정할 프로필 이미지 url")
         private String profileImage;
@@ -25,7 +32,7 @@ public class UserDTO {
     }
 
     @Getter
-    public static class changePasswordRequest {
+    public static class UpdatePasswordRequest {
         @NotBlank
         @Schema(description = "기존 비밀번호")
         private String currentPassword;
