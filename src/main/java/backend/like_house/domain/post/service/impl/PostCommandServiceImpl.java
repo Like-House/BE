@@ -36,9 +36,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public CreatePostResponse createPost(CreatePostRequest createPostRequest, List<MultipartFile> files, User user) {
-        List<String> imageUrls = s3Manager.uploadFiles(files);
-
+    public CreatePostResponse createPost(CreatePostRequest createPostRequest, User user) {
         FamilySpace familySpace = familySpaceRepository.findById(createPostRequest.getFamilySpaceId())
                 .orElseThrow(() -> new FamilySpaceException(ErrorStatus.FAMILY_SPACE_NOT_FOUND));
 
@@ -46,7 +44,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
         post = postRepository.save(post);
 
-        List<PostImage> postImages = PostConverter.toPostImages(imageUrls, post);
+        List<PostImage> postImages = PostConverter.toPostImages(createPostRequest.getImageUrls(), post);
         postImageRepository.saveAll(postImages);
 
         List<UserPostTag> userPostTags = PostConverter.toUserPostTags(createPostRequest.getTaggedUserIds(), post);
@@ -58,9 +56,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, List<MultipartFile> files, User user) {
-        List<String> imageUrls = s3Manager.uploadFiles(files);
-
+    public CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, User user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(ErrorStatus.POST_NOT_FOUND));
 
@@ -74,7 +70,7 @@ public class PostCommandServiceImpl implements PostCommandService {
         postImageRepository.deleteByPost(post);
         userPostTagRepository.deleteByPost(post);
 
-        List<PostImage> postImages = PostConverter.toPostImages(imageUrls, post);
+        List<PostImage> postImages = PostConverter.toPostImages(updatePostRequest.getImageUrls(), post);
         postImageRepository.saveAll(postImages);
 
         List<UserPostTag> userPostTags = PostConverter.toUserPostTags(updatePostRequest.getTaggedUserIds(), post);

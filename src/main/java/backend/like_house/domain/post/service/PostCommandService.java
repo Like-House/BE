@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface PostCommandService {
-    CreatePostResponse createPost(CreatePostRequest createPostRequest, List<MultipartFile> files, User user);
-    CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, List<MultipartFile> files, User user);
+    CreatePostResponse createPost(CreatePostRequest createPostRequest, User user);
+    CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, User user);
     void deletePost(Long postId, User user);
     void likePost(User user, Long postId);
     void unlikePost(User user, Long postId);

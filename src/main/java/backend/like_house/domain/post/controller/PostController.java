@@ -84,10 +84,9 @@ public class PostController {
     })
     public ApiResponse<CreatePostResponse> createPost(
             @Parameter(hidden = true) @LoginUser User user,
-            @RequestPart("createPostRequest") @Valid CreatePostRequest createPostRequest,
-            @RequestPart("files") List<MultipartFile> files
+            @RequestBody CreatePostRequest createPostRequest
     ) {
-        CreatePostResponse response = postCommandService.createPost(createPostRequest, files, user);
+        CreatePostResponse response = postCommandService.createPost(createPostRequest, user);
         return ApiResponse.onSuccess(response);
     }
 
@@ -104,10 +103,9 @@ public class PostController {
     public ApiResponse<CreatePostResponse> updatePost(
             @PathVariable Long postId,
             @Parameter(hidden = true) @LoginUser User user,
-            @RequestPart("updatePostRequest") @Valid UpdatePostRequest updatePostRequest,
-            @RequestPart("files") List<MultipartFile> files
+            @RequestBody UpdatePostRequest updatePostRequest
     ) {
-        CreatePostResponse response = postCommandService.updatePost(postId, updatePostRequest, files, user);
+        CreatePostResponse response = postCommandService.updatePost(postId, updatePostRequest, user);
         return ApiResponse.onSuccess(response);
     }
 
