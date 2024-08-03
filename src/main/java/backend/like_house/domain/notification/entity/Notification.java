@@ -44,7 +44,7 @@ public class Notification extends BaseEntity {
     private NotificationType dtype;
 
     @Column(nullable = false)
-    private String writer;
+    private Long writerId;
 
     @Column(nullable = false)
     private String content;
