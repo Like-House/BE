@@ -81,7 +81,7 @@ public class ChatRoomController {
     })
     @PatchMapping("")
     public ApiResponse<UpdateChatRoomResponse> updateChatRoom(
-            @RequestBody UpdateChatRoomRequest updateChatRoomRequest
+            @RequestBody @Valid UpdateChatRoomRequest updateChatRoomRequest
     ) {
         ChatRoom chatRoom = chatRoomCommandService.updateChatRoom(updateChatRoomRequest);
         return ApiResponse.onSuccess(ChatRoomConverter.toUpdateChatRoomResponse(chatRoom));

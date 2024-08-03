@@ -89,6 +89,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 사이즈 관련 에러
     INVALID_SIZE_NUMBER(HttpStatus.BAD_REQUEST, "SIZE4001", "올바르지 않은 사이즈입니다."),
 
+    // AWS 관련 에러
+    KEYNAME_NOT_FOUND(HttpStatus.BAD_REQUEST, "AWS4001", "찾을 수 없는 KEYNAME입니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");
 
