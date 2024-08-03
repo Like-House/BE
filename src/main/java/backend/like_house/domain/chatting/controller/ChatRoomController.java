@@ -100,7 +100,7 @@ public class ChatRoomController {
         return ApiResponse.onSuccess("해당 chatroom을 나갔습니다.");
     }
 
-    @GetMapping("/chat-rooms/{chatRoomId}/users")
+    @GetMapping("/{chatRoomId}/users")
     @Operation(summary = "채팅 방에 속해 있는 유저 불러 오기 API", description = "채팅 방에 속해 있는 유저 불러 올 수 있습 니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
