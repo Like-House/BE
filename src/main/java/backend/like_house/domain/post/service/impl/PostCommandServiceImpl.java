@@ -14,20 +14,16 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.FamilySpaceException;
 import backend.like_house.global.error.handler.PostException;
-import backend.like_house.global.s3.S3Manager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostCommandServiceImpl implements PostCommandService {
 
-    private final S3Manager s3Manager;
     private final PostRepository postRepository;
     private final FamilySpaceRepository familySpaceRepository;
     private final PostImageRepository postImageRepository;
