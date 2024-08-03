@@ -32,7 +32,7 @@ public class Schedule extends BaseEntity {
     private FamilySpace familySpace;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "creator_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
