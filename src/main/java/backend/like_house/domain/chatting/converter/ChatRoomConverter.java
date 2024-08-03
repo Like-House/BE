@@ -40,7 +40,7 @@ public class ChatRoomConverter {
                 .build();
     }
 
-    public static ChatRoomResponseList toChatRoomResponseList(Slice<ChatRoom> chatRoomList, Long nextCursor) {
+    public static ChatRoomResponseList toChatRoomResponseList(Slice<ChatRoom> chatRoomList, Long nextCursor, Long userId) {
         List<ChatRoomResponse> chatRooms = chatRoomList
                 .stream()
                 .map(ChatRoomConverter::toChatRoomResponse)
@@ -50,6 +50,7 @@ public class ChatRoomConverter {
                 .hasNext(chatRoomList.hasNext())
                 .chatRoomResponses(chatRooms)
                 .nextCursor(nextCursor)
+                .ownerId(userId)
                 .build();
     }
 

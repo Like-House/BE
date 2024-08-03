@@ -39,7 +39,7 @@ public class ChatRoomQueryServiceImpl implements ChatRoomQueryService {
         if (!chatRoomSlice.isLast()) {
             nextCursor = findNextCursorByChatRoom(chatRoomSlice.toList().get(chatRoomSlice.toList().size() - 1));
         }
-        return ChatRoomConverter.toChatRoomResponseList(chatRoomSlice, nextCursor);
+        return ChatRoomConverter.toChatRoomResponseList(chatRoomSlice, nextCursor, userId);
     }
 
     @Override
