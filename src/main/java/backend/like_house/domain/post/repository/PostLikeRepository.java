@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     int countByPostId(Long postId);
@@ -16,6 +17,7 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     Optional<PostLike> findByUserAndPost(User user, Post post);
 
     @Modifying
+    @Transactional
     @Query("DELETE FROM PostLike pl WHERE pl.user = :user")
     void deleteByUser(@Param("user") User user);
 }

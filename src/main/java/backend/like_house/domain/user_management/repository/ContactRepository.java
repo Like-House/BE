@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
@@ -16,6 +17,7 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     Optional<Contact> findByUserIdAndProfileId(Long userId, Long profileId);
 
     @Modifying
+    @Transactional
     @Query("DELETE FROM Contact c WHERE c.familySpace = :familySpace AND c.profileId = :profileId")
     void deleteByFamilySpaceAndProfileId(@Param("familySpace") FamilySpace familySpace, @Param("profileId") Long profileId);
 }

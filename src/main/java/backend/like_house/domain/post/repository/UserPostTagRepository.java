@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserPostTagRepository extends JpaRepository<UserPostTag, Long> {
     void deleteByPost(Post post);
@@ -21,6 +22,7 @@ public interface UserPostTagRepository extends JpaRepository<UserPostTag, Long> 
     List<Long> findUserIdsByPostId(@Param("postId") Long postId);
 
     @Modifying
+    @Transactional
     @Query("DELETE FROM UserPostTag tag WHERE tag.user = :user")
     void deleteAllByUser(@Param("user") User user);
 }

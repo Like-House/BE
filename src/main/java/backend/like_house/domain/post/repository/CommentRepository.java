@@ -8,12 +8,14 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     int countByPostId(Long postId);
     List<Comment> findByPostId(Long postId);
 
     @Modifying
+    @Transactional
     @Query("DELETE FROM Comment c WHERE c.user = :user")
     void deleteByUser(@Param("user") User user);
 }
