@@ -41,6 +41,6 @@ public class ChatRoom extends BaseEntity {
 
     public void updateChatRoom(UpdateChatRoomRequest updateChatRoomRequest) {
         this.title = updateChatRoomRequest.getTitle();
-        this.imageUrl = updateChatRoomRequest.getImageUrl();
+        this.imageUrl = updateChatRoomRequest.getImageKeyName();
     }
 }
