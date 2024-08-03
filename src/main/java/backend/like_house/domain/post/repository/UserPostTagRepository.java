@@ -2,11 +2,14 @@ package backend.like_house.domain.post.repository;
 
 import backend.like_house.domain.post.entity.Post;
 import backend.like_house.domain.post.entity.UserPostTag;
+import backend.like_house.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserPostTagRepository extends JpaRepository<UserPostTag, Long> {
     void deleteByPost(Post post);
@@ -17,5 +20,10 @@ public interface UserPostTagRepository extends JpaRepository<UserPostTag, Long> 
 
     @Query("SELECT tag.user.id FROM UserPostTag tag WHERE tag.post.id = :postId")
     List<Long> findUserIdsByPostId(@Param("postId") Long postId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM UserPostTag tag WHERE tag.user = :user")
+    void deleteAllByUser(@Param("user") User user);
 }
 

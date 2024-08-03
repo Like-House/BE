@@ -1,5 +1,13 @@
 package backend.like_house.domain.user_management.service.impl;
 
+import backend.like_house.domain.chatting.repository.ChatRepository;
+import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
+import backend.like_house.domain.family_space.entity.FamilySpace;
+import backend.like_house.domain.notification.repository.NotificationRepository;
+import backend.like_house.domain.post.repository.CommentRepository;
+import backend.like_house.domain.post.repository.PostLikeRepository;
+import backend.like_house.domain.post.repository.PostRepository;
+import backend.like_house.domain.post.repository.UserPostTagRepository;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.converter.UserManagementConverter;
 import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManagementRequest.ModifyFamilyDataRequest;
@@ -24,6 +32,13 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
     private final CustomRepository customRepository;
     private final RemoveUserRepository removeUserRepository;
     private final BlockUserRepository blockUserRepository;
+    private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final UserPostTagRepository userPostTagRepository;
+    private final CommentRepository commentRepository;
+    private final UserChatRoomRepository userChatRoomRepository;
+    private final ChatRepository chatRepository;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public Custom modifyFamilyCustom(User user, Long userId, ModifyFamilyDataRequest request) {
@@ -54,9 +69,20 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
 
     @Override
     public void blockUser(User manager, User blockUser) {
+        FamilySpace familySpace = manager.getFamilySpace();
         blockUser.setFamilySpace(null);
-        // TODO 유저와 연결된 것 모두 삭제
-        blockUserRepository.save(UserManagementConverter.toBlockUser(blockUser, manager.getFamilySpace()));
+
+        contactRepository.deleteByFamilySpaceAndProfileId(familySpace, blockUser.getId());
+        postLikeRepository.deleteByUser(blockUser);
+        commentRepository.deleteByUser(blockUser);
+        postRepository.deleteByUser(blockUser);
+        userPostTagRepository.deleteAllByUser(blockUser);
+        postRepository.deletePostsWithoutTags();
+        userChatRoomRepository.deleteByUser(blockUser);
+        chatRepository.setChatUserNullByUser(blockUser);
+        notificationRepository.deleteByUserAndFamilySpace(blockUser, familySpace);
+
+        blockUserRepository.save(UserManagementConverter.toBlockUser(blockUser, familySpace));
     }
 
     @Override
