@@ -13,7 +13,7 @@ public class FamilyEmoticonDTO {
     @Getter
     public static class CreateFamilyEmoticonRequest {
         private Long familySpaceId;
-        private String imageUrl;
+        private String imageKeyName;
     }
 
     @Builder
@@ -38,6 +38,6 @@ public class FamilyEmoticonDTO {
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     public static class FamilyEmoticonDetail {
         private Long familyEmoticonId;
-        private String imageUrl;
+        private String imageKeyName;
     }
 }
