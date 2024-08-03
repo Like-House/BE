@@ -8,4 +8,6 @@ public interface UserQueryService {
 
     Optional<User> findUser(Long id);
     UserDTO.GetProfileResponse getUserProfile(User user);
+
+    UserDTO.ChatRoomUserListResponse getUserByChatRoom(Long chatRoomId);
 }
