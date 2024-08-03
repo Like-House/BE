@@ -39,16 +39,9 @@ public class ChatRoomDTO {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class ChatRoomListResponse {
-       private List<ChatRoomResponse>  chatRoomResponseList;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatRoomResponseList {
         private List<ChatRoomResponse> chatRoomResponses;
+        private Long ownerId;
         private Boolean hasNext;
         private Long nextCursor;
     }

@@ -10,7 +10,9 @@ import backend.like_house.domain.chatting.dto.ChatRoomDTO.UpdateChatRoomResponse
 import backend.like_house.domain.chatting.entity.ChatRoom;
 import backend.like_house.domain.chatting.service.ChatRoomCommandService;
 import backend.like_house.domain.chatting.service.ChatRoomQueryService;
+import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.domain.user.entity.User;
+import backend.like_house.domain.user.service.UserQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.CheckSize;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +42,7 @@ public class ChatRoomController {
 
     private final ChatRoomCommandService chatRoomCommandService;
     private final ChatRoomQueryService chatRoomQueryService;
+    private final UserQueryService userQueryService;
 
     @Operation(summary = "채팅방 불러 오기 API", description = "채팅방을 무한 스크롤로 불러옵니다. hasNext가 false고 nextCursor가 null이라면 마지막 페이지입니다.")
     @ApiResponses({
@@ -94,5 +98,16 @@ public class ChatRoomController {
     ) {
         chatRoomCommandService.exitChatRoom(exitChatRoomRequest, user);
         return ApiResponse.onSuccess("해당 chatroom을 나갔습니다.");
+    }
+
+    @GetMapping("/{chatRoomId}/users")
+    @Operation(summary = "채팅 방에 속해 있는 유저 불러 오기 API", description = "채팅 방에 속해 있는 유저 불러 올 수 있습 니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "CHATROOM4002", description = "해당 채팅방이 존재하지 않습니다.")
+    })
+    public ApiResponse<UserDTO.ChatRoomUserListResponse> getUserByChatRoom(@PathVariable Long chatRoomId) {
+        UserDTO.ChatRoomUserListResponse chatRoomUserListResponse = userQueryService.getUserByChatRoom(chatRoomId);
+        return ApiResponse.onSuccess(chatRoomUserListResponse);
     }
 }

@@ -1,6 +1,7 @@
 package backend.like_house.domain.chatting.service.impl;
 
 import backend.like_house.domain.chatting.converter.ChatConverter;
+import backend.like_house.domain.chatting.entity.Chat;
 import backend.like_house.domain.chatting.entity.ChatRoom;
 import backend.like_house.domain.chatting.repository.ChatRepository;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
@@ -26,11 +27,11 @@ public class ChatCommandServiceImpl implements ChatCommandService {
 
     // DB에 넣는 API
     @Transactional
-    public void saveChat(ChattingDTO.MessageDTO messageDTO, String email, SocialType socialType) {
+    public Chat saveChat(ChattingDTO.MessageDTO messageDTO, String email, SocialType socialType) {
         ChatRoom chatRoom = chatRoomRepository.findById(messageDTO.getChatRoomId()).orElseThrow(()-> new ChatRoomException(ErrorStatus.CHATROOM_NOT_FOUND));
 
         User user = userRepository.findByEmailAndSocialType(email, socialType).orElseThrow(()-> new UserException(ErrorStatus.USER_NOT_FOUND));
 
-        chatRepository.save(ChatConverter.toChat(messageDTO, user, chatRoom));
+        return chatRepository.save(ChatConverter.toChat(messageDTO, user, chatRoom));
     }
 }

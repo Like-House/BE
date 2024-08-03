@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class UserDTO {
 
@@ -53,5 +54,23 @@ public class UserDTO {
         private Boolean commentReplyAlarmStatus;
         private Boolean eventAlarmStatus;
         private Boolean chatAlarmStatus;
+    }
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChatRoomUserListResponse {
+        private List<ChatRoomUserResponse> chatRoomUserResponses;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChatRoomUserResponse {
+        private Long userId;
+        private String username;
     }
 }
