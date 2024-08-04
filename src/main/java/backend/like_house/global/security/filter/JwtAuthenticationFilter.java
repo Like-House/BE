@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 로그아웃 or 탈퇴가 되어 있지 않다면 정상 진행
         if (blacklist != null) {
-            throw new AuthException(ErrorStatus.LOGOUT_TOKEN);
+            throw new AuthException(ErrorStatus.TOKEN_IN_BLACKLIST);
         }
 
         // 토큰이 만료되었는지 확인
@@ -60,7 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication authentication = jwtUtil.getAuthentication(email, socialType);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
 
         filterChain.doFilter(request, response);
     }
