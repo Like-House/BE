@@ -60,7 +60,7 @@ public class FamilySpaceController {
     @Parameters({
             @Parameter(name = "familySpaceCode", description = "가족 공간 초대 코드, query string 입니다.")
     })
-    public ApiResponse<CheckFamilySpaceCodeResponse> checkFamilySpaceCode(
+    public ApiResponse<FamilySpaceIdResponse> checkFamilySpaceCode(
             @Parameter(hidden = true) @LoginUser User user,
             @RequestParam(name = "familySpaceCode") String familySpaceCode
     ) {
@@ -105,6 +105,22 @@ public class FamilySpaceController {
         }
         familySpaceCommandService.userConnectWithFamilySpace(user, familySpace);
         return ApiResponse.onSuccess(FamilySpaceConverter.toEnterFamilySpaceResponse(user, familySpace));
+    }
+
+    @GetMapping("")
+    @Operation(summary = "내가 속한 가족 공간 입장 API", description = """
+        내가 이미 소속된 가족 공간에 입장하는 API입니다.
+        
+        가족 공간 아이디를 반환합니다.
+        
+        해당 유저가 가족 공간에 속해 있지 않다면 에러를 반환합니다.
+        """)
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
+    })
+    public ApiResponse<FamilySpaceIdResponse> getMyFamilySpaceId(@Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user) {
+        return ApiResponse.onSuccess(FamilySpaceConverter.toGetMyFamilySpaceId(user));
     }
 
     @GetMapping("/code")

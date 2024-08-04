@@ -1,6 +1,7 @@
 package backend.like_house.domain.chatting.dto;
 
 import backend.like_house.global.common.enums.ChatRoomType;
+import backend.like_house.global.validation.annotation.CheckImageKeyName;
 import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,8 @@ public class ChatRoomDTO {
         @ExistFamilySpace
         private Long familySpaceId;
         private String title;
-        private String imageUrl;
+        @CheckImageKeyName
+        private String imageKeyName;
         private ChatRoomType chatRoomType;
         private List<Long> roomParticipantIds;
     }
@@ -27,7 +29,8 @@ public class ChatRoomDTO {
     public static class UpdateChatRoomRequest {
         private Long chatRoomId;
         private String title;
-        private String imageUrl;
+        @CheckImageKeyName
+        private String imageKeyName;
     }
 
     @Getter
@@ -53,7 +56,7 @@ public class ChatRoomDTO {
     public static class ChatRoomResponse {
         private Long chatRoomId;
         private String title;
-        private String imageUrl;
+        private String imageKeyName;
     }
 
     @Getter

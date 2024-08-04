@@ -15,9 +15,4 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     Optional<Contact> findByUserAndFamilySpaceAndProfileId(User user, FamilySpace familySpace, Long profileId);
 
     Optional<Contact> findByUserIdAndProfileId(Long userId, Long profileId);
-
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Contact c WHERE c.familySpace = :familySpace AND c.profileId = :profileId")
-    void deleteByFamilySpaceAndProfileId(@Param("familySpace") FamilySpace familySpace, @Param("profileId") Long profileId);
 }
