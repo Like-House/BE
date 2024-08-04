@@ -72,6 +72,8 @@ public class User extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isRoomManager;
 
+    private String fcmToken;
+
     public void setFamilySpace(FamilySpace familySpace) {
         this.familySpace = familySpace;
     }
