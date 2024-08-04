@@ -40,11 +40,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // Redis에 해당 accessToken blacklist 여부를 확인
-        String blacklist = redisTemplate.opsForValue().get(accessToken);
+        String blacklist = (String) redisTemplate.opsForValue().get(accessToken);
 
         // 로그아웃 or 탈퇴가 되어 있지 않다면 정상 진행
         if (blacklist != null) {
-            throw new AuthException(ErrorStatus.TOKEN_IN_BLACKLIST);
+            if (blacklist.equals("logoutUser")) {
+                throw new AuthException(ErrorStatus.LOGOUT_USER_TOKEN);
+            }
+            else {
+                throw new AuthException(ErrorStatus.DELETE_USER_TOKEN);
+            }
         }
 
         // 토큰이 만료되었는지 확인
