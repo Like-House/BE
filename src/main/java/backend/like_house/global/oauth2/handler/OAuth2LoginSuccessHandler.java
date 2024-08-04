@@ -1,19 +1,24 @@
 package backend.like_house.global.oauth2.handler;
 
+import backend.like_house.domain.auth.dto.AuthDTO;
 import backend.like_house.domain.user.entity.Role;
 import backend.like_house.global.oauth2.CustomOAuth2User;
 import backend.like_house.global.redis.RedisUtil;
 import backend.like_house.global.security.util.JWTUtil;
+import backend.like_house.global.security.util.ResponseUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+
+import static backend.like_house.global.error.code.status.SuccessStatus._OK;
 
 @Slf4j
 @Component
@@ -22,6 +27,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
     private final RedisUtil redisUtil;
+    private final ResponseUtil responseUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -47,5 +53,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         jwtUtil.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 
         redisUtil.saveRefreshToken(oAuth2User.getEmail(), oAuth2User.getSocialType(), refreshToken);
+        
+        response.sendRedirect("http://localhost:5173");
     }
 }
