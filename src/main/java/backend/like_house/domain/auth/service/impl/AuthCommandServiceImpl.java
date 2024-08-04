@@ -73,7 +73,31 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     @Override
     public void signOut(AuthDTO.TokenRequest request) {
 
-        // 로그아웃 하고 싶은 토큰이 유효한지 확인
+        processToken(request);
+
+        // 남은 Access Token 유효시간 만큼 redis에 저장
+        Long expiration = jwtUtil.getExpiration(request.getAccessToken());
+        redisTemplate.opsForValue().set(request.getAccessToken(), "logoutUser", expiration, TimeUnit.MILLISECONDS);
+
+    }
+
+    @Override
+    public void deleteUser(AuthDTO.TokenRequest request) {
+
+        processToken(request);
+
+        String email = jwtUtil.extractEmail(request.getAccessToken());
+        SocialType socialType = jwtUtil.extractSocialName(request.getAccessToken());
+
+        // 남은 Access Token 유효시간 만큼 redis에 저장
+        Long expiration = jwtUtil.getExpiration(request.getAccessToken());
+        redisTemplate.opsForValue().set(request.getAccessToken(), "deletedUser", expiration, TimeUnit.MILLISECONDS);
+
+        authRepository.deleteByEmailAndSocialType(email, socialType);
+    }
+
+    private void processToken(AuthDTO.TokenRequest request) {
+        // 로그아웃 or 탈퇴 처리 하고 싶은 토큰이 유효한지 확인
         if (jwtUtil.isTokenExpired(request.getAccessToken())) {
             throw new AuthException(ErrorStatus.INVALID_TOKEN);
         }
@@ -86,20 +110,8 @@ public class AuthCommandServiceImpl implements AuthCommandService {
             redisTemplate.delete(email + ":" + socialType);
         }
 
-        // 남은 Access Token 유효시간 만큼 redis에 저장
-        Long expiration = jwtUtil.getExpiration(request.getAccessToken());
-        redisTemplate.opsForValue().set(request.getAccessToken(), "blacklist", expiration, TimeUnit.MILLISECONDS);
-
     }
 
-    @Override
-    public void deleteUser(AuthDTO.TokenRequest request) {
-        signOut(request);
 
-        String email = jwtUtil.extractEmail(request.getAccessToken());
-        SocialType socialType = jwtUtil.extractSocialName(request.getAccessToken());
-        
-        authRepository.deleteByEmailAndSocialType(email, socialType);
-    }
 
 }
