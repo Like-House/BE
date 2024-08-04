@@ -9,11 +9,7 @@ public interface UserManagementQueryService {
 
     boolean existsBlockByUserAndFamilySpace(User user, FamilySpace familySpace);
 
-    boolean existsRemoveByUserAndFamilySpace(User user, FamilySpace familySpace);
-
     List<FamilyData> findFamilyUser(User user);
-
-    List<FamilyData> findFamilyRemoveUser(User user);
 
     List<FamilyData> findFamilyBlockUser(User user);
 }

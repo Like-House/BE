@@ -13,15 +13,12 @@ import backend.like_house.domain.schedule.repository.ScheduleRepository;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.entity.Contact;
 import backend.like_house.domain.user_management.entity.Custom;
-import backend.like_house.domain.user_management.entity.RemoveUser;
 import backend.like_house.domain.user_management.repository.ContactRepository;
 import backend.like_house.domain.user_management.repository.CustomRepository;
-import backend.like_house.domain.user_management.repository.RemoveUserRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.PostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,15 +39,11 @@ public class PostQueryServiceImpl implements PostQueryService {
     private final CustomRepository customRepository;
     private final ContactRepository contactRepository;
     private final UserPostTagRepository userPostTagRepository;
-    private final RemoveUserRepository removeUserRepository;
     private final ScheduleRepository scheduleRepository;
 
     @Override
     public List<GetPostListResponse> getPostsByFamilySpace(Long familySpaceId, User user, Integer page, Integer size) {
-        List<RemoveUser> removedUsers = removeUserRepository.findByFamilySpaceId(familySpaceId);
-        List<Long> removedUserIds = removedUsers.stream().map(removeUser -> removeUser.getUser().getId()).collect(Collectors.toList());
-
-        List<Post> posts = postRepository.findPostsByFamilySpaceIdAndUserIdNotIn(familySpaceId, removedUserIds, PageRequest.of(page, size));
+        List<Post> posts = postRepository.findPostsByFamilySpaceId(familySpaceId, PageRequest.of(page, size));
         List<LocalDate> scheduledDates = scheduleRepository.findDatesWithSchedules(familySpaceId, LocalDate.now().getMonthValue());
 
         return posts.stream().map(post -> {
