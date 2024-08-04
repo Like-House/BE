@@ -1,6 +1,5 @@
 package backend.like_house.global.oauth2.handler;
 
-import backend.like_house.domain.auth.dto.AuthDTO;
 import backend.like_house.domain.user.entity.Role;
 import backend.like_house.global.oauth2.CustomOAuth2User;
 import backend.like_house.global.redis.RedisUtil;
@@ -11,14 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static backend.like_house.global.error.code.status.SuccessStatus._OK;
 
 @Slf4j
 @Component
