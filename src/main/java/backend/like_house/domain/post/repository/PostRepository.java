@@ -11,11 +11,9 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.familySpace.id = :familySpaceId " +
-            "AND (:removedUserIds IS NULL OR p.user.id NOT IN :removedUserIds) " +
             "ORDER BY p.id DESC")
-    List<Post> findPostsByFamilySpaceIdAndUserIdNotIn(@Param("familySpaceId") Long familySpaceId,
-                                                      @Param("removedUserIds") List<Long> removedUserIds,
-                                                      Pageable pageable);
+    List<Post> findPostsByFamilySpaceId(@Param("familySpaceId") Long familySpaceId,
+                                        Pageable pageable);
 
     List<Post> findByUserId(Long userId);
 
