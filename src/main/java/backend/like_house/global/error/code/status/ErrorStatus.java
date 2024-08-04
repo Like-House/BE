@@ -38,6 +38,7 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "유효하지 않은 토큰입니다."),
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "AUTH4002", "비밀번호가 일치하지 않습니다."),
     INVALID_ACCESS(HttpStatus.FORBIDDEN, "AUTH4003", "접근 권한이 없습니다."),
+    LOGOUT_TOKEN(HttpStatus.BAD_REQUEST, "AUTH4004", "로그아웃된 토큰입니다."),
 
     // 일정 관련 에러
     SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "SCHEDULE4001", "존재하지 않는 일정 입니다."),
