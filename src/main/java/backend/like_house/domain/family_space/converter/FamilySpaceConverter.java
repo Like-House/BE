@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public class FamilySpaceConverter {
 
-    public static CheckFamilySpaceCodeResponse toCheckFamilySpaceCodeResponse(Optional<FamilySpace> familySpace) {
-        return CheckFamilySpaceCodeResponse.builder()
+    public static FamilySpaceIdResponse toCheckFamilySpaceCodeResponse(Optional<FamilySpace> familySpace) {
+        return FamilySpaceIdResponse.builder()
                 .familySpaceId(familySpace.map(FamilySpace::getId).orElse(0L))
                 .build();
     }
@@ -42,6 +42,12 @@ public class FamilySpaceConverter {
 
     public static FamilySpace toNewFamilySpace() {
         return FamilySpace.builder()
+                .build();
+    }
+
+    public static FamilySpaceIdResponse toGetMyFamilySpaceId(User user) {
+        return FamilySpaceIdResponse.builder()
+                .familySpaceId(user.getFamilySpace().getId())
                 .build();
     }
 }

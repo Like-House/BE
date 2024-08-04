@@ -16,8 +16,8 @@ public class FamilySpaceDTO {
         @Getter
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
-        public static class CheckFamilySpaceCodeResponse {
-            @Schema(description = "초대 코드에 해당하는 가족 공간 아이디", example = "1")
+        public static class FamilySpaceIdResponse {
+            @Schema(description = "가족 공간 아이디", example = "1")
             private Long familySpaceId;
         }
 
