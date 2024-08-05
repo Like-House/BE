@@ -15,15 +15,15 @@ public class FamilyEmoticonDTO {
     public static class CreateFamilyEmoticonRequest {
         @ExistFamilySpace
         private Long familySpaceId;
-        private String filename;
+        private String imageKeyName;
     }
 
     @Builder
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class FamilyEmoticonPreviewList {
-        private List<FamilyEmoticonDTO> familyEmoticonDTOList;
+    public static class FamilyEmoticonDetailListResponse {
+        private List<FamilyEmoticonDetailResponse> familyEmoticonDTOList;
     }
 
     @Builder
@@ -38,8 +38,8 @@ public class FamilyEmoticonDTO {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class FamilyEmoticonDetail {
+    public static class FamilyEmoticonDetailResponse {
         private Long familyEmoticonId;
-        private String imageUrl;
+        private String imageKeyName;
     }
 }

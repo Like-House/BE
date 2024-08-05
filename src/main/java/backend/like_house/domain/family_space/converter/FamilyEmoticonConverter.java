@@ -1,15 +1,19 @@
 package backend.like_house.domain.family_space.converter;
 
 import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO;
+import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonDetailListResponse;
+import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonDetailResponse;
 import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonPreview;
 import backend.like_house.domain.family_space.entity.FamilyEmoticon;
 import backend.like_house.domain.family_space.entity.FamilySpace;
+
+import java.util.List;
 
 public class FamilyEmoticonConverter {
 
     public static FamilyEmoticon toFamilyEmoticon(FamilyEmoticonDTO.CreateFamilyEmoticonRequest createFamilyEmoticonRequest, FamilySpace familySpace) {
         return FamilyEmoticon.builder()
-                .filename(createFamilyEmoticonRequest.getFilename())
+                .filename(createFamilyEmoticonRequest.getImageKeyName())
                 .familySpace(familySpace)
                 .build();
     }
@@ -17,6 +21,21 @@ public class FamilyEmoticonConverter {
     public static FamilyEmoticonPreview toFamilyEmoticonPreview(FamilyEmoticon familyEmoticon) {
         return FamilyEmoticonPreview.builder()
                 .familyEmoticonId(familyEmoticon.getId())
+                .build();
+    }
+
+    public static FamilyEmoticonDetailListResponse toFamilyEmoticonDetailResponseList(List<FamilyEmoticon> familyEmoticonList) {
+        List<FamilyEmoticonDetailResponse> familyEmoticons = familyEmoticonList.stream().map(FamilyEmoticonConverter::toFamilyEmoticonDetailResponse).toList();
+
+        return FamilyEmoticonDetailListResponse.builder()
+                .familyEmoticonDTOList(familyEmoticons)
+                .build();
+    }
+
+    public static FamilyEmoticonDetailResponse toFamilyEmoticonDetailResponse(FamilyEmoticon familyEmoticon) {
+        return FamilyEmoticonDetailResponse.builder()
+                .familyEmoticonId(familyEmoticon.getId())
+                .imageKeyName(familyEmoticon.getFilename())
                 .build();
     }
 }
