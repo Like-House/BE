@@ -27,7 +27,7 @@ public class AuthConverter {
                 .email(signUpRequest.getEmail())
                 .password(password)
                 .birthDate(signUpRequest.getBirthDate())
-                .profileImage(signUpRequest.getProfileImage())
+                .profileImage(signUpRequest.getImageKeyName())
                 .role(Role.ROLE_USER)
                 .socialType(SocialType.LOCAL)
                 .build();

@@ -12,11 +12,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "사용자 정보 수정", description = "사용자 정보 수정 관련 API입니다.")
 @RequestMapping("/api/v0/users")
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -38,7 +41,7 @@ public class UserController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<UserDTO.GetProfileResponse> updateProfile(@Parameter(hidden = true) @LoginUser User user, @RequestBody UserDTO.UpdateProfileRequest updateProfileRequest) {
+    public ApiResponse<UserDTO.GetProfileResponse> updateProfile(@Parameter(hidden = true) @LoginUser User user, @RequestBody @Valid UserDTO.UpdateProfileRequest updateProfileRequest) {
         User requestUser = userCommandService.updateUserProfile(user, updateProfileRequest);
         return ApiResponse.onSuccess(userQueryService.getUserProfile(requestUser));
     }
@@ -49,7 +52,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4009", description = "기존 비밀번호와 동일합니다"),
     })
-    public ApiResponse<String> changePassword(@Parameter(hidden = true) @LoginUser User user, @RequestBody UserDTO.UpdatePasswordRequest changePasswordRequest) {
+    public ApiResponse<String> changePassword(@Parameter(hidden = true) @LoginUser User user, @RequestBody @Valid UserDTO.UpdatePasswordRequest changePasswordRequest) {
         userCommandService.updateUserPassword(user, changePasswordRequest);
         return ApiResponse.onSuccess("비밀번호 변경 성공");
     }

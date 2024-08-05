@@ -1,6 +1,5 @@
 package backend.like_house.domain.auth.dto;
 
-import backend.like_house.domain.user.entity.SocialType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -50,7 +49,7 @@ public class AuthDTO {
         private LocalDate birthDate;
 
         @Schema(description = "회원가입할 유저 프로필 이미지", example = "프로필")
-        private String profileImage;
+        private String imageKeyName;
     }
 
     @Builder

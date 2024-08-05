@@ -1,6 +1,5 @@
 package backend.like_house.domain.user.converter;
 
-import backend.like_house.domain.chatting.converter.ChatRoomConverter;
 import backend.like_house.domain.user.dto.UserDTO.*;
 import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.domain.user.entity.User;
@@ -24,7 +23,7 @@ public class UserConverter {
     public static GetProfileResponse toGetProfileResponseDTO (User user) {
         return GetProfileResponse.builder()
                 .name(user.getName())
-                .profileImage(user.getProfileImage())
+                .imageKeyName(user.getProfileImage())
                 .birthDate(user.getBirthDate())
                 .build();
     }
