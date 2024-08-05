@@ -41,7 +41,6 @@ public class User extends BaseEntity {
 
     private LocalDate birthDate;
 
-    @Column(nullable = false)
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
