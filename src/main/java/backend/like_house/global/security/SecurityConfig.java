@@ -57,7 +57,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 new AntPathRequestMatcher("/api-docs/**"),
                                 new AntPathRequestMatcher("/error"),
                                 new AntPathRequestMatcher("/favicon.ico"),
-                                new AntPathRequestMatcher("/health")
+                                new AntPathRequestMatcher("/health"),
+                                new AntPathRequestMatcher("/api/v0/s3/presigned/upload")
                         ).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(configurer -> configurer
