@@ -7,5 +7,5 @@ import backend.like_house.domain.user.entity.User;
 public interface FamilyEmoticonCommandService {
     FamilyEmoticon createFamilyEmoticon(User user, FamilyEmoticonDTO.CreateFamilyEmoticonRequest createFamilyEmoticonRequest);
 
-    void deleteFamilyEmoticon(Long familyEmoticonId);
+    void deleteFamilyEmoticon(Long familySpaceId, User user, Long familyEmoticonId);
 }

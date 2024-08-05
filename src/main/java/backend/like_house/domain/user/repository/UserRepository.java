@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>, CustomUserRepository {
     Optional<User> findByEmailAndSocialType(String email, SocialType socialType);
 
-    Boolean existsByFamilySpace(FamilySpace familySpace);
+    Boolean existsByFamilySpaceAndId(FamilySpace familySpace, Long Id);
 }

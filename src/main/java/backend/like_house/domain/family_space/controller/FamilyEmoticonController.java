@@ -68,7 +68,7 @@ public class FamilyEmoticonController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
     public ApiResponse<String> deleteFamilyEmoticon(@Parameter(hidden = true) @LoginUser User user,@PathVariable @ExistFamilySpace Long familySpaceId, @PathVariable Long familyEmoticonId) {
-        familyEmoticonCommandService.deleteFamilyEmoticon(familyEmoticonId);
+        familyEmoticonCommandService.deleteFamilyEmoticon(familySpaceId, user,familyEmoticonId);
         return ApiResponse.onSuccess("가족티콘 삭제에 성공하였습니다.");
     }
 

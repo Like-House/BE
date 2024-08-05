@@ -30,7 +30,7 @@ public class FamilyEmoticonCommandServiceImpl implements FamilyEmoticonCommandSe
         // 이미 유효성 검사를 함.
         FamilySpace familySpace = familySpaceRepository.findById(createFamilyEmoticonRequest.getFamilySpaceId()).get();
 
-        if (!userRepository.existsByFamilySpace(familySpace)) {
+        if (!userRepository.existsByFamilySpaceAndId(familySpace, user.getId())) {
             throw new FamilySpaceException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
         }
 
@@ -41,7 +41,14 @@ public class FamilyEmoticonCommandServiceImpl implements FamilyEmoticonCommandSe
     }
 
     @Override
-    public void deleteFamilyEmoticon(Long familyEmoticonId) {
+    public void deleteFamilyEmoticon(Long familySpaceId, User user, Long familyEmoticonId) {
+
+        FamilySpace familySpace = familySpaceRepository.findById(familySpaceId).get();
+
+        if (!userRepository.existsByFamilySpaceAndId(familySpace, user.getId())) {
+            throw new FamilySpaceException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
+        }
+
         FamilyEmoticon familyEmoticon = familyEmoticonRepository.findById(familyEmoticonId).orElseThrow(()->{
             throw new FamilyEmoticonException(ErrorStatus.FAMILY_EMOTICON_NOT_FOUND);
         });
