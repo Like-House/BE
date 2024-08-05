@@ -10,6 +10,7 @@ import backend.like_house.domain.family_space.service.FamilyEmoticonCommandServi
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
+import backend.like_house.global.error.handler.FamilyEmoticonException;
 import backend.like_house.global.error.handler.FamilySpaceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,14 @@ public class FamilyEmoticonCommandServiceImpl implements FamilyEmoticonCommandSe
         familyEmoticonRepository.save(familyEmoticon);
 
         return familyEmoticon;
+    }
+
+    @Override
+    public void deleteFamilyEmoticon(Long familyEmoticonId) {
+        FamilyEmoticon familyEmoticon = familyEmoticonRepository.findById(familyEmoticonId).orElseThrow(()->{
+            throw new FamilyEmoticonException(ErrorStatus.FAMILY_EMOTICON_NOT_FOUND);
+        });
+
+        familyEmoticonRepository.delete(familyEmoticon);
     }
 }
