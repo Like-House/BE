@@ -65,6 +65,7 @@ public class ScheduleConverter {
     public static Schedule toSchedule(SaveScheduleRequest request, User user) {
         return Schedule.builder()
                 .familySpace(user.getFamilySpace())
+                .user(user)
                 .date(request.getDate())
                 .dtype(ScheduleType.valueOfKoreanName(request.getDtype()))
                 .title(request.getTitle())
