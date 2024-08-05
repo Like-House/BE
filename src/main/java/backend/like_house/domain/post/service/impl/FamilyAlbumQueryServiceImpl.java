@@ -51,7 +51,8 @@ public class FamilyAlbumQueryServiceImpl implements FamilyAlbumQueryService {
         // 각 게시글의 대표 이미지를 AlbumPhotoResponse로 변환하여 반환
         return posts.stream()
                 .map(post -> {
-                    PostImage representativeImage = postImageRepository.findFirstByPostId(post.getId()).orElse(null);
+                    List<PostImage> postImages = postImageRepository.findFirstByPostId(post.getId());
+                    PostImage representativeImage = postImages.isEmpty() ? null : postImages.get(0);
                     String representativeImageUrl = (representativeImage != null) ? representativeImage.getFilename() : null;
                     return FamilyAlbumConverter.toAlbumPhotoResponse(post, representativeImageUrl);
                 })

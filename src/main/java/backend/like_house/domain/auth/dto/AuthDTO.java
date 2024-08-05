@@ -46,11 +46,9 @@ public class AuthDTO {
         @Schema(description = "회원가입할 유저 비밀번호", example = "비밀번호")
         private String password;
 
-        @NotNull
         @Schema(description = "회원가입할 유저 생년월일", example = "2024-07-20")
         private LocalDate birthDate;
 
-        @NotBlank
         @Schema(description = "회원가입할 유저 프로필 이미지", example = "프로필")
         private String profileImage;
     }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -31,8 +32,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             // 최초 OAuth 로그인 시 Guest
             if (oAuth2User.getRole() == Role.ROLE_GUEST) {
                 String accessToken = jwtUtil.generateAccessToken(oAuth2User.getEmail(), oAuth2User.getSocialType());
-                response.addHeader(jwtUtil.getAccessHeader(), "Bearer " + accessToken);
-
                 jwtUtil.sendAccessAndRefreshToken(response, accessToken, null);
             } else {
                 loginSuccess(response, oAuth2User);
@@ -46,10 +45,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtUtil.generateAccessToken(oAuth2User.getEmail(), oAuth2User.getSocialType());
         String refreshToken = jwtUtil.generateRefreshToken(oAuth2User.getEmail(), oAuth2User.getSocialType());
 
-        response.addHeader(jwtUtil.getAccessHeader(), "Bearer " + accessToken);
-        response.addHeader(jwtUtil.getRefreshHeader(), "Bearer " + refreshToken);
-
         jwtUtil.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+
         redisUtil.saveRefreshToken(oAuth2User.getEmail(), oAuth2User.getSocialType(), refreshToken);
+        
+        response.sendRedirect("http://localhost:5173");
     }
 }

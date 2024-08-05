@@ -9,7 +9,6 @@ import backend.like_house.domain.chatting.entity.ChatRoom;
 import backend.like_house.domain.family_space.entity.FamilySpace;
 import org.springframework.data.domain.Slice;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,7 @@ public class ChatRoomConverter {
         return ChatRoom.builder()
                 .title(createChatRoomRequest.getTitle())
                 .dtype(createChatRoomRequest.getChatRoomType())
-                .imageUrl(createChatRoomRequest.getImageUrl())
+                .imageUrl(createChatRoomRequest.getImageKeyName())
                 .familySpace(familySpace)
                 .build();
     }
@@ -40,7 +39,7 @@ public class ChatRoomConverter {
                 .build();
     }
 
-    public static ChatRoomResponseList toChatRoomResponseList(Slice<ChatRoom> chatRoomList, Long nextCursor) {
+    public static ChatRoomResponseList toChatRoomResponseList(Slice<ChatRoom> chatRoomList, Long nextCursor, Long userId) {
         List<ChatRoomResponse> chatRooms = chatRoomList
                 .stream()
                 .map(ChatRoomConverter::toChatRoomResponse)
@@ -50,6 +49,7 @@ public class ChatRoomConverter {
                 .hasNext(chatRoomList.hasNext())
                 .chatRoomResponses(chatRooms)
                 .nextCursor(nextCursor)
+                .ownerId(userId)
                 .build();
     }
 
@@ -57,7 +57,7 @@ public class ChatRoomConverter {
         return ChatRoomResponse.builder()
                 .chatRoomId(chatRoom.getId())
                 .title(chatRoom.getTitle())
-                .imageUrl(chatRoom.getImageUrl())
+                .imageKeyName(chatRoom.getImageUrl())
                 .build();
     }
 }

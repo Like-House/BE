@@ -3,7 +3,7 @@ package backend.like_house.domain.family_space.converter;
 import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO;
 import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonDetailListResponse;
 import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonDetailResponse;
-import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonPreview;
+import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonPreviewResponse;
 import backend.like_house.domain.family_space.entity.FamilyEmoticon;
 import backend.like_house.domain.family_space.entity.FamilySpace;
 
@@ -18,8 +18,8 @@ public class FamilyEmoticonConverter {
                 .build();
     }
 
-    public static FamilyEmoticonPreview toFamilyEmoticonPreview(FamilyEmoticon familyEmoticon) {
-        return FamilyEmoticonPreview.builder()
+    public static FamilyEmoticonPreviewResponse toFamilyEmoticonPreview(FamilyEmoticon familyEmoticon) {
+        return FamilyEmoticonPreviewResponse.builder()
                 .familyEmoticonId(familyEmoticon.getId())
                 .build();
     }

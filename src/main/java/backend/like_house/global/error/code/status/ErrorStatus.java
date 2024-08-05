@@ -28,15 +28,16 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "사용자를 찾을 수 없습니다."),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER4002", "이미 가입된 유저 입니다."),
     USER_NOT_MANAGER(HttpStatus.BAD_REQUEST, "USER4004", "주최자가 아닙니다."),
-    ALREADY_REMOVED_USER(HttpStatus.BAD_REQUEST, "USER4005", "이미 해제된 유저입니다."),
     ALREADY_BLOCKED_USER(HttpStatus.BAD_REQUEST, "USER4006", "이미 차단된 유저입니다."),
-    ALREADY_RELEASE_REMOVE_USER(HttpStatus.BAD_REQUEST, "USER4007", "이미 해제가 풀어진 유저입니다."),
     ALREADY_RELEASE_BLOCK_USER(HttpStatus.BAD_REQUEST, "USER4008", "이미 차단이 풀어진 유저입니다."),
+    PASSWORD_SAME_AS_OLD(HttpStatus.BAD_REQUEST, "USER4009", "기존 비밀번호와 동일합니다."),
 
     // 인증 관련 에러
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "유효하지 않은 토큰입니다."),
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "AUTH4002", "비밀번호가 일치하지 않습니다."),
     INVALID_ACCESS(HttpStatus.FORBIDDEN, "AUTH4003", "접근 권한이 없습니다."),
+    LOGOUT_USER_TOKEN(HttpStatus.BAD_REQUEST, "AUTH4004", "로그아웃 처리된 토큰입니다."),
+    DELETE_USER_TOKEN(HttpStatus.BAD_REQUEST, "AUTH4005", "탈퇴 처리된 토큰입니다."),
 
     // 일정 관련 에러
     SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "SCHEDULE4001", "존재하지 않는 일정 입니다."),
@@ -87,6 +88,9 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 사이즈 관련 에러
     INVALID_SIZE_NUMBER(HttpStatus.BAD_REQUEST, "SIZE4001", "올바르지 않은 사이즈입니다."),
+
+    // AWS 관련 에러
+    KEYNAME_NOT_FOUND(HttpStatus.BAD_REQUEST, "AWS4001", "찾을 수 없는 KEYNAME입니다."),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");

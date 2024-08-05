@@ -14,20 +14,16 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.FamilySpaceException;
 import backend.like_house.global.error.handler.PostException;
-import backend.like_house.global.s3.S3Manager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostCommandServiceImpl implements PostCommandService {
 
-    private final S3Manager s3Manager;
     private final PostRepository postRepository;
     private final FamilySpaceRepository familySpaceRepository;
     private final PostImageRepository postImageRepository;
@@ -36,9 +32,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public CreatePostResponse createPost(CreatePostRequest createPostRequest, List<MultipartFile> files, User user) {
-        List<String> imageUrls = s3Manager.uploadFiles(files);
-
+    public CreatePostResponse createPost(CreatePostRequest createPostRequest, User user) {
         FamilySpace familySpace = familySpaceRepository.findById(createPostRequest.getFamilySpaceId())
                 .orElseThrow(() -> new FamilySpaceException(ErrorStatus.FAMILY_SPACE_NOT_FOUND));
 
@@ -46,7 +40,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
         post = postRepository.save(post);
 
-        List<PostImage> postImages = PostConverter.toPostImages(imageUrls, post);
+        List<PostImage> postImages = PostConverter.toPostImages(createPostRequest.getImageUrls(), post);
         postImageRepository.saveAll(postImages);
 
         List<UserPostTag> userPostTags = PostConverter.toUserPostTags(createPostRequest.getTaggedUserIds(), post);
@@ -58,9 +52,7 @@ public class PostCommandServiceImpl implements PostCommandService {
 
     @Transactional
     @Override
-    public CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, List<MultipartFile> files, User user) {
-        List<String> imageUrls = s3Manager.uploadFiles(files);
-
+    public CreatePostResponse updatePost(Long postId, UpdatePostRequest updatePostRequest, User user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(ErrorStatus.POST_NOT_FOUND));
 
@@ -74,7 +66,7 @@ public class PostCommandServiceImpl implements PostCommandService {
         postImageRepository.deleteByPost(post);
         userPostTagRepository.deleteByPost(post);
 
-        List<PostImage> postImages = PostConverter.toPostImages(imageUrls, post);
+        List<PostImage> postImages = PostConverter.toPostImages(updatePostRequest.getImageUrls(), post);
         postImageRepository.saveAll(postImages);
 
         List<UserPostTag> userPostTags = PostConverter.toUserPostTags(updatePostRequest.getTaggedUserIds(), post);

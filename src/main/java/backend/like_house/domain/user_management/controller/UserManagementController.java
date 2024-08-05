@@ -43,7 +43,7 @@ public class UserManagementController {
     private final UserQueryService userQueryService;
 
     @GetMapping("")
-    @Operation(summary = "가족 목록 확인 API", description = "가족 공간에 속한 가족 목록, 해제 목록, 차단 목록을 확인하는 API입니다.")
+    @Operation(summary = "가족 목록 확인 API", description = "가족 공간에 속한 가족 목록, 차단 목록을 확인하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
@@ -51,10 +51,9 @@ public class UserManagementController {
     public ApiResponse<FamilyListResponse> getFamilyList(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user) {
         List<FamilyData> familyUser = userManagementQueryService.findFamilyUser(user);
-        List<FamilyData> familyRemoveUser = userManagementQueryService.findFamilyRemoveUser(user);
         List<FamilyData> familyBlockUser = userManagementQueryService.findFamilyBlockUser(user);
         return ApiResponse.onSuccess(
-                UserManagementConverter.toFamilyListResponse(familyUser, familyRemoveUser, familyBlockUser));
+                UserManagementConverter.toFamilyListResponse(familyUser, familyBlockUser));
     }
 
     @PatchMapping("/{userId}")
@@ -80,67 +79,6 @@ public class UserManagementController {
         }
         Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
         return ApiResponse.onSuccess(UserManagementConverter.toModifyFamilyDataResponse(userId, custom));
-    }
-
-    @PostMapping("/remove/{userId}")
-    @Operation(summary = "가족 해제 API", description = "특정 유저를 가족 공간에서 내보내는 API입니다.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4005", description = "이미 해제된 유저입니다.")
-    })
-    @Parameters({
-            @Parameter(name = "userId", description = "해제할 유저 아이디, path variable 입니다.")
-    })
-    public ApiResponse<String> removeFamily(
-            @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
-            @PathVariable(name = "userId") Long userId) {
-        User removeUser = userQueryService.findUser(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
-
-        if (userManagementQueryService.existsRemoveByUserAndFamilySpace(removeUser, user.getFamilySpace())) {
-            // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.ALREADY_REMOVED_USER);
-        }
-        if (!removeUser.getFamilySpace().equals(user.getFamilySpace())) {
-            // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
-        }
-        userManagementCommandService.removeUser(user, removeUser);
-        return ApiResponse.onSuccess("Family removal completed successfully.");
-    }
-
-    @PostMapping("/remove/release/{userId}")
-    @Operation(summary = "가족 해제 풀기 API", description = "특정 유저를 가족 공간에 다시 합류시키는 API입니다.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4007", description = "이미 해제가 풀어진 유저입니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4006", description = "이미 다른 가족 공간에 속해 있습니다.")
-    })
-    @Parameters({
-            @Parameter(name = "userId", description = "해제 풀 유저 아이디, path variable 입니다.")
-    })
-    public ApiResponse<String> releaseRemoveFamily(
-            @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
-            @PathVariable(name = "userId") Long userId) {
-        User removeUser = userQueryService.findUser(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
-
-        if (!userManagementQueryService.existsRemoveByUserAndFamilySpace(removeUser, user.getFamilySpace())) {
-            // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.ALREADY_RELEASE_REMOVE_USER);
-        }
-        if (removeUser.getFamilySpace() != null) {
-            // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.ALREADY_BELONG_USER_FAMILY_SPACE);
-        }
-        userManagementCommandService.releaseRemoveUser(user, removeUser);
-        return ApiResponse.onSuccess("Family removal release completed successfully.");
     }
 
     @PostMapping("block/{userId}")

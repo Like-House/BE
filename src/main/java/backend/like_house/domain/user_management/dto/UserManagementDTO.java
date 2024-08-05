@@ -1,7 +1,6 @@
 package backend.like_house.domain.user_management.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -32,8 +31,6 @@ public class UserManagementDTO {
         public static class FamilyListResponse {
             @Schema(description = "가족 목록")
             private List<FamilyData> familyDataList;
-            @Schema(description = "해제 목록")
-            private List<FamilyData> removeFamilyDataList;
             @Schema(description = "차단 목록")
             private List<FamilyData> blockFamilyDataList;
             @Schema(description = "가족 명수", example = "20")

@@ -2,6 +2,7 @@ package backend.like_house.domain.schedule.entity;
 
 import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.schedule.dto.ScheduleDTO.ScheduleRequest.ModifyScheduleRequest;
+import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.BaseEntity;
 import backend.like_house.global.common.enums.ScheduleType;
 import jakarta.persistence.*;
@@ -29,6 +30,11 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "family_space_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private FamilySpace familySpace;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
     @Column(nullable = false)
     private LocalDate date;

@@ -8,7 +8,5 @@ public interface UserManagementQueryRepository {
 
     List<FamilyData> findFamilyUser(User user);
 
-    List<FamilyData> findFamilyRemoveUser(User user);
-
     List<FamilyData> findFamilyBlockUser(User user);
 }

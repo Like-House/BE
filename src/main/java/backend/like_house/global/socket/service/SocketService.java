@@ -1,6 +1,9 @@
 package backend.like_house.global.socket.service;
 
 
+import backend.like_house.domain.chatting.converter.ChatConverter;
+import backend.like_house.domain.chatting.dto.ChatDTO;
+import backend.like_house.domain.chatting.entity.Chat;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
 import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
 import backend.like_house.domain.chatting.service.ChatCommandService;
@@ -78,13 +81,16 @@ public class SocketService {
         List<Tuple> emailsAndSocialTypes = userRepository.getEmailAndSocialTypeByChatRoomId(chattingDTO.getChatRoomId());
 
         // 채팅 DB에 저장
-        chatCommandService.saveChat(chattingDTO, session.getAttributes().get("email").toString(), SocialType.valueOf(session.getAttributes().get("social").toString()));
+        Chat chat = chatCommandService.saveChat(chattingDTO, session.getAttributes().get("email").toString(), SocialType.valueOf(session.getAttributes().get("social").toString()));
+
+        // response 값 통일
+        ChatDTO.ChatResponse chatResponse = ChatConverter.toChatResponse(chat);
 
         // 메시지를 모든 세션에 전달
-        socketUtil.sendToUserWithOutMe(session, chattingDTO);
+        socketUtil.sendToUserWithOutMe(session, chattingDTO, chatResponse);
         
         // 대기 방 인원에게 메시지 전달
-        socketUtil.sendToUserWithOutInSessionRoom(emailsAndSocialTypes, chattingDTO);
+        socketUtil.sendToUserWithOutInSessionRoom(emailsAndSocialTypes, chatResponse);
         
         // 밖 인원들 에게 푸시 알림 전달
 

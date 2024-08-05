@@ -21,6 +21,7 @@ public class PostDTO {
             private Long familySpaceId;
             private String content;
             private List<PostResponse.FamilyTagResponse> taggedUserIds;
+            private List<String> imageUrls;
         }
 
         @Getter
@@ -29,6 +30,7 @@ public class PostDTO {
             private Long postId;
             private String content;
             private List<PostResponse.FamilyTagResponse> taggedUserIds;
+            private List<String> imageUrls;
         }
     }
 

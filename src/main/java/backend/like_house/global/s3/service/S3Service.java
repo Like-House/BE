@@ -60,4 +60,8 @@ public class S3Service {
                 .url(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString())
                 .build();
     }
+
+    public Boolean isExistKeyName(String keyName) {
+        return amazonS3.doesObjectExist(bucket, keyName);
+    }
 }

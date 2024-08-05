@@ -1,7 +1,10 @@
 package backend.like_house.domain.user.entity;
 
 import backend.like_house.domain.family_space.entity.FamilySpace;
+import backend.like_house.domain.schedule.dto.ScheduleDTO;
+import backend.like_house.domain.user.dto.UserDTO;
 import backend.like_house.global.common.BaseEntity;
+import backend.like_house.global.common.enums.ScheduleType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -38,7 +41,6 @@ public class User extends BaseEntity {
 
     private LocalDate birthDate;
 
-    @Column(nullable = false)
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
@@ -69,6 +71,8 @@ public class User extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isRoomManager;
 
+    private String fcmToken;
+
     public void setFamilySpace(FamilySpace familySpace) {
         this.familySpace = familySpace;
     }
@@ -77,4 +81,29 @@ public class User extends BaseEntity {
         this.isRoomManager = isRoomManager;
     }
 
+    public void setUpdateUserProfile(UserDTO.UpdateProfileRequest request) {
+        this.name = request.getName() != null ? request.getName() : this.name;
+        this.profileImage = request.getProfileImage() != null ? request.getProfileImage() : this.getProfileImage();
+        this.birthDate = request.getBirthDate() != null ? request.getBirthDate() : this.getBirthDate();
+    }
+
+    public void setUpdateUserPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void commentAlarmSetting() {
+        this.commentAlarm = !this.commentAlarm;
+    }
+
+    public void commentReplyAlarmSetting() {
+        this.commentReplyAlarm = !this.commentReplyAlarm;
+    }
+
+    public void eventAlarmSetting() {
+        this.eventAlarm = !this.eventAlarm;
+    }
+
+    public void chatAlarmSetting() {
+        this.chatAlarm = !this.chatAlarm;
+    }
 }

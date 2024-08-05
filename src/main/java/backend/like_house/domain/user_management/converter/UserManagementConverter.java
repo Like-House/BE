@@ -7,19 +7,16 @@ import backend.like_house.domain.user_management.dto.UserManagementDTO.UserManag
 import backend.like_house.domain.user_management.entity.BlockUser;
 import backend.like_house.domain.user_management.entity.Contact;
 import backend.like_house.domain.user_management.entity.Custom;
-import backend.like_house.domain.user_management.entity.RemoveUser;
 import java.util.List;
 
 public class UserManagementConverter {
 
     public static FamilyListResponse toFamilyListResponse(List<FamilyData> familyUser,
-                                                          List<FamilyData> familyRemoveUser,
                                                           List<FamilyData> familyBlockUser) {
         return FamilyListResponse.builder()
                 .familyDataList(familyUser)
-                .removeFamilyDataList(familyRemoveUser)
                 .blockFamilyDataList(familyBlockUser)
-                .size(familyUser.size() + familyRemoveUser.size() + familyBlockUser.size())
+                .size(familyUser.size() + familyBlockUser.size())
                 .build();
     }
 
@@ -43,13 +40,6 @@ public class UserManagementConverter {
                 .contact(contact)
                 .nickname(request.getNickname())
                 .memo(request.getMemo())
-                .build();
-    }
-
-    public static RemoveUser toRemoveUser(User user, FamilySpace familySpace) {
-        return RemoveUser.builder()
-                .user(user)
-                .familySpace(familySpace)
                 .build();
     }
 

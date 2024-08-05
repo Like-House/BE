@@ -3,7 +3,7 @@ package backend.like_house.domain.family_space.controller;
 import backend.like_house.domain.family_space.converter.FamilyEmoticonConverter;
 import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO;
 import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonDetailListResponse;
-import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonPreview;
+import backend.like_house.domain.family_space.dto.FamilyEmoticonDTO.FamilyEmoticonPreviewResponse;
 import backend.like_house.domain.family_space.entity.FamilyEmoticon;
 import backend.like_house.domain.family_space.service.FamilyEmoticonCommandService;
 import backend.like_house.domain.family_space.service.FamilyEmoticonQueryService;
@@ -54,7 +54,7 @@ public class FamilyEmoticonController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
-    public ApiResponse<FamilyEmoticonPreview> createFamilyEmoticon(@Parameter(hidden = true) @LoginUser User user,@RequestBody @Valid FamilyEmoticonDTO.CreateFamilyEmoticonRequest createFamilyEmoticonRequest) {
+    public ApiResponse<FamilyEmoticonPreviewResponse> createFamilyEmoticon(@Parameter(hidden = true) @LoginUser User user, @RequestBody @Valid FamilyEmoticonDTO.CreateFamilyEmoticonRequest createFamilyEmoticonRequest) {
         FamilyEmoticon familyEmoticon = familyEmoticonCommandService.createFamilyEmoticon(user, createFamilyEmoticonRequest);
         return ApiResponse.onSuccess(FamilyEmoticonConverter.toFamilyEmoticonPreview(familyEmoticon));
     }
