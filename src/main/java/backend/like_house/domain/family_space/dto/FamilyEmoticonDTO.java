@@ -1,6 +1,7 @@
 package backend.like_house.domain.family_space.dto;
 
 import backend.like_house.global.validation.annotation.CheckImageKeyName;
+import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ public class FamilyEmoticonDTO {
 
     @Getter
     public static class CreateFamilyEmoticonRequest {
+        @ExistFamilySpace
         private Long familySpaceId;
         @CheckImageKeyName
         private String imageKeyName;
@@ -22,8 +24,8 @@ public class FamilyEmoticonDTO {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class FamilyEmoticonPreviewListResponse {
-        private List<FamilyEmoticonDTO> familyEmoticonDTOList;
+    public static class FamilyEmoticonDetailListResponse {
+        private List<FamilyEmoticonDetailResponse> familyEmoticonDTOList;
     }
 
     @Builder
