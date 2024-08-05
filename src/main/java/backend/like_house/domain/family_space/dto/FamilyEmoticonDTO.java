@@ -1,5 +1,6 @@
 package backend.like_house.domain.family_space.dto;
 
+import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +13,9 @@ public class FamilyEmoticonDTO {
 
     @Getter
     public static class CreateFamilyEmoticonRequest {
+        @ExistFamilySpace
         private Long familySpaceId;
-        private String imageUrl;
+        private String filename;
     }
 
     @Builder
