@@ -10,7 +10,9 @@ import backend.like_house.domain.user_management.service.UserManagementCommandSe
 import backend.like_house.domain.user_management.service.UserManagementQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.error.code.status.ErrorStatus;
-import backend.like_house.global.error.exception.GeneralException;
+import backend.like_house.global.error.handler.FamilySpaceException;
+import backend.like_house.global.error.handler.UserException;
+import backend.like_house.global.error.handler.UserManagementException;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
 import backend.like_house.global.validation.annotation.IsRoomManager;
@@ -71,11 +73,11 @@ public class UserManagementController {
             @PathVariable(name = "userId") Long userId,
             @RequestBody @Valid ModifyFamilyDataRequest request) {
         User modifyUser = userQueryService.findUser(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
 
         if (!modifyUser.getFamilySpace().equals(user.getFamilySpace())) {
             // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
+            throw new FamilySpaceException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
         }
         Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
         return ApiResponse.onSuccess(UserManagementConverter.toModifyFamilyDataResponse(userId, custom));
@@ -98,15 +100,15 @@ public class UserManagementController {
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
         User blockUser = userQueryService.findUser(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
 
         if (userManagementQueryService.existsBlockByUserAndFamilySpace(blockUser, user.getFamilySpace())) {
             // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.ALREADY_BLOCKED_USER);
+            throw new UserManagementException(ErrorStatus.ALREADY_BLOCKED_USER);
         }
         if (!blockUser.getFamilySpace().equals(user.getFamilySpace())) {
             // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
+            throw new FamilySpaceException(ErrorStatus.NOT_INCLUDE_USER_FAMILY_SPACE);
         }
         userManagementCommandService.blockUser(user, blockUser);
         return ApiResponse.onSuccess("Family block completed successfully");
@@ -129,15 +131,15 @@ public class UserManagementController {
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser @IsRoomManager User user,
             @PathVariable(name = "userId") Long userId) {
         User blockUser = userQueryService.findUser(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
 
         if (!userManagementQueryService.existsBlockByUserAndFamilySpace(blockUser, user.getFamilySpace())) {
             // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.ALREADY_RELEASE_BLOCK_USER);
+            throw new UserManagementException(ErrorStatus.ALREADY_RELEASE_BLOCK_USER);
         }
         if (blockUser.getFamilySpace() != null) {
             // TODO 리팩토링
-            throw new GeneralException(ErrorStatus.ALREADY_BELONG_OTHER_FAMILY_SPACE);
+            throw new FamilySpaceException(ErrorStatus.ALREADY_BELONG_OTHER_FAMILY_SPACE);
         }
         userManagementCommandService.releaseBlockUser(user, blockUser);
         return ApiResponse.onSuccess("Family block release completed successfully");
