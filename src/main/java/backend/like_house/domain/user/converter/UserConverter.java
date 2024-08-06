@@ -46,6 +46,7 @@ public class UserConverter {
                 .builder()
                 .userId(user.getId())
                 .username(user.getName())
+                .userProfile(user.getProfileImage())
                 .build();
     }
 }
