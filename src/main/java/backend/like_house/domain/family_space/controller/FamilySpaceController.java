@@ -10,7 +10,7 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user_management.service.UserManagementQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.error.code.status.ErrorStatus;
-import backend.like_house.global.error.exception.GeneralException;
+import backend.like_house.global.error.handler.UserManagementException;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
@@ -101,7 +101,7 @@ public class FamilySpaceController {
         FamilySpace familySpace = familySpaceQueryService.findFamilySpace(familySpaceId).get();
         if (userManagementQueryService.existsBlockByUserAndFamilySpace(user, familySpace)) {
             // TODO 어노테이션으로 리팩토링
-            throw new GeneralException(ErrorStatus.ALREADY_BLOCKED_USER);
+            throw new UserManagementException(ErrorStatus.ALREADY_BLOCKED_USER);
         }
         familySpaceCommandService.userConnectWithFamilySpace(user, familySpace);
         return ApiResponse.onSuccess(FamilySpaceConverter.toEnterFamilySpaceResponse(user, familySpace));
