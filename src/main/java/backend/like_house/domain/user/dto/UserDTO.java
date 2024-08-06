@@ -16,7 +16,6 @@ public class UserDTO {
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     public static class GetProfileResponse {
         private String name;
-        @CheckImageKeyName
         private String imageKeyName;
         private LocalDate birthDate;
     }
@@ -24,6 +23,7 @@ public class UserDTO {
     @Getter
     public static class UpdateProfileRequest {
 
+        @CheckImageKeyName
         @Schema(description = "수정할 프로필 이미지 url")
         private String imageKeyName;
 
@@ -38,6 +38,7 @@ public class UserDTO {
     public static class UpdatePasswordRequest {
         @NotBlank
         @Schema(description = "기존 비밀번호")
+        @CheckImageKeyName
         private String currentPassword;
 
         @NotBlank
