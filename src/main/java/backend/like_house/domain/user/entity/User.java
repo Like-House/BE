@@ -83,7 +83,7 @@ public class User extends BaseEntity {
 
     public void setUpdateUserProfile(UserDTO.UpdateProfileRequest request) {
         this.name = request.getName() != null ? request.getName() : this.name;
-        this.profileImage = request.getProfileImage() != null ? request.getProfileImage() : this.getProfileImage();
+        this.profileImage = request.getImageKeyName() != null ? request.getImageKeyName() : this.getProfileImage();
         this.birthDate = request.getBirthDate() != null ? request.getBirthDate() : this.getBirthDate();
     }
 

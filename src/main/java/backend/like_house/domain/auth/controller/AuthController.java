@@ -6,11 +6,14 @@ import backend.like_house.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "회원가입/로그인", description = "회원가입 및 로그인 관련 API입니다.")
 @RequestMapping("/api/v0/auth")
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -22,7 +25,7 @@ public class AuthController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<AuthDTO.SignUpResponse> signUp(@RequestBody AuthDTO.SignUpRequest signUpDTO) {
+    public ApiResponse<AuthDTO.SignUpResponse> signUp(@RequestBody @Valid AuthDTO.SignUpRequest signUpDTO) {
         return ApiResponse.onSuccess(authCommandService.signUp(signUpDTO));
     }
 
@@ -34,7 +37,7 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH4002", description = "비밀번호가 일치하지 않습니다.")
 
     })
-    public ApiResponse<AuthDTO.SignInResponse> signIn(@RequestBody AuthDTO.SignInRequest signInDTO) {
+    public ApiResponse<AuthDTO.SignInResponse> signIn(@RequestBody @Valid AuthDTO.SignInRequest signInDTO) {
         return ApiResponse.onSuccess(authCommandService.signIn(signInDTO));
     }
 
@@ -45,7 +48,7 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH4001", description = "유효하지 않은 토큰입니다.")
 
     })
-    public ApiResponse<String> signOut(@RequestBody AuthDTO.TokenRequest tokenRequest) {
+    public ApiResponse<String> signOut(@RequestBody @Valid AuthDTO.TokenRequest tokenRequest) {
         authCommandService.signOut(tokenRequest);
         return ApiResponse.onSuccess("로그아웃 성공");
     }
@@ -56,7 +59,7 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH4001", description = "유효하지 않은 토큰입니다.")
     })
-    public ApiResponse<String> deleteAccount(@RequestBody AuthDTO.TokenRequest deleteAccountRequest) {
+    public ApiResponse<String> deleteAccount(@RequestBody @Valid AuthDTO.TokenRequest deleteAccountRequest) {
         authCommandService.deleteUser(deleteAccountRequest);
         return ApiResponse.onSuccess("회원 탈퇴 성공");
     }

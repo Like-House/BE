@@ -1,5 +1,6 @@
 package backend.like_house.domain.user.dto;
 
+import backend.like_house.global.validation.annotation.CheckImageKeyName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -15,15 +16,16 @@ public class UserDTO {
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     public static class GetProfileResponse {
         private String name;
-        private String profileImage;
+        private String imageKeyName;
         private LocalDate birthDate;
     }
 
     @Getter
     public static class UpdateProfileRequest {
 
+        @CheckImageKeyName
         @Schema(description = "수정할 프로필 이미지 url")
-        private String profileImage;
+        private String imageKeyName;
 
         @Schema(description = "수정할 이름", example = "이름")
         private String name;
@@ -36,6 +38,7 @@ public class UserDTO {
     public static class UpdatePasswordRequest {
         @NotBlank
         @Schema(description = "기존 비밀번호")
+        @CheckImageKeyName
         private String currentPassword;
 
         @NotBlank
