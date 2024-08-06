@@ -39,6 +39,7 @@ public class ChatDTO {
     public static class SenderDTO {
         private Long senderId;
         private String senderName;
+        private String senderProfile;
     }
 
 }

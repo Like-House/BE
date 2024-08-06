@@ -41,6 +41,7 @@ public class ChatConverter {
         ChatDTO.SenderDTO senderDTO = ChatDTO.SenderDTO.builder()
                 .senderId(user == null ? null : user.getId())
                 .senderName(user == null ? "알 수 없음" : user.getName())
+                .senderProfile(user == null ? null : user.getProfileImage())
                 .build();
 
         return ChatDTO.ChatResponse.builder()

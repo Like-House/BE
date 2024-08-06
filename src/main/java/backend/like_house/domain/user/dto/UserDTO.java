@@ -72,5 +72,6 @@ public class UserDTO {
     public static class ChatRoomUserResponse {
         private Long userId;
         private String username;
+        private String userProfile;
     }
 }
