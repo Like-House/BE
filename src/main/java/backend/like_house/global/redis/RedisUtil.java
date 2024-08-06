@@ -31,6 +31,10 @@ public class RedisUtil {
         redisTemplate.opsForValue().set(code, String.valueOf(familySpaceId), 7, TimeUnit.DAYS);
     }
 
+    public void saveEmailCode(String receiver, String code) {
+        redisTemplate.opsForValue().set(receiver, code, 5, TimeUnit.MINUTES);
+    }
+
     public LocalDateTime getFamilySpaceCodeExpirationByCode(String code) {
         Long expiration = redisTemplate.getExpire(code, TimeUnit.SECONDS);
         if (expiration == null || expiration <= 0) {
@@ -57,6 +61,10 @@ public class RedisUtil {
         }
 
         return code;
+    }
+
+    public String getEmailVerificationCode(String email) {
+        return redisTemplate.opsForValue().get(email);
     }
 
     public String generateFamilySpaceCodeById(Long familySpaceId) {
@@ -113,5 +121,9 @@ public class RedisUtil {
     // email과 socialType으로 키 생성
     private String generateKey(String email, String socialType) {
         return email + ":" + socialType;
+    }
+
+    public void deleteEmailVerficationCode(String email) {
+        redisTemplate.delete(email);
     }
 }

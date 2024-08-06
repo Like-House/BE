@@ -93,8 +93,11 @@ public enum ErrorStatus implements BaseErrorCode {
     // AWS 관련 에러
     KEYNAME_NOT_FOUND(HttpStatus.BAD_REQUEST, "AWS4001", "찾을 수 없는 KEYNAME입니다."),
 
-    // 예시,,,
-    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");
+    // 이메일 인증 관련
+    EMAIL_SEND_FAIL(HttpStatus.BAD_REQUEST, "EMAIL4001", "이메일 전송을 실패하였습니다."),
+    EMAIL_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "EMAIL4002", "인증번호를 찾을 수 없습니다."),
+    INCORRECT_EMAIL_CODE(HttpStatus.BAD_REQUEST, "EMAIL4003", "인증번호가 일치하지 않습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -2,10 +2,12 @@ package backend.like_house.domain.auth.service.impl;
 
 import backend.like_house.domain.auth.converter.AuthConverter;
 import backend.like_house.domain.auth.dto.AuthDTO;
+import backend.like_house.domain.auth.dto.EmailDTO;
 import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.auth.repository.AuthRepository;
 import backend.like_house.domain.auth.service.AuthCommandService;
+import backend.like_house.global.email.EmailUtil;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.error.handler.AuthException;
@@ -31,6 +33,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     private final JWTUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final RedisTemplate<String, String> redisTemplate;
+    private final EmailUtil emailUtil;
 
     @Override
     public AuthDTO.SignUpResponse signUp(AuthDTO.SignUpRequest signUpRequest) {
@@ -96,6 +99,32 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         authRepository.deleteByEmailAndSocialType(email, socialType);
     }
 
+    @Override
+    public EmailDTO.EmailSendResponse sendCode(String email) {
+        try {
+            String code = emailUtil.sendMessage(email);
+            return new EmailDTO.EmailSendResponse(email, code);
+        } catch (Exception e) {
+            throw new GeneralException(ErrorStatus.EMAIL_SEND_FAIL);
+        }
+    }
+
+    @Override
+    public void verifyCode(EmailDTO.EmailVerificationRequest request) {
+
+        Object redisCode = redisUtil.getEmailVerificationCode(request.getEmail());
+        if (redisCode == null) {
+            throw new AuthException(ErrorStatus.EMAIL_CODE_NOT_FOUND);
+        }
+
+        boolean isCodeValid = request.getCode().equals(String.valueOf(redisCode));
+        if (isCodeValid) {
+            redisUtil.deleteEmailVerficationCode(request.getEmail());
+        } else {
+            throw new AuthException(ErrorStatus.INCORRECT_EMAIL_CODE);
+        }
+    }
+
     private void processToken(AuthDTO.TokenRequest request) {
         // 로그아웃 or 탈퇴 처리 하고 싶은 토큰이 유효한지 확인
         if (jwtUtil.isTokenExpired(request.getAccessToken())) {
@@ -111,7 +140,6 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         }
 
     }
-
 
 
 }
