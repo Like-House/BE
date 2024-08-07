@@ -1,6 +1,7 @@
 package backend.like_house.domain.auth.controller;
 
 import backend.like_house.domain.auth.dto.AuthDTO;
+import backend.like_house.domain.auth.dto.EmailDTO;
 import backend.like_house.domain.auth.service.AuthCommandService;
 import backend.like_house.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,6 +63,30 @@ public class AuthController {
     public ApiResponse<String> deleteAccount(@RequestBody @Valid AuthDTO.TokenRequest deleteAccountRequest) {
         authCommandService.deleteUser(deleteAccountRequest);
         return ApiResponse.onSuccess("회원 탈퇴 성공");
+    }
+
+    @PostMapping("/email/send-verification")
+    @Operation(summary="인증 코드 전송 요청 API", description="인증 번호 전송을 요청하는 API 입니다. ")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL_001", description = "이메일 전송에 실패했습니다."),
+    })
+    public ApiResponse<EmailDTO.EmailSendResponse> sendCode(@RequestParam("email") String email) {
+        return ApiResponse.onSuccess(authCommandService.sendCode(email));
+    }
+
+    @PostMapping("/email/verification")
+    @Operation(summary="코드 인증 요청 API", description="이메일 인증 코드 일치 여부를 확인하는 API 입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL_002", description = "이메일 인증 코드가 일치하지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL_003", description = "유저 이메일에 해당하는 이메일 코드가 저장되어있지 않습니다. 재요청을 시도해주세요."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL_004", description = "이메일 인증에 실패했습니다.")
+    })
+    public ApiResponse<String> verifyCode(
+            @RequestBody EmailDTO.EmailVerificationRequest request) {
+        authCommandService.verifyCode(request);
+        return ApiResponse.onSuccess("이메일 인증 성공");
     }
 
 }
