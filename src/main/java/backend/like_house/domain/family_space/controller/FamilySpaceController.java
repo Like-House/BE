@@ -7,10 +7,7 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.family_space.service.FamilySpaceCommandService;
 import backend.like_house.domain.family_space.service.FamilySpaceQueryService;
 import backend.like_house.domain.user.entity.User;
-import backend.like_house.domain.user_management.service.UserManagementQueryService;
 import backend.like_house.global.common.ApiResponse;
-import backend.like_house.global.error.code.status.ErrorStatus;
-import backend.like_house.global.error.handler.UserManagementException;
 import backend.like_house.global.security.annotation.LoginUser;
 import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
@@ -43,7 +40,6 @@ public class FamilySpaceController {
 
     private final FamilySpaceQueryService familySpaceQueryService;
     private final FamilySpaceCommandService familySpaceCommandService;
-    private final UserManagementQueryService userManagementQueryService;
 
     @PostMapping("/check")
     @Operation(summary = "가족 공간 초대 코드 유효성 확인 API", description = """
@@ -99,27 +95,24 @@ public class FamilySpaceController {
             @PathVariable(name = "familySpaceId") @ExistFamilySpace Long familySpaceId
     ) {
         FamilySpace familySpace = familySpaceQueryService.findFamilySpace(familySpaceId).get();
-        if (userManagementQueryService.existsBlockByUserAndFamilySpace(user, familySpace)) {
-            // TODO 어노테이션으로 리팩토링
-            throw new UserManagementException(ErrorStatus.ALREADY_BLOCKED_USER);
-        }
         familySpaceCommandService.userConnectWithFamilySpace(user, familySpace);
         return ApiResponse.onSuccess(FamilySpaceConverter.toEnterFamilySpaceResponse(user, familySpace));
     }
 
     @GetMapping("")
     @Operation(summary = "내가 속한 가족 공간 입장 API", description = """
-        내가 이미 소속된 가족 공간에 입장하는 API입니다.
-        
-        가족 공간 아이디를 반환합니다.
-        
-        해당 유저가 가족 공간에 속해 있지 않다면 에러를 반환합니다.
-        """)
+            내가 이미 소속된 가족 공간에 입장하는 API입니다.
+                    
+            가족 공간 아이디를 반환합니다.
+                    
+            해당 유저가 가족 공간에 속해 있지 않다면 에러를 반환합니다.
+            """)
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
-    public ApiResponse<FamilySpaceIdResponse> getMyFamilySpaceId(@Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user) {
+    public ApiResponse<FamilySpaceIdResponse> getMyFamilySpaceId(
+            @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user) {
         return ApiResponse.onSuccess(FamilySpaceConverter.toGetMyFamilySpaceId(user));
     }
 

@@ -8,7 +8,7 @@ public interface UserManagementCommandService {
 
     Custom modifyFamilyCustom(User user, Long userId, ModifyFamilyDataRequest request);
 
-    void blockUser(User manager, User blockUser);
+    void blockUser(User manager, Long blockUserId);
 
-    void releaseBlockUser(User manager, User blockUser);
+    void releaseBlockUser(User manager, Long blockUserId);
 }
