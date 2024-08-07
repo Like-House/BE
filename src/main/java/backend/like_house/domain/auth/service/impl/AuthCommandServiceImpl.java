@@ -105,7 +105,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
             String code = emailUtil.sendMessage(email);
             return new EmailDTO.EmailSendResponse(email, code);
         } catch (Exception e) {
-            throw new GeneralException(ErrorStatus.EMAIL_SEND_FAIL);
+            throw new AuthException(ErrorStatus.EMAIL_SEND_FAIL);
         }
     }
 
