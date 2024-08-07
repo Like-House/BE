@@ -119,7 +119,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
         boolean isCodeValid = request.getCode().equals(String.valueOf(redisCode));
         if (isCodeValid) {
-            redisUtil.deleteEmailVerficationCode(request.getEmail());
+            redisUtil.deleteEmailVerificationCode(request.getEmail());
         } else {
             throw new AuthException(ErrorStatus.INCORRECT_EMAIL_CODE);
         }

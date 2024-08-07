@@ -123,7 +123,7 @@ public class RedisUtil {
         return email + ":" + socialType;
     }
 
-    public void deleteEmailVerficationCode(String email) {
+    public void deleteEmailVerificationCode(String email) {
         redisTemplate.delete(email);
     }
 }
