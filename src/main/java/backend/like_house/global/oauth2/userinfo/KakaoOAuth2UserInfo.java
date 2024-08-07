@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Map;
+
 @AllArgsConstructor
 public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
 
@@ -13,6 +14,7 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
     public String getProviderId() {
         return attributes.get("id").toString();
     }
+
     @Override
     public String getProvider() {
         return "kakao";

@@ -67,7 +67,7 @@ public class AuthController {
     }
 
     @PostMapping("/email/send-verification")
-    @Operation(summary="인증 코드 전송 요청 API", description="인증 번호 전송을 요청하는 API 입니다. ")
+    @Operation(summary = "인증 코드 이메일 전송 요청 API", description = "인증 번호 전송을 요청하는 API 입니다. ")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL4001", description = "이메일 전송을 실패하였습니다."),
@@ -77,7 +77,7 @@ public class AuthController {
     }
 
     @PostMapping("/email/verification")
-    @Operation(summary="코드 인증 요청 API", description="이메일 인증 코드 일치 여부를 확인하는 API 입니다.")
+    @Operation(summary = "코드 인증 요청 API", description = "이메일 인증 코드 일치 여부를 확인하는 API 입니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL4002", description = "인증번호를 찾을 수 없습니다."),
