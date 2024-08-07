@@ -26,25 +26,6 @@ public class ChatQueryServiceImpl implements ChatQueryService {
     private final UserChatRoomRepository userChatRoomRepository;
 
     @Override
-    public ChatDTO.ChatListResponse getFirstChats(User user, Long chatRoomId) {
-
-        if (!userChatRoomRepository.existsByChatRoomIdAndUserId(chatRoomId, user.getId())) {
-            throw new ChatRoomException(ErrorStatus.NOT_JOIN_CHATROOM);
-        }
-
-        // user와 chatRoom은 어노테이션으로 확인
-
-        Slice<Chat> chatSlice = chatRepository.findChatsByLastReadTime(user.getId(), chatRoomId);
-
-        Long nextCursor = null;
-        if (!chatSlice.isLast()) {
-            nextCursor = chatSlice.toList().get(chatSlice.toList().size() - 1).getId();
-        }
-
-        return ChatConverter.toChatResponseList(chatSlice, nextCursor);
-    }
-
-    @Override
     public ChatDTO.ChatListResponse getChats(User user, Long chatRoomId, Long cursor, Integer take) {
 
         if (!userChatRoomRepository.existsByChatRoomIdAndUserId(chatRoomId, user.getId())) {
@@ -52,7 +33,12 @@ public class ChatQueryServiceImpl implements ChatQueryService {
         }
 
         // user와 chatRoom은 어노테이션으로 확인
-        Slice<Chat> chatSlice = chatRepository.findChatByChatRoomIdOrderByDesc(cursor, take, chatRoomId);
+        Slice<Chat> chatSlice;
+        if (cursor == 1) {
+            chatSlice = chatRepository.findChatsByLastReadTime(user.getId(), chatRoomId);
+        } else {
+            chatSlice = chatRepository.findChatByChatRoomIdOrderByDesc(cursor, take, chatRoomId);
+        }
 
         Long nextCursor = null;
         if (!chatSlice.isLast()) {

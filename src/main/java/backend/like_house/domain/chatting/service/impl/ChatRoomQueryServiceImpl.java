@@ -30,7 +30,7 @@ public class ChatRoomQueryServiceImpl implements ChatRoomQueryService {
     public ChatRoomResponseList getChatRoomsByUserIdAndFamilySpaceId(Long userId, Long familySpaceId, Long cursor, Integer take) {
         // 가족 공간은 유무는 어노테이션으로 처리
         
-        if (cursor == -1) {
+        if (cursor == 1) {
             cursor = Long.MAX_VALUE;
         }
 
