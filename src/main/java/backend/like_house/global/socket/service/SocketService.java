@@ -57,9 +57,9 @@ public class SocketService {
         
         // 롤백 처리
         try {
+            userChatRoomCommandService.updateLastTime(session.getAttributes().get("email").toString(), SocialType.valueOf(session.getAttributes().get("social").toString()), chattingDTO.getChatRoomId());
             TextHandler.chatSessionRoom.get(0L).remove(session);
             socketUtil.createOrJoinSessionChatRoom(chattingDTO.getChatRoomId(), session);
-            userChatRoomCommandService.updateLastTime(session.getAttributes().get("email").toString(), SocialType.valueOf(session.getAttributes().get("social").toString()), chattingDTO.getChatRoomId());
         } catch (Exception e) {
             socketUtil.exitAllSessionChatRoom(session);
             socketUtil.createSessionChatRoom(0L, session);
@@ -106,6 +106,7 @@ public class SocketService {
 
         // 롤백 처리
         try {
+            userChatRoomCommandService.updateLastTime(session.getAttributes().get("email").toString(), SocialType.valueOf(session.getAttributes().get("social").toString()), chattingDTO.getChatRoomId());
             TextHandler.chatSessionRoom.get(chattingDTO.getChatRoomId()).remove(session);
             TextHandler.chatSessionRoom.get(0L).add(session);
         } catch (Exception e) {

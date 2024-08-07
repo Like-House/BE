@@ -15,6 +15,7 @@ import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.service.UserQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
+import backend.like_house.global.validation.annotation.CheckCursor;
 import backend.like_house.global.validation.annotation.CheckSize;
 import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +55,7 @@ public class ChatRoomController {
     public ApiResponse<ChatRoomResponseList> getChatRooms(
             @Parameter(hidden = true) @LoginUser User user,
             @RequestParam(name = "familySpaceId") @ExistFamilySpace Long familySpaceId,
-            @Parameter(description = "처음 요청은 -1로 해주세요.") @RequestParam(name = "cursor") Long cursor,
+            @Parameter(description = "처음 요청은 1로 해주세요.") @CheckCursor @RequestParam(name = "cursor") Long cursor,
             @RequestParam(name = "take") @CheckSize Integer take
     ) {
        ChatRoomResponseList chatRoomResponseList = chatRoomQueryService.getChatRoomsByUserIdAndFamilySpaceId(user.getId(), familySpaceId, cursor, take);
