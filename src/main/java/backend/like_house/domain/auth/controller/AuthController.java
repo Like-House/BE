@@ -83,8 +83,7 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL4002", description = "인증번호를 찾을 수 없습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EMAIL4003", description = "인증번호가 일치하지 않습니다.")
     })
-    public ApiResponse<String> verifyCode(
-            @RequestBody EmailDTO.EmailVerificationRequest request) {
+    public ApiResponse<String> verifyCode(@RequestBody @Valid EmailDTO.EmailVerificationRequest request) {
         authCommandService.verifyCode(request);
         return ApiResponse.onSuccess("이메일 인증 성공");
     }
