@@ -106,4 +106,8 @@ public class User extends BaseEntity {
     public void chatAlarmSetting() {
         this.chatAlarm = !this.chatAlarm;
     }
+
+    public void addFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }

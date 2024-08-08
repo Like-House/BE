@@ -66,6 +66,9 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
         // Redis에 RefreshToken 저장
         redisUtil.saveRefreshToken(user.getEmail(), user.getSocialType(), refreshToken);
+        
+        // fcm 토큰 저장
+        user.addFcmToken(signInRequest.getFcmToken());
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }
