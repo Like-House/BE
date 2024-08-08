@@ -8,7 +8,6 @@ import backend.like_house.domain.user.repository.UserRepository;
 import backend.like_house.domain.user.service.UserQueryService;
 
 import java.util.List;
-import java.util.Optional;
 
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.ChatRoomException;
@@ -23,11 +22,6 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
-
-    @Override
-    public Optional<User> findUser(Long id) {
-        return userRepository.findById(id);
-    }
 
     @Override
     public UserDTO.GetProfileResponse getUserProfile(User user) {
