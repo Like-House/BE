@@ -26,7 +26,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final AuthRepository memberRepository;
 
     private static final String NAVER = "naver";
-    private static final String KAKAO = "kakao";
     private static final String GOOGLE = "google";
 
     @Override

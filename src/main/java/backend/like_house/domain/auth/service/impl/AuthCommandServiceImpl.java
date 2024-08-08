@@ -105,7 +105,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
             String code = emailUtil.sendMessage(email);
             return new EmailDTO.EmailSendResponse(email, code);
         } catch (Exception e) {
-            throw new GeneralException(ErrorStatus.EMAIL_SEND_FAIL);
+            throw new AuthException(ErrorStatus.EMAIL_SEND_FAIL);
         }
     }
 
@@ -119,7 +119,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
         boolean isCodeValid = request.getCode().equals(String.valueOf(redisCode));
         if (isCodeValid) {
-            redisUtil.deleteEmailVerficationCode(request.getEmail());
+            redisUtil.deleteEmailVerificationCode(request.getEmail());
         } else {
             throw new AuthException(ErrorStatus.INCORRECT_EMAIL_CODE);
         }
