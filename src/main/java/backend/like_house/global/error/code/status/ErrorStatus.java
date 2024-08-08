@@ -31,6 +31,8 @@ public enum ErrorStatus implements BaseErrorCode {
     ALREADY_BLOCKED_USER(HttpStatus.BAD_REQUEST, "USER4006", "이미 차단된 유저입니다."),
     ALREADY_RELEASE_BLOCK_USER(HttpStatus.BAD_REQUEST, "USER4008", "이미 차단이 풀어진 유저입니다."),
     PASSWORD_SAME_AS_OLD(HttpStatus.BAD_REQUEST, "USER4009", "기존 비밀번호와 동일합니다."),
+    CANNOT_BLOCK_YOURSELF(HttpStatus.BAD_REQUEST, "USER4010", "자기 자신을 차단할 수 없습니다."),
+    CANNOT_RELEASE_BLOCK_YOURSELF(HttpStatus.BAD_REQUEST, "USER4011", "자기 자신을 차단 해제할 수 없습니다."),
 
     // 인증 관련 에러
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "AUTH4001", "유효하지 않은 토큰입니다."),

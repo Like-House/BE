@@ -78,7 +78,8 @@ public class UserManagementController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4006", description = "이미 차단된 유저입니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4006", description = "이미 차단된 유저입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4010", description = "자기 자신을 차단할 수 없습니다.")
     })
     @Parameters({
             @Parameter(name = "userId", description = "차단할 유저 아이디, path variable 입니다.")
@@ -98,7 +99,8 @@ public class UserManagementController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4004", description = "주최자가 아닙니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4008", description = "이미 차단이 풀어진 유저입니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4006", description = "이미 다른 가족 공간에 속해 있습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4006", description = "이미 다른 가족 공간에 속해 있습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4011", description = "자기 자신을 차단 해제할 수 없습니다.")
     })
     @Parameters({
             @Parameter(name = "userId", description = "차단 풀 유저 아이디, path variable 입니다.")

@@ -55,6 +55,9 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
         User blockUser = userRepository.findById(blockUserId)
                 .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
 
+        if (blockUser.equals(manager)) {
+            throw new UserManagementException(ErrorStatus.CANNOT_BLOCK_YOURSELF);
+        }
         if (blockUserRepository.existsByUserAndFamilySpace(blockUser, manager.getFamilySpace())) {
             throw new UserManagementException(ErrorStatus.ALREADY_BLOCKED_USER);
         }
@@ -71,6 +74,9 @@ public class UserManagementCommandServiceImpl implements UserManagementCommandSe
         User blockUser = userRepository.findById(blockUserId)
                 .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
 
+        if (blockUser.equals(manager)) {
+            throw new UserManagementException(ErrorStatus.CANNOT_RELEASE_BLOCK_YOURSELF);
+        }
         if (!blockUserRepository.existsByUserAndFamilySpace(blockUser, manager.getFamilySpace())) {
             throw new UserManagementException(ErrorStatus.ALREADY_RELEASE_BLOCK_USER);
         }
