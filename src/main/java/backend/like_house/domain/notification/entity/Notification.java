@@ -37,14 +37,14 @@ public class Notification extends BaseEntity {
     private FamilySpace familySpace;
 
     @Column(nullable = false)
-    private LocalDate date;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private NotificationType dtype;
 
     @Column(nullable = false)
     private Long writerId;
+
+    @Column(nullable = false)
+    private String title;
 
     @Column(nullable = false)
     private String content;
