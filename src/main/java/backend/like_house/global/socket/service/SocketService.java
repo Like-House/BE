@@ -4,17 +4,21 @@ package backend.like_house.global.socket.service;
 import backend.like_house.domain.chatting.converter.ChatConverter;
 import backend.like_house.domain.chatting.dto.ChatDTO;
 import backend.like_house.domain.chatting.entity.Chat;
+import backend.like_house.domain.chatting.entity.ChatRoom;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
 import backend.like_house.domain.chatting.repository.UserChatRoomRepository;
 import backend.like_house.domain.chatting.service.ChatCommandService;
 import backend.like_house.domain.chatting.service.UserChatRoomCommandService;
+import backend.like_house.domain.notification.service.NotificationCommandService;
 import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
+import backend.like_house.global.common.enums.NotificationType;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.ChatException;
 import backend.like_house.global.error.handler.ChatRoomException;
 import backend.like_house.global.error.handler.UserException;
+import backend.like_house.global.firebase.service.FcmService;
 import backend.like_house.global.socket.handler.SocketUtil;
 import backend.like_house.global.socket.handler.TextHandler;
 import backend.like_house.global.socket.dto.ChattingDTO;
@@ -26,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -38,6 +43,8 @@ public class SocketService {
     private final UserRepository userRepository;
     private final UserChatRoomRepository userChatRoomRepository;
     private final UserChatRoomCommandService userChatRoomCommandService;
+    private final NotificationCommandService notificationCommandService;
+    private final FcmService fcmService;
 
 
     // scheduler 로 chatting room 연결이 끊길 시 연결 시키는 거 고려
@@ -93,7 +100,16 @@ public class SocketService {
         socketUtil.sendToUserWithOutInSessionRoom(emailsAndSocialTypes, chatResponse);
         
         // 밖 인원들 에게 푸시 알림 전달
-
+        Set<Tuple> tuples = socketUtil.sendPushNotification(emailsAndSocialTypes, chattingDTO);
+        tuples.forEach(tuple -> {
+            String email = tuple.get(0, String.class);
+            SocialType socialType = tuple.get(1, SocialType.class);
+            ChatRoom chatRoom = chatRoomRepository.findById(chattingDTO.getChatRoomId()).orElseThrow(() -> new ChatRoomException(ErrorStatus.CHATROOM_NOT_FOUND));
+            User sender = userRepository.findByEmailAndSocialType(session.getAttributes().get("email").toString(), SocialType.valueOf(session.getAttributes().get("social").toString())).orElseThrow(()-> new ChatRoomException(ErrorStatus.USER_NOT_FOUND));
+            User receiver = userRepository.findByEmailAndSocialType(email, socialType).orElseThrow(()-> new ChatRoomException(ErrorStatus.USER_NOT_FOUND));
+            notificationCommandService.saveNotification(sender, receiver, chatRoom.getTitle(), chattingDTO.getContent(), NotificationType.CHAT);
+            fcmService.sendNotification(receiver.getFcmToken(), chatRoom.getTitle(), chattingDTO.getContent());
+        });
 
         log.info("ChatSessionRoom 현황 : " + TextHandler.chatSessionRoom);
     }
