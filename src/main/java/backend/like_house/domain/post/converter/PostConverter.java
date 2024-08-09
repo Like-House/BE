@@ -94,4 +94,11 @@ public class PostConverter {
                 .imageUrls(imageUrls)
                 .build();
     }
+
+    public static MyPostCursorDataListResponse toMyPostCursorDataListResponse(List<GetMyPostListResponse> postResponses, Long nextCursor) {
+        return MyPostCursorDataListResponse.builder()
+                .posts(postResponses)
+                .nextCursor(nextCursor)
+                .build();
+    }
 }
