@@ -27,14 +27,12 @@ public class Custom extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Contact contact;
 
-    @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
     private String memo;
 
     public void setUpdateCustom(ModifyFamilyDataRequest request) {
-        this.nickname = request.getNickname() != null ? request.getNickname() : this.nickname;
-        this.memo = request.getMemo() != null ? request.getMemo() : this.memo;
+        this.nickname = request.getNickname();
+        this.memo = request.getMemo();
     }
 }
