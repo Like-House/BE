@@ -9,6 +9,7 @@ import backend.like_house.domain.family_space.service.FamilySpaceQueryService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
+import backend.like_house.global.validation.annotation.CheckFamilySpaceCode;
 import backend.like_house.global.validation.annotation.ExistFamilySpace;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
 import backend.like_house.global.validation.annotation.HasNotFamilySpaceUser;
@@ -51,14 +52,15 @@ public class FamilySpaceController {
         """)
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4005", description = "초대 코드가 유효하지 않습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4005", description = "초대 코드가 유효하지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4007", description = "코드의 길이는 8~12글자이고, 대소문자와 알파벳으로 이루어져야 합니다.")
     })
     @Parameters({
             @Parameter(name = "familySpaceCode", description = "가족 공간 초대 코드, query string 입니다.")
     })
     public ApiResponse<FamilySpaceIdResponse> checkFamilySpaceCode(
             @Parameter(hidden = true) @LoginUser User user,
-            @RequestParam(name = "familySpaceCode") String familySpaceCode
+            @RequestParam(name = "familySpaceCode") @CheckFamilySpaceCode String familySpaceCode
     ) {
         Optional<FamilySpace> familySpace = familySpaceQueryService.findFamilySpaceByCode(familySpaceCode);
         return ApiResponse.onSuccess(FamilySpaceConverter.toCheckFamilySpaceCodeResponse(familySpace));
