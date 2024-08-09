@@ -121,8 +121,8 @@ public class SocketUtil {
     }
 
     private String toChatMessageConverter(ChatDTO.ChatResponse chatResponse) {
-        return String.format("{\"content\": \"%s\", \"senderDTO\": {\"senderId\": %d, \"senderName\": \"%s\"}}",
-                chatResponse.getContent(), chatResponse.getSenderDTO().getSenderId(), chatResponse.getSenderDTO().getSenderName());
+        return String.format("{\"content\": \"%s\", \"senderDTO\": {\"senderId\": %d, \"senderName\": \"%s\", \"senderProfile\": \"%s\"}}",
+                chatResponse.getContent(), chatResponse.getSenderDTO().getSenderId(), chatResponse.getSenderDTO().getSenderName(), chatResponse.getSenderDTO().getSenderProfile());
 
     }
 }
