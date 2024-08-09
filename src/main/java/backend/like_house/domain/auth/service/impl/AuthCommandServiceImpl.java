@@ -9,6 +9,7 @@ import backend.like_house.domain.auth.service.AuthCommandService;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.error.handler.AuthException;
+import backend.like_house.global.firebase.service.FcmService;
 import backend.like_house.global.redis.RedisUtil;
 import backend.like_house.global.security.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     private final JWTUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final RedisTemplate<String, String> redisTemplate;
+    private final FcmService fcmService;
 
     @Override
     public AuthDTO.SignUpResponse signUp(AuthDTO.SignUpRequest signUpRequest) {
@@ -66,9 +68,6 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
         // Redis에 RefreshToken 저장
         redisUtil.saveRefreshToken(user.getEmail(), user.getSocialType(), refreshToken);
-        
-        // fcm 토큰 저장
-        user.addFcmToken(signInRequest.getFcmToken());
 
         return AuthConverter.toSignInResponseDTO(accessToken, refreshToken);
     }
@@ -97,6 +96,12 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         redisTemplate.opsForValue().set(request.getAccessToken(), "deletedUser", expiration, TimeUnit.MILLISECONDS);
 
         authRepository.deleteByEmailAndSocialType(email, socialType);
+    }
+
+    @Override
+    public void fcmSave(User user, AuthDTO.FcmRequest tokenRequest) {
+        fcmService.isTokenValid(user.getName(), tokenRequest.getFcmToken());
+        user.addFcmToken(tokenRequest.getFcmToken());
     }
 
     private void processToken(AuthDTO.TokenRequest request) {

@@ -19,9 +19,6 @@ public class AuthDTO {
         @NotBlank
         @Schema(description = "로그인할 유저 비밀번호", example = "비밀번호")
         private String password;
-
-        @Schema(description = "FCM 토큰")
-        private String fcmToken;
     }
 
     @Builder
@@ -82,6 +79,13 @@ public class AuthDTO {
         @NotNull
         @Schema(description = "탈퇴할 유저 아이디", example = "1")
         private Long userId;
+    }
+
+    @Getter
+    public static class FcmRequest {
+        @NotNull
+        @Schema(description = "토큰")
+        private String fcmToken;
     }
 
 }

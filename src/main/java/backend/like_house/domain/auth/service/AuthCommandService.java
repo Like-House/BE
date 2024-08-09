@@ -1,6 +1,7 @@
 package backend.like_house.domain.auth.service;
 
 import backend.like_house.domain.auth.dto.AuthDTO;
+import backend.like_house.domain.user.entity.User;
 
 public interface AuthCommandService {
 
@@ -12,4 +13,5 @@ public interface AuthCommandService {
 
     void deleteUser(AuthDTO.TokenRequest request);
 
+    void fcmSave(User user, AuthDTO.FcmRequest tokenRequest);
 }

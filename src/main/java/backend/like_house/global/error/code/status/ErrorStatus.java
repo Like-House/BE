@@ -93,7 +93,8 @@ public enum ErrorStatus implements BaseErrorCode {
     KEYNAME_NOT_FOUND(HttpStatus.BAD_REQUEST, "AWS4001", "찾을 수 없는 KEYNAME입니다."),
 
     // token 관련 에러
-    TOKEN_NOT_SEND(HttpStatus.BAD_REQUEST, "TOKEN4001", "찾을 수 없는 KEYNAME입니다."),
+    TOKEN_NOT_SEND(HttpStatus.BAD_REQUEST, "TOKEN4001", "토큰이 보내지지 않았습니다.."),
+    TOKEN_NOT_VALID(HttpStatus.BAD_REQUEST, "TOKEN4002", "유효하지 않은 토큰입니다."),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");

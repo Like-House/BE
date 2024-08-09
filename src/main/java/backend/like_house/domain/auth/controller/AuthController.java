@@ -2,8 +2,11 @@ package backend.like_house.domain.auth.controller;
 
 import backend.like_house.domain.auth.dto.AuthDTO;
 import backend.like_house.domain.auth.service.AuthCommandService;
+import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
+import backend.like_house.global.security.annotation.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +62,16 @@ public class AuthController {
     public ApiResponse<String> deleteAccount(@RequestBody AuthDTO.TokenRequest deleteAccountRequest) {
         authCommandService.deleteUser(deleteAccountRequest);
         return ApiResponse.onSuccess("회원 탈퇴 성공");
+    }
+
+    @PostMapping("/fcm")
+    @Operation(summary = "fcm 토큰 저장 API", description = "fcm 토큰 저장 API 입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+    })
+    public ApiResponse<String> fcmSave(@Parameter(hidden = true) @LoginUser User user, @RequestBody AuthDTO.FcmRequest tokenRequest) {
+        authCommandService.fcmSave(user, tokenRequest);
+        return ApiResponse.onSuccess("토큰 저장 성공");
     }
 
 }
