@@ -9,6 +9,7 @@ import backend.like_house.domain.user_management.service.UserManagementCommandSe
 import backend.like_house.domain.user_management.service.UserManagementQueryService;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
+import backend.like_house.global.validation.annotation.CheckModifyFamilyData;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
 import backend.like_house.global.validation.annotation.IsRoomManager;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +17,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -57,7 +57,8 @@ public class UserManagementController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "사용자를 찾을 수 없습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_DATA4001", description = "별명 또는 메모 중 최소 하나는 필요합니다.")
     })
     @Parameters({
             @Parameter(name = "userId", description = "수정할 유저 아이디, path variable 입니다.")
@@ -65,7 +66,7 @@ public class UserManagementController {
     public ApiResponse<ModifyFamilyDataResponse> modifyFamilyData(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
             @PathVariable(name = "userId") Long userId,
-            @RequestBody @Valid ModifyFamilyDataRequest request) {
+            @RequestBody @CheckModifyFamilyData ModifyFamilyDataRequest request) {
         Custom custom = userManagementCommandService.modifyFamilyCustom(user, userId, request);
         return ApiResponse.onSuccess(UserManagementConverter.toModifyFamilyDataResponse(userId, custom));
     }
