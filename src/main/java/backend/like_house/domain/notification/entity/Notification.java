@@ -47,6 +47,9 @@ public class Notification extends BaseEntity {
     private String title;
 
     @Column(nullable = false)
+    private LocalDate date;
+
+    @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
