@@ -18,6 +18,7 @@ import backend.like_house.domain.user_management.repository.CustomRepository;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.PostException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,19 +86,28 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public List<GetMyPostListResponse> getMyPosts(User user) {
-        List<Post> posts = postRepository.findByUserId(user.getId());
+    public MyPostCursorDataListResponse getMyPosts(User user, Long cursor, Integer size) {
+        Page<Post> postPage = postRepository.findByUserIdAndIdLessThanOrderByIdDesc(
+                user.getId(), cursor, PageRequest.of(0, size + 1)
+        );
 
-        return posts.stream()
+        List<Post> posts = postPage.getContent();
+        List<GetMyPostListResponse> postResponses = posts.stream()
+                .limit(size)
                 .map(post -> {
                     List<FamilyTagResponse> taggedUsers = userPostTagRepository.findByPostId(post.getId())
                             .stream().map(tag -> new FamilyTagResponse(tag.getUser().getId(), tag.getUser().getName()))
                             .collect(Collectors.toList());
                     List<String> imageUrls = postImageRepository.findByPostId(post.getId())
-                            .stream().map(PostImage::getFilename).collect(Collectors.toList());
+                            .stream().map(PostImage::getFilename)
+                            .collect(Collectors.toList());
                     return PostConverter.toGetMyPostListResponse(post, taggedUsers, imageUrls);
                 })
                 .collect(Collectors.toList());
+
+        Long nextCursor = posts.size() > size ? posts.get(size - 1).getId() : -1L;
+
+        return PostConverter.toMyPostCursorDataListResponse(postResponses, nextCursor);
     }
 
     private String getAuthorNickname(User user, User postUser) {

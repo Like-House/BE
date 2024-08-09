@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/api/v0")
+@Tag(name = "게시글 관련 컨트롤러")
 public class PostController {
 
     private final PostQueryService postQueryService;
@@ -132,8 +134,15 @@ public class PostController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST4001", description = "존재하지 않는 게시글입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
     })
-    public ApiResponse<List<GetMyPostListResponse>> getMyPosts(@Parameter(hidden = true) @LoginUser User user) {
-        List<GetMyPostListResponse> response = postQueryService.getMyPosts(user);
+    @Parameters({
+            @Parameter(name = "cursor", description = "커서, 마지막으로 받은 게시글의 ID입니다. query string 입니다."),
+            @Parameter(name = "size", description = "가져올 게시글의 개수입니다. 1이상의 값으로 주세요. query string 입니다.")
+    })
+    public ApiResponse<MyPostCursorDataListResponse> getMyPosts(
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestParam(name = "cursor", defaultValue = "9223372036854775807") Long cursor,
+            @RequestParam(required = false, name = "size", defaultValue = "10") @CheckSize Integer size) {
+        MyPostCursorDataListResponse response = postQueryService.getMyPosts(user, cursor, size);
         return ApiResponse.onSuccess(response);
     }
 
