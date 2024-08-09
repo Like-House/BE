@@ -18,6 +18,7 @@ public class CommentDTO {
             private Long parentId;
             @NotNull
             private String content;
+            private String title;
         }
 
         @Getter
@@ -39,6 +40,7 @@ public class CommentDTO {
             private Long commentId;
             private Long parentId;
             private Long userId;
+            private String title;
             private String content;
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
@@ -55,6 +57,7 @@ public class CommentDTO {
             private String userNickname;
             private String userProfileImage;
             private String content;
+            private String title;
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
         }

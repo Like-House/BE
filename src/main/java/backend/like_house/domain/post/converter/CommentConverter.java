@@ -14,6 +14,7 @@ public class CommentConverter {
                 .user(user)
                 .parent(parent)
                 .content(request.getContent())
+                .title(request.getTitle())
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class CommentConverter {
                 .parentId(comment.getParent() != null ? comment.getParent().getId() : null)
                 .userId(comment.getUser().getId())
                 .content(comment.getContent())
+                .title(comment.getTitle())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
                 .build();
@@ -36,6 +38,7 @@ public class CommentConverter {
                 .userNickname(userNickname)
                 .userProfileImage(comment.getUser().getProfileImage())
                 .content(comment.getContent())
+                .title(comment.getTitle())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
                 .build();
