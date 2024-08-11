@@ -29,6 +29,7 @@ spring:
       - oauth
       - discord
       - email
+      - firebase
   data:
     redis:
       repositories:
