@@ -159,18 +159,8 @@ public class AuthCommandServiceImpl implements AuthCommandService {
             redisTemplate.delete(email + ":" + socialType);
         }
 
-        // 쿠키 무효화
-        Cookie cookie = new Cookie("accessToken", null);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
-        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setMaxAge(0);
-        response.addCookie(refreshTokenCookie);
+        jwtUtil.setCookie(response, "accessToken", null, 0);
+        jwtUtil.setCookie(response, "refreshToken", null, 0);
     }
 
     private String resolveToken(HttpServletRequest request) {
