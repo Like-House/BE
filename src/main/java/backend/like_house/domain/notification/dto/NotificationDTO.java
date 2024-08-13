@@ -1,5 +1,6 @@
 package backend.like_house.domain.notification.dto;
 
+import backend.like_house.global.common.enums.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +16,9 @@ public class NotificationDTO {
     @Getter
     @Builder
     public static class NotificationResponseListDTO {
-        List<NotificationResponseDTO> notificationResponseDTOList;
-        Boolean hasNext;
-        Long nextCursor;
+        private List<NotificationResponseDTO> notificationResponseDTOList;
+        private Boolean hasNext;
+        private Long nextCursor;
     }
 
     @NoArgsConstructor
@@ -25,9 +26,12 @@ public class NotificationDTO {
     @Getter
     @Builder
     public static class NotificationResponseDTO {
-        public String sender;
-        public String title;
-        public String content;
-        public LocalDate createAt;
+        private String title;
+        private String content;
+        private NotificationType notificationType;
+        private LocalDate createAt;
+        private String senderName;
+        private String profileImage;
     }
+
 }

@@ -4,7 +4,7 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.family_space.repository.FamilySpaceRepository;
 import backend.like_house.domain.notification.controller.NotificationRequestType;
 import backend.like_house.domain.notification.converter.NotificationConverter;
-import backend.like_house.domain.notification.dto.NotificationDTO;
+import backend.like_house.domain.notification.dto.NotificationDTO.NotificationResponseListDTO;
 import backend.like_house.domain.notification.entity.Notification;
 import backend.like_house.domain.notification.repository.NotificationRepository;
 import backend.like_house.domain.notification.service.NotificationQueryService;
@@ -25,15 +25,12 @@ public class NotificationQueryServiceImpl implements NotificationQueryService {
     private final FamilySpaceRepository familySpaceRepository;
 
     @Override
-    public NotificationDTO.NotificationResponseListDTO getNotifications(User user, Long familySpaceId, NotificationRequestType notificationRequestType, Long cursor, Integer take) {
-        FamilySpace familySpace = familySpaceRepository.findById(familySpaceId).orElseThrow(() -> {
-            throw new FamilySpaceException(ErrorStatus.FAMILY_SPACE_NOT_FOUND);
-        });
+    public NotificationResponseListDTO getNotifications(User user, Long familySpaceId, NotificationRequestType notificationRequestType, Long cursor, Integer take) {
+        FamilySpace familySpace = familySpaceRepository.findById(familySpaceId).orElseThrow(() -> new FamilySpaceException(ErrorStatus.FAMILY_SPACE_NOT_FOUND));
 
         if (cursor == 1) {
             cursor = Long.MAX_VALUE;
         }
-
 
 
         Slice<Notification> notificationSlice;
@@ -48,6 +45,7 @@ public class NotificationQueryServiceImpl implements NotificationQueryService {
         if (!notificationSlice.isLast()) {
             nextCursor = notificationSlice.toList().get(notificationSlice.toList().size() - 1).getId();
         }
+
 
         return NotificationConverter.toNotificationResponseListDTO(notificationSlice, nextCursor);
     }
