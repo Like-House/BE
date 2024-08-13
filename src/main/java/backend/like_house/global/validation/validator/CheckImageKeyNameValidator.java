@@ -22,6 +22,10 @@ public class CheckImageKeyNameValidator implements ConstraintValidator<CheckImag
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
+        if (value == null) {
+            return true;
+        }
+
         if (!s3Service.isExistKeyName(value)){
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(ErrorStatus.KEYNAME_NOT_FOUND.toString())
