@@ -18,6 +18,7 @@ public class ChatConverter {
     public static Chat toChat(MessageDTO messageDTO, User user, ChatRoom chatRoom) {
         return Chat.builder()
                 .content(messageDTO.getContent())
+                .imageKeyName(messageDTO.getImageKeyName())
                 .user(user)
                 .chatRoom(chatRoom)
                 .build();
@@ -50,7 +51,8 @@ public class ChatConverter {
         return ChatDTO.ChatResponse.builder()
                 .chatId(chat.getId())
                 .senderDTO(senderDTO)
-                .content(chat.getContent())
+                .content(chat.getContent() == null ? null : chat.getContent())
+                .imageKeyName(chat.getImageKeyName() == null ? null : chat.getImageKeyName())
                 .createAt(chat.getCreatedAt())
                 .build();
     }

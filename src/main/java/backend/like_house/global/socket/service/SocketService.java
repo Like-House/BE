@@ -84,6 +84,11 @@ public class SocketService {
             throw new ChatRoomException(ErrorStatus.FIRST_JOIN_CHATROOM);
         }
 
+        // 둘 중 하나는 NULL 이여야 함.
+        if (chattingDTO.getContent() != null && chattingDTO.getImageKeyName() != null) {
+            throw new ChatException(ErrorStatus.INVALID_CHAT_FORMAT);
+        }
+
         // 채팅 방 번호로 해당 하는 채팅방 사람들의 이메일 받아오는 로직
         List<Tuple> emailsAndSocialTypes = userRepository.getEmailAndSocialTypeByChatRoomId(chattingDTO.getChatRoomId());
 
