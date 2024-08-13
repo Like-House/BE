@@ -32,6 +32,7 @@ public class Chat extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @Column(nullable = false)
     private String content;
+
+    private String imageKeyName;
 }

@@ -9,6 +9,7 @@ public class ChattingDTO {
         private ChatType chatType;
         private String content;
         private Long chatRoomId;
+        private String imageKeyName;
 
         public enum ChatType {
             ENTER, TALK, EXIT

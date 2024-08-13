@@ -28,6 +28,7 @@ public class ChatDTO {
     public static class ChatResponse {
         private Long chatId;
         private String content;
+        private String imageKeyName;
         private LocalDateTime createAt;
         private SenderDTO senderDTO;
     }
