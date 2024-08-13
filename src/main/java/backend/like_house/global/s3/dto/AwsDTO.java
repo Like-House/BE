@@ -27,4 +27,12 @@ public class AwsDTO {
     public static class PresignedUrlDownLoadResponse {
         private String url;
     }
+
+    @Schema(description = "AWS S3 업로드할 파일 정보")
+    @Getter
+    @Builder
+    public static class FileUploadRequest {
+        private String fileName;
+        private byte[] fileData;
+    }
 }

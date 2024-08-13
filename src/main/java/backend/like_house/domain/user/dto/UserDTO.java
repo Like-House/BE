@@ -21,6 +21,7 @@ public class UserDTO {
     }
 
     @Getter
+    @Builder
     public static class UpdateProfileRequest {
 
         @CheckImageKeyName

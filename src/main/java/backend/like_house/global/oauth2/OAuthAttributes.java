@@ -55,21 +55,15 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public User toEntity(OAuth2UserInfo oauth2UserInfo) {
+    public User toEntity(OAuth2UserInfo oauth2UserInfo, String profileImageKey) {
         return User.builder()
                 .socialType(SocialType.valueOf(oauth2UserInfo.getProvider().toUpperCase()))
                 .socialId(oauth2UserInfo.getProviderId())
                 .email(oauth2UserInfo.getEmail())
                 .name(oauth2UserInfo.getName())
-                .profileImage(oauth2UserInfo.getProfileImage())
+                .profileImage(profileImageKey)
                 .birthDate(oauth2UserInfo.getBirthDate())
                 .role(Role.ROLE_USER)
                 .build();
     }
-
-
 }
-
-
-
-

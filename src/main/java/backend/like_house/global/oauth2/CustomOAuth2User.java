@@ -14,13 +14,15 @@ public class CustomOAuth2User extends DefaultOAuth2User {
     private String email;
     private Role role;
     private SocialType socialType;
+    private String profileImageKey;
 
     public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities,
                             Map<String, Object> attributes, String nameAttributeKey,
-                            String email, Role role, SocialType socialType) {
+                            String email, Role role, SocialType socialType, String profileImageKey) {
         super(authorities, attributes, nameAttributeKey);
         this.email = email;
         this.role = role;
         this.socialType = socialType;
+        this.profileImageKey = profileImageKey;
     }
 }
