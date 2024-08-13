@@ -68,6 +68,10 @@ dependencies {
 
 	// fcm
 	implementation 'com.google.firebase:firebase-admin:9.1.0'
+
+	// JAXB
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
 }
 
 tasks.named('test') {
