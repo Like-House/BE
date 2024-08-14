@@ -18,7 +18,7 @@ public class ChatRoomConverter {
         return ChatRoom.builder()
                 .title(createChatRoomRequest.getTitle())
                 .dtype(createChatRoomRequest.getChatRoomType())
-                .imageUrl(createChatRoomRequest.getImageKeyName())
+                .imageKeyName(createChatRoomRequest.getImageKeyName())
                 .familySpace(familySpace)
                 .build();
     }
@@ -57,7 +57,7 @@ public class ChatRoomConverter {
         return ChatRoomResponse.builder()
                 .chatRoomId(chatRoom.getId())
                 .title(chatRoom.getTitle())
-                .imageKeyName(chatRoom.getImageUrl())
+                .imageKeyName(chatRoom.getImageKeyName())
                 .build();
     }
 }
