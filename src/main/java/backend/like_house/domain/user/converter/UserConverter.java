@@ -22,6 +22,7 @@ public class UserConverter {
 
     public static GetProfileResponse toGetProfileResponseDTO (User user) {
         return GetProfileResponse.builder()
+                .userId(user.getId())
                 .name(user.getName())
                 .imageKeyName(user.getProfileImage())
                 .birthDate(user.getBirthDate())
