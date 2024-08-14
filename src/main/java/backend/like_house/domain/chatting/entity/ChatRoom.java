@@ -36,11 +36,10 @@ public class ChatRoom extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ChatRoomType dtype;
 
-    @Column(nullable = false)
-    private String imageUrl;
+    private String imageKeyName;
 
     public void updateChatRoom(UpdateChatRoomRequest updateChatRoomRequest) {
         this.title = updateChatRoomRequest.getTitle();
-        this.imageUrl = updateChatRoomRequest.getImageKeyName();
+        this.imageKeyName = updateChatRoomRequest.getImageKeyName();
     }
 }

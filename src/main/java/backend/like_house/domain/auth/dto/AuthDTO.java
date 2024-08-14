@@ -50,7 +50,6 @@ public class AuthDTO {
         @Schema(description = "회원가입할 유저 생년월일", example = "2024-07-20")
         private LocalDate birthDate;
 
-        @Null
         @CheckImageKeyName
         @Schema(description = "회원가입할 유저 프로필 이미지", example = "프로필")
         private String imageKeyName;
