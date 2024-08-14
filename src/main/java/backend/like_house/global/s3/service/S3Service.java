@@ -1,8 +1,7 @@
 package backend.like_house.global.s3.service;
 
 import backend.like_house.global.s3.dto.AwsDTO;
-import backend.like_house.global.s3.dto.AwsDTO.PresignedUrlDownLoadResponse;
-import backend.like_house.global.s3.dto.AwsDTO.PresignedUrlUploadResponse;
+import backend.like_house.global.s3.dto.AwsDTO.*;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
@@ -14,10 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -87,5 +87,63 @@ public class S3Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public PresignedUrlUploadResponseList getPresignedUrlToUploadList(PresignedUploadRequest presignedUploadRequest) {
+        // Set expiration time for 3 minutes from now
+        Date expiration = new Date();
+        expiration.setTime(expiration.getTime() + TimeUnit.MINUTES.toMillis(3));
+
+        System.out.println(1);
+
+        // Generate the list of presigned URLs
+        List<PresignedUrlUploadResponse> responses = presignedUploadRequest.getKeyNames().stream()
+                .map(oldKeyName -> {
+                    String keyName = UUID.randomUUID() + "_" + oldKeyName;
+
+                    GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, keyName)
+                            .withMethod(HttpMethod.PUT)
+                            .withExpiration(expiration);
+
+                    String url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
+
+                    return PresignedUrlUploadResponse.builder()
+                            .url(url)
+                            .keyName(keyName)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        System.out.println(2);
+        // Return the response list
+        return PresignedUrlUploadResponseList.builder().presignedUrlUploadResponses(responses).build();
+    }
+
+    public PresignedUrlDownLoadResponseList getPresignedUrlToDownloadList(DownLoadRequestList downloadRequestList) {
+        // Set expiration time for 3 minutes from now
+        Date expiration = new Date();
+        expiration.setTime(expiration.getTime() + TimeUnit.MINUTES.toMillis(3));
+
+        // Generate the list of presigned URLs for downloading
+        List<PresignedUrlDownLoadResponse> responses = downloadRequestList.getKeyNames().stream()
+                .map(keyName -> {
+
+                    GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, keyName)
+                            .withMethod(HttpMethod.GET)
+                            .withExpiration(expiration);
+
+                    // Generate the presigned URL
+                    String url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
+
+                    // Build the response
+                    return PresignedUrlDownLoadResponse.builder()
+                            .url(url)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        // Return the response list
+        return PresignedUrlDownLoadResponseList.builder().presignedUrlDownLoadResponseLists(responses).build();
     }
 }

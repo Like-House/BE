@@ -7,7 +7,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class AwsDTO {
+
+    @Schema(description = "AWS S3 URL 응답 정보 리스트")
+    @Builder
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PresignedUrlUploadResponseList {
+        private List<PresignedUrlUploadResponse> presignedUrlUploadResponses;
+    }
 
     @Schema(description = "AWS S3 URL 응답 정보")
     @Builder
@@ -17,6 +28,24 @@ public class AwsDTO {
     public static class PresignedUrlUploadResponse {
         private String url;
         private String keyName;
+    }
+
+    @Getter
+    public static class PresignedUploadRequest {
+        private List<String> keyNames;
+    }
+
+    @Getter
+    public static class DownLoadRequestList {
+        private List<String> keyNames;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PresignedUrlDownLoadResponseList {
+        private List<PresignedUrlDownLoadResponse> presignedUrlDownLoadResponseLists;
     }
 
     @Schema(description = "AWS S3 URL 응답 정보")
