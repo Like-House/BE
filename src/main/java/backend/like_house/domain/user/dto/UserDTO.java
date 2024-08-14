@@ -15,6 +15,7 @@ public class UserDTO {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     public static class GetProfileResponse {
+        private Long userId;
         private String name;
         private String imageKeyName;
         private LocalDate birthDate;
