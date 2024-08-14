@@ -97,5 +97,14 @@ public class UserController {
         return ApiResponse.onSuccess(UserConverter.toSettingAlarmResponse(user));
     }
 
+    @GetMapping("/alarms")
+    @Operation(summary = "알림 조회 API", description = "사용자의 알림 상태를 조회합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    })
+    public ApiResponse<SettingAlarmResponse> getUserAlarm(@Parameter(hidden = true) @LoginUser User user) {
+        return ApiResponse.onSuccess(UserConverter.toSettingAlarmResponse(user));
+    }
+
 
 }
