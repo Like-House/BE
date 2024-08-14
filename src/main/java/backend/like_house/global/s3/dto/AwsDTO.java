@@ -31,13 +31,23 @@ public class AwsDTO {
     }
 
     @Getter
-    public static class PresignedUploadRequest {
+    public static class PresignedUploadListRequest {
         private List<String> keyNames;
     }
 
     @Getter
-    public static class DownLoadRequestList {
+    public static class PresignedUploadRequest {
+        private String keyName;
+    }
+
+    @Getter
+    public static class PresignedDownLoadListRequest {
         private List<String> keyNames;
+    }
+
+    @Getter
+    public static class PresignedDownloadRequest {
+        private String keyName;
     }
 
     @Builder

@@ -28,14 +28,14 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public PresignedUrlUploadResponse getPresignedUrlToUpload(String fileName) {
+    public PresignedUrlUploadResponse getPresignedUrlToUpload(PresignedUploadRequest presignedUploadRequest) {
         /// 제한시간 설정
         Date expiration = new Date();
         long expTime = expiration.getTime();
         expTime += TimeUnit.MINUTES.toMillis(3); // 3 Minute
         expiration.setTime(expTime);
 
-        String keyName = UUID.randomUUID() + "_" + fileName;
+        String keyName = UUID.randomUUID() + "_" + presignedUploadRequest.getKeyName();
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, keyName)
                 .withMethod(HttpMethod.PUT)
@@ -50,14 +50,14 @@ public class S3Service {
 
     }
 
-    public PresignedUrlDownLoadResponse getPresignedUrlToDownload(String keyName) {
+    public PresignedUrlDownLoadResponse getPresignedUrlToDownload(PresignedDownloadRequest presignedDownloadRequest) {
         /// 제한시간 설정
         Date expiration = new Date();
         long expTime = expiration.getTime();
         expTime += TimeUnit.MINUTES.toMillis(3);
         expiration.setTime(expTime); // 3 Minute
 
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, keyName)
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, presignedDownloadRequest.getKeyName())
                 .withMethod(HttpMethod.GET)
                 .withExpiration(expiration);
 
@@ -90,7 +90,7 @@ public class S3Service {
     }
 
 
-    public PresignedUrlUploadResponseList getPresignedUrlToUploadList(PresignedUploadRequest presignedUploadRequest) {
+    public PresignedUrlUploadResponseList getPresignedUrlToUploadList(PresignedUploadListRequest presignedUploadListRequest) {
         // Set expiration time for 3 minutes from now
         Date expiration = new Date();
         expiration.setTime(expiration.getTime() + TimeUnit.MINUTES.toMillis(3));
@@ -98,7 +98,7 @@ public class S3Service {
         System.out.println(1);
 
         // Generate the list of presigned URLs
-        List<PresignedUrlUploadResponse> responses = presignedUploadRequest.getKeyNames().stream()
+        List<PresignedUrlUploadResponse> responses = presignedUploadListRequest.getKeyNames().stream()
                 .map(oldKeyName -> {
                     String keyName = UUID.randomUUID() + "_" + oldKeyName;
 
@@ -120,13 +120,13 @@ public class S3Service {
         return PresignedUrlUploadResponseList.builder().presignedUrlUploadResponses(responses).build();
     }
 
-    public PresignedUrlDownLoadResponseList getPresignedUrlToDownloadList(DownLoadRequestList downloadRequestList) {
+    public PresignedUrlDownLoadResponseList getPresignedUrlToDownloadList(PresignedDownLoadListRequest downloadListPresigned) {
         // Set expiration time for 3 minutes from now
         Date expiration = new Date();
         expiration.setTime(expiration.getTime() + TimeUnit.MINUTES.toMillis(3));
 
         // Generate the list of presigned URLs for downloading
-        List<PresignedUrlDownLoadResponse> responses = downloadRequestList.getKeyNames().stream()
+        List<PresignedUrlDownLoadResponse> responses = downloadListPresigned.getKeyNames().stream()
                 .map(keyName -> {
 
                     GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, keyName)
