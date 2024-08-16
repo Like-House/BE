@@ -25,6 +25,10 @@ public class PostConverter {
     }
 
     public static List<PostImage> toPostImages(List<String> imageUrls, Post post) {
+        if (imageUrls == null || imageUrls.isEmpty()) {
+            return List.of();  // 이미지가 없는 경우 빈 리스트 반환
+        }
+
         return imageUrls.stream()
                 .map(url -> PostImage.builder().post(post).filename(url).build())
                 .collect(Collectors.toList());
