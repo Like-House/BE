@@ -45,9 +45,6 @@ public class Comment extends BaseEntity {
     private Post post;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
