@@ -42,7 +42,6 @@ public class UserDTO {
     public static class UpdatePasswordRequest {
         @NotBlank
         @Schema(description = "기존 비밀번호")
-        @CheckImageKeyName
         private String currentPassword;
 
         @NotBlank
