@@ -92,7 +92,9 @@ public class PostQueryServiceImpl implements PostQueryService {
         List<GetCommentResponse> commentResponses = comments.stream()
                 .map(comment -> {
                     String userNickname = getAuthorNickname(user, comment.getUser());
-                    return CommentConverter.toGetCommentResponse(comment, userNickname);
+                    // 로그인한 사용자가 작성자와 동일한지 확인
+                    boolean owner = comment.getUser().getId().equals(user.getId());
+                    return CommentConverter.toGetCommentResponse(comment, userNickname, owner);
                 })
                 .collect(Collectors.toList());
 

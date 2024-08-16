@@ -28,7 +28,7 @@ public class CommentConverter {
                 .build();
     }
 
-    public static GetCommentResponse toGetCommentResponse(Comment comment, String userNickname) {
+    public static GetCommentResponse toGetCommentResponse(Comment comment, String userNickname, boolean owner) {
         return GetCommentResponse.builder()
                 .commentId(comment.getId())
                 .parentId(comment.getParent() != null ? comment.getParent().getId() : null)
@@ -36,6 +36,7 @@ public class CommentConverter {
                 .userNickname(userNickname)
                 .userProfileImage(comment.getUser().getProfileImage())
                 .content(comment.getContent())
+                .owner(owner)
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
                 .build();

@@ -55,6 +55,7 @@ public class CommentDTO {
             private String userNickname;
             private String userProfileImage;
             private String content;
+            private boolean owner;
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
         }
