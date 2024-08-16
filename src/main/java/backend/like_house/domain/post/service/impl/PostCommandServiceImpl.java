@@ -40,8 +40,11 @@ public class PostCommandServiceImpl implements PostCommandService {
 
         post = postRepository.save(post);
 
-        List<PostImage> postImages = PostConverter.toPostImages(createPostRequest.getImageUrls(), post);
-        postImageRepository.saveAll(postImages);
+        // 이미지가 null이거나 비어있지 않은 경우에만 저장
+        if (createPostRequest.getImageUrls() != null && !createPostRequest.getImageUrls().isEmpty()) {
+            List<PostImage> postImages = PostConverter.toPostImages(createPostRequest.getImageUrls(), post);
+            postImageRepository.saveAll(postImages);
+        }
 
         List<UserPostTag> userPostTags = PostConverter.toUserPostTags(createPostRequest.getTaggedUserIds(), post);
         userPostTagRepository.saveAll(userPostTags);
