@@ -26,6 +26,7 @@ public class UserConverter {
                 .name(user.getName())
                 .imageKeyName(user.getProfileImage())
                 .birthDate(user.getBirthDate())
+                .socialType(user.getSocialType())
                 .build();
     }
 
