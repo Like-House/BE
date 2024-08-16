@@ -1,5 +1,6 @@
 package backend.like_house.domain.user.dto;
 
+import backend.like_house.domain.user.entity.SocialType;
 import backend.like_house.global.validation.annotation.CheckImageKeyName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public class UserDTO {
         private String name;
         private String imageKeyName;
         private LocalDate birthDate;
+        private SocialType socialType;
     }
 
     @Getter
