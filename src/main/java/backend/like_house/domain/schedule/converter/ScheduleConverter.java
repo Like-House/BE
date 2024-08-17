@@ -21,17 +21,13 @@ public class ScheduleConverter {
                 .build();
     }
 
-    public static SchedulePageDataListResponse toSchedulePageDataListResponse(Page<Schedule> scheduleList) {
+    public static ScheduleDataByMonthListResponse toScheduleDataByMonthListResponse(List<Schedule> scheduleList) {
         List<ScheduleDataResponse> scheduleDataResponseList = scheduleList.stream()
                 .map(ScheduleConverter::toScheduleDataResponse).toList();
 
-        return SchedulePageDataListResponse.builder()
+        return ScheduleDataByMonthListResponse.builder()
                 .scheduleDataResponseList(scheduleDataResponseList)
                 .listSize(scheduleDataResponseList.size())
-                .totalPage(scheduleList.getTotalPages())
-                .totalElements(scheduleList.getTotalElements())
-                .isFirst(scheduleList.isFirst())
-                .isLast(scheduleList.isLast())
                 .build();
     }
 

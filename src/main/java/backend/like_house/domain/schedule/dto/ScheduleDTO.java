@@ -51,18 +51,10 @@ public class ScheduleDTO {
         @Getter
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor(access = AccessLevel.PROTECTED)
-        public static class SchedulePageDataListResponse {
+        public static class ScheduleDataByMonthListResponse {
             private List<ScheduleDataResponse> scheduleDataResponseList;
             @Schema(description = "리스트의 크기")
             private Integer listSize;
-            @Schema(description = "전체 페이지 수")
-            private Integer totalPage;
-            @Schema(description = "전체 요소 수")
-            private Long totalElements;
-            @Schema(description = "첫 번째 페이지 여부")
-            private Boolean isFirst;
-            @Schema(description = "마지막 페이지 여부")
-            private Boolean isLast;
         }
 
         @Builder

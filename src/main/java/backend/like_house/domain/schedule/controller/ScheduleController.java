@@ -9,11 +9,9 @@ import backend.like_house.domain.schedule.service.ScheduleQueryService;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.global.common.ApiResponse;
 import backend.like_house.global.security.annotation.LoginUser;
-import backend.like_house.global.validation.annotation.CheckPage;
 import backend.like_house.global.validation.annotation.CheckSize;
 import backend.like_house.global.validation.annotation.ExistSchedule;
 import backend.like_house.global.validation.annotation.HasFamilySpaceUser;
-import backend.like_house.global.validation.validator.CheckPageValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -22,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,30 +45,22 @@ public class ScheduleController {
 
     private final ScheduleQueryService scheduleQueryService;
     private final ScheduleCommandService scheduleCommandService;
-    private final CheckPageValidator checkPageValidator;
 
     @GetMapping("/month")
     @Operation(summary = "달별 일정 조회 API", description = "특정 달의 일정들을 조회하는 API입니다. "
-            + "페이징을 포함합니다. query string 으로 yearMonth와 page 번호를 주세요.")
+            + "query string 으로 yearMonth를 주세요.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PAGE4001", description = "올바르지 않은 페이징 번호입니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SIZE4001", description = "올바르지 않은 사이즈입니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FAMILY_SPACE4003", description = "유저가 해당 가족 공간에 속해 있지 않습니다.")
     })
     @Parameters({
-            @Parameter(name = "yearMonth", description = "연도와 월, yyyy-MM 형식입니다. query string 입니다."),
-            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다. query string 입니다."),
-            @Parameter(name = "size", description = "가져올 일정의 개수입니다. 1이상의 값으로 주세요. query string 입니다.")
+            @Parameter(name = "yearMonth", description = "연도와 월, yyyy-MM 형식입니다. query string 입니다.")
     })
-    public ApiResponse<SchedulePageDataListResponse> getScheduleByMonth(
+    public ApiResponse<ScheduleDataByMonthListResponse> getScheduleByMonth(
             @Parameter(hidden = true) @LoginUser @HasFamilySpaceUser User user,
-            @RequestParam(name = "yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
-            @RequestParam(required = false, name = "page", defaultValue = "1") @CheckPage Integer page,
-            @RequestParam(required = false, name = "size", defaultValue = "10") @CheckSize Integer size) {
-        Integer validatedPage = checkPageValidator.validateAndTransformPage(page);
-        Page<Schedule> scheduleList = scheduleQueryService.getScheduleByMonth(user, yearMonth, validatedPage, size);
-        return ApiResponse.onSuccess(ScheduleConverter.toSchedulePageDataListResponse(scheduleList));
+            @RequestParam(name = "yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth) {
+        List<Schedule> scheduleList = scheduleQueryService.getScheduleByMonth(user, yearMonth);
+        return ApiResponse.onSuccess(ScheduleConverter.toScheduleDataByMonthListResponse(scheduleList));
     }
 
     @GetMapping("/date")

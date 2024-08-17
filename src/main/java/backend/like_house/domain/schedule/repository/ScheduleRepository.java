@@ -12,8 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    Page<Schedule> findAllByFamilySpaceAndDateBetween(FamilySpace familySpace, LocalDate startDate, LocalDate endDate,
-                                                      PageRequest pageRequest);
+    List<Schedule> findAllByFamilySpaceAndDateBetween(FamilySpace familySpace, LocalDate startDate, LocalDate endDate);
 
     Page<Schedule> findAllByFamilySpaceAndDateAndIdLessThanOrderByIdDesc(FamilySpace familySpace, LocalDate date,
                                                                          Long cursor, PageRequest pageRequest);
