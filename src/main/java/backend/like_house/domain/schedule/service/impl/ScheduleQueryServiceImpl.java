@@ -7,6 +7,7 @@ import backend.like_house.domain.schedule.service.ScheduleQueryService;
 import backend.like_house.domain.user.entity.User;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,10 +28,10 @@ public class ScheduleQueryServiceImpl implements ScheduleQueryService {
     }
 
     @Override
-    public Page<Schedule> getScheduleByMonth(User user, YearMonth yearMonth, Integer page, Integer size) {
+    public List<Schedule> getScheduleByMonth(User user, YearMonth yearMonth) {
         FamilySpace familySpace = user.getFamilySpace();
-        return scheduleRepository.findAllByFamilySpaceAndDateBetween(
-                familySpace, yearMonth.atDay(1), yearMonth.atEndOfMonth(), PageRequest.of(page, size));
+        return scheduleRepository.findAllByFamilySpaceAndDateBetween(familySpace, yearMonth.atDay(1),
+                yearMonth.atEndOfMonth());
     }
 
     @Override
