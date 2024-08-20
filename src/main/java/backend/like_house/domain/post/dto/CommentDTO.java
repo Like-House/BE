@@ -58,6 +58,7 @@ public class CommentDTO {
             private boolean owner;
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
+            private boolean commentAlarmEnabled;
         }
     }
 }
