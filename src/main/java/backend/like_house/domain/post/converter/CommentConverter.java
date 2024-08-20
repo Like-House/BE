@@ -39,6 +39,7 @@ public class CommentConverter {
                 .owner(owner)
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
+                .commentAlarmEnabled(comment.getCommentAlarm())
                 .build();
     }
 }

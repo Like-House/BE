@@ -61,6 +61,7 @@ public class PostConverter {
                 .imageUrls(imageUrls)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
+                .postAlarmEnabled(post.getPostAlarm())
                 .owner(owner)
                 .scheduledDates(scheduledDates)
                 .build();
@@ -79,6 +80,7 @@ public class PostConverter {
                 .comments(comments)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
+                .postAlarmEnabled(post.getPostAlarm())
                 .build();
     }
 

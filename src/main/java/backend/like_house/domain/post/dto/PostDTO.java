@@ -52,6 +52,7 @@ public class PostDTO {
             private LocalDateTime updatedAt;
             private boolean owner;
             private List<LocalDate> scheduledDates;
+            private boolean postAlarmEnabled;
         }
 
         @Builder
@@ -70,6 +71,7 @@ public class PostDTO {
             private List<CommentDTO.CommentResponse.GetCommentResponse> comments;
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
+            private boolean postAlarmEnabled;
         }
 
         @Builder
