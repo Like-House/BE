@@ -1,12 +1,15 @@
 package backend.like_house.domain.chatting.repository;
 
+import backend.like_house.domain.chatting.dto.ChatRoomDTO;
 import backend.like_house.domain.chatting.entity.ChatRoom;
 import backend.like_house.domain.chatting.entity.QChat;
 import backend.like_house.domain.chatting.entity.QChatRoom;
 import backend.like_house.domain.chatting.entity.QUserChatRoom;
 import backend.like_house.domain.family_space.entity.QFamilySpace;
 import backend.like_house.domain.user.entity.QUser;
+import com.amazonaws.services.ec2.model.UserData;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +25,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static backend.like_house.domain.chatting.dto.ChatRoomDTO.*;
+
 @Repository
 @RequiredArgsConstructor
 public class CustomChatRoomRepositoryImpl implements CustomChatRoomRepository {
 
     private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
 
     @Override
@@ -60,4 +66,19 @@ public class CustomChatRoomRepositoryImpl implements CustomChatRoomRepository {
 
         return new SliceImpl<>(chatRooms, PageRequest.of(0, take), hasNext); // 페이지 정보와 함께 Slice 반환
     }
+
+    @Override
+    public ChatRoomData getUserDataByUserIdAndChatRoomId(Long userId, Long chatRoomId) {
+        QUserChatRoom userChatRoom = QUserChatRoom.userChatRoom;
+        QUser user = QUser.user;
+
+         return queryFactory
+                .select(Projections.constructor(ChatRoomData.class, user.name, user.profileImage))
+                .from(userChatRoom)
+                .join(user)
+                .on(userChatRoom.user.eq(user))
+                .where(userChatRoom.chatRoom.id.eq(chatRoomId).and(userChatRoom.user.id.ne(userId)))
+                .fetchOne();
+    }
+
 }

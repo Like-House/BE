@@ -1,21 +1,23 @@
 package backend.like_house.domain.chatting.service.impl;
 
 import backend.like_house.domain.chatting.converter.ChatRoomConverter;
+import backend.like_house.domain.chatting.dto.ChatRoomDTO;
+import backend.like_house.domain.chatting.dto.ChatRoomDTO.ChatRoomData;
 import backend.like_house.domain.chatting.dto.ChatRoomDTO.ChatRoomResponseList;
 import backend.like_house.domain.chatting.entity.Chat;
 import backend.like_house.domain.chatting.entity.ChatRoom;
 import backend.like_house.domain.chatting.repository.ChatRepository;
 import backend.like_house.domain.chatting.repository.ChatRoomRepository;
 import backend.like_house.domain.chatting.service.ChatRoomQueryService;
-import backend.like_house.domain.family_space.repository.FamilySpaceRepository;
+import backend.like_house.global.common.enums.ChatRoomType;
 import backend.like_house.global.error.code.status.ErrorStatus;
-import backend.like_house.global.error.exception.GeneralException;
 import backend.like_house.global.error.handler.ChatRoomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,11 +37,17 @@ public class ChatRoomQueryServiceImpl implements ChatRoomQueryService {
         }
 
         Slice<ChatRoom> chatRoomSlice = chatRoomRepository.getChatRoomsByUserIdAndFamilySpaceId(userId, familySpaceId, cursor, take);
+
+        List<ChatRoomDTO.ChatRoomResponse> chatRoomResponses = chatRoomSlice.stream().map((c)->{
+            ChatRoomData chatRoomData = c.getDtype().equals(ChatRoomType.GENERAL) ? chatRoomRepository.getUserDataByUserIdAndChatRoomId(userId, c.getId()) : new ChatRoomData(c.getTitle(), c.getImageKeyName());
+            return ChatRoomConverter.toChatRoomResponse(c, chatRoomData.getTitle(), chatRoomData.getImageKeyName());
+        }).toList();
+
         Long nextCursor = null;
         if (!chatRoomSlice.isLast()) {
             nextCursor = findNextCursorByChatRoom(chatRoomSlice.toList().get(chatRoomSlice.toList().size() - 1));
         }
-        return ChatRoomConverter.toChatRoomResponseList(chatRoomSlice, nextCursor, userId);
+        return ChatRoomConverter.toChatRoomResponseList(chatRoomResponses, nextCursor, chatRoomSlice.hasNext(), userId);
     }
 
     @Override

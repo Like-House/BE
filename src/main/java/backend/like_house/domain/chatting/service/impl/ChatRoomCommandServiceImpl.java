@@ -15,6 +15,7 @@ import backend.like_house.domain.family_space.entity.FamilySpace;
 import backend.like_house.domain.family_space.repository.FamilySpaceRepository;
 import backend.like_house.domain.user.entity.User;
 import backend.like_house.domain.user.repository.UserRepository;
+import backend.like_house.global.common.enums.ChatRoomType;
 import backend.like_house.global.error.code.status.ErrorStatus;
 import backend.like_house.global.error.handler.ChatRoomException;
 import backend.like_house.global.error.handler.UserException;
@@ -39,6 +40,10 @@ public class ChatRoomCommandServiceImpl implements ChatRoomCommandService {
 
         if (createChatRoomRequest.getRoomParticipantIds().contains(user.getId())) {
             throw new ChatRoomException(ErrorStatus.OVERLAP_JOIN_USER);
+        }
+
+        if (createChatRoomRequest.getChatRoomType().equals(ChatRoomType.GENERAL) && (createChatRoomRequest.getRoomParticipantIds().size() != 1)) {
+            throw new ChatRoomException(ErrorStatus.GENERAL_ONE_USER);
         }
 
         // 어노테이션으로 이미 확인

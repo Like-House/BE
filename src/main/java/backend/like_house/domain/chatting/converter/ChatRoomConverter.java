@@ -39,25 +39,21 @@ public class ChatRoomConverter {
                 .build();
     }
 
-    public static ChatRoomResponseList toChatRoomResponseList(Slice<ChatRoom> chatRoomList, Long nextCursor, Long userId) {
-        List<ChatRoomResponse> chatRooms = chatRoomList
-                .stream()
-                .map(ChatRoomConverter::toChatRoomResponse)
-                .collect(Collectors.toList());
+    public static ChatRoomResponseList toChatRoomResponseList(List<ChatRoomResponse> chatRoomList, Long nextCursor, Boolean hasNext, Long userId) {
 
         return ChatRoomResponseList.builder()
-                .hasNext(chatRoomList.hasNext())
-                .chatRoomResponses(chatRooms)
+                .hasNext(hasNext)
+                .chatRoomResponses(chatRoomList)
                 .nextCursor(nextCursor)
                 .ownerId(userId)
                 .build();
     }
 
-    private static ChatRoomResponse toChatRoomResponse(ChatRoom chatRoom) {
+    public static ChatRoomResponse toChatRoomResponse(ChatRoom chatRoom, String title, String imageKeyName) {
         return ChatRoomResponse.builder()
                 .chatRoomId(chatRoom.getId())
-                .title(chatRoom.getTitle())
-                .imageKeyName(chatRoom.getImageKeyName())
+                .title(title)
+                .imageKeyName(imageKeyName)
                 .build();
     }
 }
