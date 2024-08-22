@@ -8,12 +8,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.jdbc.Expectation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -136,7 +134,7 @@ public class JWTUtil {
     }
 
     public boolean isRefreshTokenValid(String refreshToken) {
-        String tokenFromRedis = redisTemplate.opsForValue().get(refreshToken);
+        String tokenFromRedis = redisTemplate.opsForValue().get(extractEmail(refreshToken) + ":" + extractSocialName(refreshToken));
         return tokenFromRedis != null && tokenFromRedis.equals(refreshToken);
     }
 

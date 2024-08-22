@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw new AuthException(ErrorStatus.INVALID_TOKEN);
             }
         } else {
-            throw new AuthException(ErrorStatus._UNAUTHORIZED);
+            throw new AuthException(ErrorStatus.REFRESH_TOKEN_EXPIRED);
         }
     }
 

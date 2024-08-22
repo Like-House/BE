@@ -45,6 +45,7 @@ public enum ErrorStatus implements BaseErrorCode {
     LOGOUT_USER_TOKEN(HttpStatus.BAD_REQUEST, "AUTH4004", "로그아웃 처리된 토큰입니다."),
     DELETE_USER_TOKEN(HttpStatus.BAD_REQUEST, "AUTH4005", "탈퇴 처리된 토큰입니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4006", "만료된 토큰입니다."),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "AUTH4006", "refreshToken이 만료 되었습니다. 재로그인 해주세요."),
 
     // 일정 관련 에러
     SCHEDULE_NOT_FOUND(HttpStatus.BAD_REQUEST, "SCHEDULE4001", "존재하지 않는 일정 입니다."),
