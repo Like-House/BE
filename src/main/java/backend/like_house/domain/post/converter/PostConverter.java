@@ -67,7 +67,7 @@ public class PostConverter {
                 .build();
     }
 
-    public static GetPostDetailResponse toGetPostDetailResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls, List<FamilyTagResponse> taggedUsers, List<CommentDTO.CommentResponse.GetCommentResponse> comments) {
+    public static GetPostDetailResponse toGetPostDetailResponse(Post post, String authorNickname, String profileImage, int likeCount, int commentCount, List<String> imageUrls, List<FamilyTagResponse> taggedUsers, List<CommentDTO.CommentResponse.GetCommentResponse> comments, boolean owner) {
         return GetPostDetailResponse.builder()
                 .postId(post.getId())
                 .content(post.getContent())
@@ -81,6 +81,7 @@ public class PostConverter {
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .postAlarmEnabled(post.getPostAlarm())
+                .owner(owner)
                 .build();
     }
 

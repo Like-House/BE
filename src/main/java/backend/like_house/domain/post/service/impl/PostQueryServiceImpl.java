@@ -97,8 +97,9 @@ public class PostQueryServiceImpl implements PostQueryService {
                     return CommentConverter.toGetCommentResponse(comment, userNickname, owner);
                 })
                 .collect(Collectors.toList());
+        boolean owner = post.getUser().getId().equals(user.getId());
 
-        return PostConverter.toGetPostDetailResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls, taggedUsers, commentResponses);
+        return PostConverter.toGetPostDetailResponse(post, authorNickname, profileImage, likeCount, commentCount, imageUrls, taggedUsers, commentResponses, owner);
     }
 
     @Override
