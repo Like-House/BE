@@ -40,7 +40,7 @@ public class ChatRoomQueryServiceImpl implements ChatRoomQueryService {
 
         List<ChatRoomDTO.ChatRoomResponse> chatRoomResponses = chatRoomSlice.stream().map((c)->{
             ChatRoomData chatRoomData = c.getDtype().equals(ChatRoomType.GENERAL) ? chatRoomRepository.getUserDataByUserIdAndChatRoomId(userId, c.getId()) : new ChatRoomData(c.getTitle(), c.getImageKeyName());
-            return ChatRoomConverter.toChatRoomResponse(c, chatRoomData.getTitle(), chatRoomData.getImageKeyName());
+            return ChatRoomConverter.toChatRoomResponse(c, chatRoomData == null ? null : chatRoomData.getTitle(), chatRoomData == null ? null :chatRoomData.getImageKeyName());
         }).toList();
 
         Long nextCursor = null;
