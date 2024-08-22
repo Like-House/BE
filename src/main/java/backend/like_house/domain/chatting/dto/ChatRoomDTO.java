@@ -78,4 +78,13 @@ public class ChatRoomDTO {
         private LocalDateTime createAt;
         private LocalDateTime updateAt;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PUBLIC)
+    @NoArgsConstructor(access = AccessLevel.PUBLIC)
+    public static class ChatRoomData {
+        private String title;
+        private String imageKeyName;
+    }
 }
