@@ -72,6 +72,7 @@ public class PostDTO {
             private LocalDateTime createdAt;
             private LocalDateTime updatedAt;
             private boolean postAlarmEnabled;
+            private boolean owner;
         }
 
         @Builder
