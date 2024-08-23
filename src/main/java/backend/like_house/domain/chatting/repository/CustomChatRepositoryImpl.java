@@ -19,7 +19,7 @@ import java.util.List;
 public class CustomChatRepositoryImpl implements CustomChatRepository {
 
     private final JPAQueryFactory queryFactory;
-    private static final int FIRST_TAKE = 8;
+    private static final int FIRST_TAKE = 15;
 
     @Override
     public Slice<Chat> findChatByChatRoomIdOrderByDesc(
