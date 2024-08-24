@@ -43,6 +43,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         jwtUtil.setCookie(response, "accessToken", accessToken, 1800); // 30분
         jwtUtil.setCookie(response, "refreshToken", refreshToken, 604800); // 1주일
 
-        response.sendRedirect("http://localhost:5173");
+        response.sendRedirect("https://like-house.vercel.app");
     }
 }
